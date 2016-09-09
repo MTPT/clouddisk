@@ -1193,7 +1193,7 @@ class Manager implements IManager {
 			$path = $path->getParent();
 		}
 
-		$users = [];
+		$users = [$owner => 'null'];
 		$public = false;
 		$remote = false;
 		foreach ($shares as $share) {
