@@ -24,6 +24,7 @@ namespace OCA\ShareByMail;
 use OC\HintException;
 use OC\Share20\Exception\InvalidShare;
 use OCP\Activity\IManager;
+use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\Files\Folder;
 use OCP\Files\IRootFolder;
 use OCP\Files\Node;
@@ -773,7 +774,27 @@ class ShareByMailProvider implements IShareProvider {
 	}
 
 	public function getAccessList($nodes, $currentAccess) {
-		return ['users' => [], 'remote' => false, 'public' => false];
+		$ids = [];
+		foreach ($nodes as $node) {
+			$ids[] = $node->getId();
+		}
+
+		$qb = $this->dbConnection->getQueryBuilder();
+		$qb->select('share_with')
+			->from('share')
+			->where($qb->expr()->eq('share_type', $qb->createNamedParameter(\OCP\Share::SHARE_TYPE_EMAIL)))
+			->andWhere($qb->expr()->in('file_source', $qb->createNamedParameter($ids, IQueryBuilder::PARAM_INT_ARRAY)))
+			->andWhere($qb->expr()->orX(
+				$qb->expr()->eq('item_type', $qb->createNamedParameter('file')),
+				$qb->expr()->eq('item_type', $qb->createNamedParameter('folder'))
+			))
+			->setMaxResults(1);
+		$cursor = $qb->execute();
+
+		$mail = $cursor->fetch() !== false;
+		$cursor->closeCursor();
+
+		return ['mail' => $mail];
 	}
 
 }
