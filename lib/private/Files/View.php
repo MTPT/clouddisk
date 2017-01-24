@@ -627,6 +627,7 @@ class View {
 	 */
 	public function file_put_contents($path, $data) {
 		if (is_resource($data)) { //not having to deal with streams in file_put_contents makes life easier
+			\OC::$server->getLogger()->warning('put stream');
 			$absolutePath = Filesystem::normalizePath($this->getAbsolutePath($path));
 			if (Filesystem::isValidPath($path)
 				and !Filesystem::isFileBlacklisted($path)
@@ -651,9 +652,13 @@ class View {
 				list($storage, $internalPath) = $this->resolvePath($path);
 				$target = $storage->fopen($internalPath, 'w');
 				if ($target) {
-					list (, $result) = \OC_Helper::streamCopy($data, $target);
+					list ($written, $result) = \OC_Helper::streamCopy($data, $target);
 					fclose($target);
 					fclose($data);
+
+					if ($written === 0) {
+						\OC::$server->getLogger()->logException(new \Exception('Attempt to write 0 byte file'));
+					}
 
 					$this->writeUpdate($storage, $internalPath);
 
@@ -672,6 +677,9 @@ class View {
 				return false;
 			}
 		} else {
+			if (strlen($data) === 0) {
+				\OC::$server->getLogger()->logException(new \Exception('Attempt to write 0 byte file to ' . $path));
+			}
 			$hooks = ($this->file_exists($path)) ? array('update', 'write') : array('create', 'write');
 			return $this->basicOperation('file_put_contents', $path, $hooks, $data);
 		}
@@ -961,7 +969,18 @@ class View {
 			\OC::$server->getLogger()->info('Trying to open a file with a mode other than "r" or "w" can cause severe performance issues with some backends');
 		}
 
-		return $this->basicOperation('fopen', $path, $hooks, $mode);
+		if ($mode !== 'r') {
+			$dataWritten = false;
+			return CallbackWrapper::wrap($stream, null, function($data) use (&$dataWritten) {
+				$dataWritten = $dataWritten | (strlen($data) > 0);
+			}, function() use ($dataWritten) {
+				if (!$dataWritten) {
+					\OC::$server->getLogger()->logException(new \Exception('Attempt to write 0 byte file'));
+				}
+			});
+		} else {
+			return $stream;
+		}
 	}
 
 	/**

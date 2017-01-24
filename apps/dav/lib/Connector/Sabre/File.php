@@ -131,6 +131,9 @@ class File extends Node implements IFile {
 				throw new Exception('Could not write file contents');
 			}
 			list($count, $result) = \OC_Helper::streamCopy($data, $target);
+			if ($count === 0) {
+				\OC::$server->getLogger()->logException(new \Exception('Attempt to write 0 byte file'));
+			}
 			fclose($target);
 
 			if ($result === false) {
