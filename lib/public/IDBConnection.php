@@ -259,4 +259,12 @@ interface IDBConnection {
 	 * @since 11.0.0
 	 */
 	public function supports4ByteText();
+
+	/**
+	 * Check whether or not the current database support common table expressions (with)
+	 *
+	 * @return bool
+	 * @since 12.0.0
+	 */
+	public function supportsCommonTableExpression();
 }

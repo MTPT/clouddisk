@@ -53,6 +53,8 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 
 	protected $lockedTable = null;
 
+	private $dbVersion = null;
+
 	public function connect() {
 		try {
 			return parent::connect();
@@ -126,15 +128,14 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	/**
 	 * Initializes a new instance of the Connection class.
 	 *
-	 * @param array $params  The connection parameters.
+	 * @param array $params The connection parameters.
 	 * @param \Doctrine\DBAL\Driver $driver
 	 * @param \Doctrine\DBAL\Configuration $config
 	 * @param \Doctrine\Common\EventManager $eventManager
 	 * @throws \Exception
 	 */
 	public function __construct(array $params, Driver $driver, Configuration $config = null,
-		EventManager $eventManager = null)
-	{
+								EventManager $eventManager = null) {
 		if (!isset($params['adapter'])) {
 			throw new \Exception('adapter not set');
 		}
@@ -156,7 +157,7 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 * @param int $offset
 	 * @return \Doctrine\DBAL\Driver\Statement The prepared statement.
 	 */
-	public function prepare( $statement, $limit=null, $offset=null ) {
+	public function prepare($statement, $limit = null, $offset = null) {
 		if ($limit === -1) {
 			$limit = null;
 		}
@@ -167,8 +168,8 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 		$statement = $this->replaceTablePrefix($statement);
 		$statement = $this->adapter->fixupStatement($statement);
 
-		if(\OC::$server->getSystemConfig()->getValue( 'log_query', false)) {
-			\OCP\Util::writeLog('core', 'DB prepare : '.$statement, \OCP\Util::DEBUG);
+		if (\OC::$server->getSystemConfig()->getValue('log_query', false)) {
+			\OCP\Util::writeLog('core', 'DB prepare : ' . $statement, \OCP\Util::DEBUG);
 		}
 		return parent::prepare($statement);
 	}
@@ -179,17 +180,16 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 * If the query is parametrized, a prepared statement is used.
 	 * If an SQLLogger is configured, the execution is logged.
 	 *
-	 * @param string                                      $query  The SQL query to execute.
-	 * @param array                                       $params The parameters to bind to the query, if any.
-	 * @param array                                       $types  The types the previous parameters are in.
-	 * @param \Doctrine\DBAL\Cache\QueryCacheProfile|null $qcp    The query cache profile, optional.
+	 * @param string $query The SQL query to execute.
+	 * @param array $params The parameters to bind to the query, if any.
+	 * @param array $types The types the previous parameters are in.
+	 * @param \Doctrine\DBAL\Cache\QueryCacheProfile|null $qcp The query cache profile, optional.
 	 *
 	 * @return \Doctrine\DBAL\Driver\Statement The executed statement.
 	 *
 	 * @throws \Doctrine\DBAL\DBALException
 	 */
-	public function executeQuery($query, array $params = array(), $types = array(), QueryCacheProfile $qcp = null)
-	{
+	public function executeQuery($query, array $params = array(), $types = array(), QueryCacheProfile $qcp = null) {
 		$query = $this->replaceTablePrefix($query);
 		$query = $this->adapter->fixupStatement($query);
 		return parent::executeQuery($query, $params, $types, $qcp);
@@ -201,16 +201,15 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 *
 	 * This method supports PDO binding types as well as DBAL mapping types.
 	 *
-	 * @param string $query  The SQL query.
-	 * @param array  $params The query parameters.
-	 * @param array  $types  The parameter types.
+	 * @param string $query The SQL query.
+	 * @param array $params The query parameters.
+	 * @param array $types The parameter types.
 	 *
 	 * @return integer The number of affected rows.
 	 *
 	 * @throws \Doctrine\DBAL\DBALException
 	 */
-	public function executeUpdate($query, array $params = array(), array $types = array())
-	{
+	public function executeUpdate($query, array $params = array(), array $types = array()) {
 		$query = $this->replaceTablePrefix($query);
 		$query = $this->adapter->fixupStatement($query);
 		return parent::executeUpdate($query, $params, $types);
@@ -245,8 +244,8 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 * @param string $table The table name (will replace *PREFIX* with the actual prefix)
 	 * @param array $input data that should be inserted into the table  (column name => value)
 	 * @param array|null $compare List of values that should be checked for "if not exists"
-	 *				If this is null or an empty array, all keys of $input will be compared
-	 *				Please note: text fields (clob) must not be used in the compare array
+	 *                If this is null or an empty array, all keys of $input will be compared
+	 *                Please note: text fields (clob) must not be used in the compare array
 	 * @return int number of inserted rows
 	 * @throws \Doctrine\DBAL\DBALException
 	 */
@@ -280,7 +279,7 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 			$insertQb = $this->getQueryBuilder();
 			$insertQb->insert($table)
 				->values(
-					array_map(function($value) use ($insertQb) {
+					array_map(function ($value) use ($insertQb) {
 						return $insertQb->createNamedParameter($value, $this->getType($value));
 					}, array_merge($keys, $values))
 				);
@@ -342,15 +341,16 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	/**
 	 * returns the error code and message as a string for logging
 	 * works with DoctrineException
+	 *
 	 * @return string
 	 */
 	public function getError() {
 		$msg = $this->errorCode() . ': ';
 		$errorInfo = $this->errorInfo();
 		if (is_array($errorInfo)) {
-			$msg .= 'SQLSTATE = '.$errorInfo[0] . ', ';
-			$msg .= 'Driver Code = '.$errorInfo[1] . ', ';
-			$msg .= 'Driver Message = '.$errorInfo[2];
+			$msg .= 'SQLSTATE = ' . $errorInfo[0] . ', ';
+			$msg .= 'Driver Code = ' . $errorInfo[1] . ', ';
+			$msg .= 'Driver Message = ' . $errorInfo[2];
 		}
 		return $msg;
 	}
@@ -363,7 +363,7 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	public function dropTable($table) {
 		$table = $this->tablePrefix . trim($table);
 		$schema = $this->getSchemaManager();
-		if($schema->tablesExist(array($table))) {
+		if ($schema->tablesExist(array($table))) {
 			$schema->dropTable($table);
 		}
 	}
@@ -374,19 +374,20 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 	 * @param string $table table name without the prefix
 	 * @return bool
 	 */
-	public function tableExists($table){
+	public function tableExists($table) {
 		$table = $this->tablePrefix . trim($table);
 		$schema = $this->getSchemaManager();
 		return $schema->tablesExist(array($table));
 	}
 
 	// internal use
+
 	/**
 	 * @param string $statement
 	 * @return string
 	 */
 	protected function replaceTablePrefix($statement) {
-		return str_replace( '*PREFIX*', $this->tablePrefix, $statement );
+		return str_replace('*PREFIX*', $this->tablePrefix, $statement);
 	}
 
 	/**
@@ -420,5 +421,25 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 			return true;
 		}
 		return $this->getParams()['charset'] === 'utf8mb4';
+	}
+
+	/**
+	 * Check whether or not the current database support common table expressions (with)
+	 *
+	 * @return bool
+	 * @since 12.0.0
+	 */
+	public function supportsCommonTableExpression() {
+		$platform = $this->getDatabasePlatform();
+		if ($platform instanceof MySqlPlatform) {
+			if ($this->dbVersion === null) {
+				$query = $this->query('SELECT VERSION()');
+				$query->execute();
+				$this->dbVersion = $query->fetchColumn();
+			}
+			return version_compare($this->dbVersion, '10.2.0', '>=');
+		}
+
+		return true;
 	}
 }

@@ -37,6 +37,7 @@
 
 namespace OC\Files\Cache;
 
+use OC\DB\QueryBuilder\QueryFunction;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use Doctrine\DBAL\Driver\Statement;
 use OCP\Files\Cache\ICache;
@@ -529,13 +530,33 @@ class Cache implements ICache {
 				$query->update('filecache')
 					->set('storage', $query->createNamedParameter($targetStorageId, IQueryBuilder::PARAM_INT))
 					->set('path_hash', $fun->md5($newPathFunction))
-					->set('path', $newPathFunction)
-					->where($query->expr()->eq('storage', $query->createNamedParameter($sourceStorageId, IQueryBuilder::PARAM_INT)))
-					->andWhere($query->expr()->like('path', $query->createNamedParameter($this->connection->escapeLikeParameter($sourcePath) . '/%')));
+					->set('path', $newPathFunction);
+				if ($this->connection->supportsCommonTableExpression()) {
+					// if cte is supported we create a cte with all files that need to be renamed
+					// and use that in our where statement
+					$cteSql = 'with recursive `matched_files` (`fileid`) as
+					(select `fileid` from `*PREFIX*filecache` where `parent`=:fileid
+					union all
+					select `f`.`fileid` from `*PREFIX*filecache` `f` inner join
+					`matched_files` `m` on `f`.`parent` = `m`.`fileid`) ';
+
+					$query->where($query->expr()->in('fileid', new QueryFunction(
+						'SELECT fileid from matched_files'
+					)))->setParameter(':fileid', $sourceId);;
+				} else {
+					// else we fall back to wildcard LIKE matching
+					$cteSql = '';
+					$query->where($query->expr()->eq('storage', $query->createNamedParameter($sourceStorageId)))
+						->andWhere($query->expr()->like('path', $query->createNamedParameter(
+							$this->connection->escapeLikeParameter($sourcePath) . '/%'
+						)));
+				}
+
 
 				try {
-					$query->execute();
-				} catch (\OC\DatabaseException $e) {
+					$fullSql = $cteSql . $query->getSQL();
+					$this->connection->executeUpdate($fullSql, $query->getParameters());
+				} catch (\Exception $e) {
 					$this->connection->rollBack();
 					throw $e;
 				}
