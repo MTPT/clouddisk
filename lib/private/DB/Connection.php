@@ -53,6 +53,8 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 
 	protected $lockedTable = null;
 
+	private $dbVersion = null;
+
 	public function connect() {
 		try {
 			return parent::connect();
@@ -417,5 +419,25 @@ class Connection extends \Doctrine\DBAL\Connection implements IDBConnection {
 			return true;
 		}
 		return $this->getParams()['charset'] === 'utf8mb4';
+	}
+
+	/**
+	 * Check whether or not the current database support common table expressions (with)
+	 *
+	 * @return bool
+	 * @since 12.0.0
+	 */
+	public function supportsCommonTableExpression() {
+		$platform = $this->getDatabasePlatform();
+		if ($platform instanceof MySqlPlatform) {
+			if ($this->dbVersion === null) {
+				$query = $this->query('SELECT VERSION()');
+				$query->execute();
+				$this->dbVersion = $query->fetchColumn();
+			}
+			return version_compare($this->dbVersion, '10.2.0', '>=');
+		}
+
+		return true;
 	}
 }
