@@ -1178,7 +1178,7 @@ class Manager implements IManager {
 	public function getAccessList(\OCP\Files\Node $path, $recursive = true, $currentAccess = false) {
 		$owner = $path->getOwner()->getUID();
 
-		$al = ['users' => [], 'public' => false, 'remote' => false];
+		$al = ['users' => [], 'remote' => [], 'public' => false];
 		if (!$this->userManager->userExists($owner)) {
 			return $al;
 		}
@@ -1194,7 +1194,12 @@ class Manager implements IManager {
 		/** @var Node[] $nodes */
 		$nodes = [];
 
-		$al['users'][] = $owner;
+		$ownerPath = $path->getPath();
+		list(,,,$ownerPath) = explode('/', $ownerPath, 4);
+		$al['users'][$owner] = [
+			'node_id' => $path->getId(),
+			'node_path' => '/' . $ownerPath,
+		];
 
 		// Collect all the shares
 		while ($path->getPath() !== $userFolder->getPath()) {
@@ -1220,8 +1225,6 @@ class Manager implements IManager {
 				}
 			}
 		}
-
-		$al['users'] = array_unique($al['users']);
 
 		return $al;
 	}
