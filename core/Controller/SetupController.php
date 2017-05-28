@@ -50,7 +50,7 @@ class SetupController {
 	public function run($post) {
 		// Check for autosetup:
 		$post = $this->loadAutoConfig($post);
-		$opts = $this->setupHelper->getSystemInfo();
+		$opts = $this->setupHelper->getSystemInfo(true);
 
 		// convert 'abcpassword' to 'abcpass'
 		if (isset($post['adminpassword'])) {
