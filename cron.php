@@ -73,7 +73,7 @@ try {
 
 	// Exit if background jobs are disabled!
 	$appMode = \OCP\BackgroundJob::getExecutionType();
-	if ($appMode == 'none') {
+	if ($appMode === 'none') {
 		if (OC::$CLI) {
 			echo 'Background Jobs are disabled!' . PHP_EOL;
 		} else {
@@ -103,7 +103,7 @@ try {
 		}
 
 		// We call ownCloud from the CLI (aka cron)
-		if ($appMode != 'cron') {
+		if ($appMode !== 'cron') {
 			\OCP\BackgroundJob::setExecutionType('cron');
 		}
 
@@ -136,7 +136,7 @@ try {
 
 	} else {
 		// We call cron.php from some website
-		if ($appMode == 'cron') {
+		if ($appMode === 'cron') {
 			// Cron is cron :-P
 			OC_JSON::error(array('data' => array('message' => 'Backgroundjobs are using system cron!')));
 		} else {
@@ -152,8 +152,8 @@ try {
 	}
 
 	// Log the successful cron execution
-	if (\OC::$server->getConfig()->getSystemValue('cron_log', true)) {
-		\OC::$server->getConfig()->setAppValue('core', 'lastcron', time());
+	if ($config->getSystemValue('cron_log', true)) {
+		$config->setAppValue('core', 'lastcron', time());
 	}
 	exit();
 
