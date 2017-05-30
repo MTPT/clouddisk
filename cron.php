@@ -113,6 +113,7 @@ try {
 		// We only ask for jobs for 14 minutes, because after 15 minutes the next
 		// system cron task should spawn.
 		$endTime = time() + 14 * 60;
+		$currentVersion = $config->getSystemValue('version', '');
 
 		$executedJobs = [];
 		while ($job = $jobList->getNext()) {
@@ -129,7 +130,11 @@ try {
 			$executedJobs[$job->getId()] = true;
 			unset($job);
 
-			if (time() > $endTime) {
+			if (time() > $endTime ||
+				$config->getSystemValue('maintenance', false) ||
+				$currentVersion !== $config->getSystemValue('version', '')
+				) {
+				// Time over or there is/was an update, make sure we don't continue with old cached data...
 				break;
 			}
 		}
