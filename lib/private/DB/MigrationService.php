@@ -25,7 +25,7 @@
 
 namespace OC\DB;
 
-use Doctrine\DBAL\Schema\Schema;
+use OC\DB\Wrapper\SchemaWrapper;
 use OC\IntegrityCheck\Helpers\AppLocator;
 use OC\Migration\SimpleOutput;
 use OCP\AppFramework\App;

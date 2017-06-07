@@ -19,10 +19,11 @@
  *
  */
 
-namespace OC\DB;
+namespace OC\DB\Wrapper;
 
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Schema\Schema;
+use OC\DB\Connection;
 use OCP\IDBConnection;
 
 class SchemaWrapper {
@@ -80,7 +81,7 @@ class SchemaWrapper {
 	 * @throws \Doctrine\DBAL\Schema\SchemaException
 	 */
 	public function getTable($tableName) {
-		return $this->schema->getTable($this->connection->getPrefix() . $tableName);
+		return new TableWrapper($this->schema->getTable($this->connection->getPrefix() . $tableName));
 	}
 
 	/**
@@ -99,9 +100,13 @@ class SchemaWrapper {
 	 *
 	 * @param string $tableName
 	 * @return \Doctrine\DBAL\Schema\Table
+	 * @throws DBALException
 	 */
 	public function createTable($tableName) {
-		return $this->schema->createTable($this->connection->getPrefix() . $tableName);
+		if (strlen($tableName) > 27) {
+			throw new DBALException('Database schema error: Name of table ' . $tableName . ' is too long (' . strlen($tableName) . '), max. 27 characters (21 characters for tables with autoincrement) allowed');
+		}
+		return new TableWrapper($this->schema->createTable($this->connection->getPrefix() . $tableName));
 	}
 
 	/**
