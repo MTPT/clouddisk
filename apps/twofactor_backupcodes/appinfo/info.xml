@@ -5,7 +5,7 @@
 	<description>A two-factor auth backup codes provider</description>
 	<licence>agpl</licence>
 	<author>Christoph Wurst</author>
-	<version>1.2.0</version>
+	<version>1.2.1</version>
 	<namespace>TwoFactorBackupCodes</namespace>
 	<category>other</category>
 
@@ -22,10 +22,4 @@
 			<provider>OCA\TwoFactorBackupCodes\Activity\Provider</provider>
 		</providers>
 	</activity>
-
-	<repair-steps>
-		<post-migration>
-			<step>OCA\TwoFactorBackupCodes\Migration\CopyEntriesFromOldTable</step>
-		</post-migration>
-	</repair-steps>
 </info>
