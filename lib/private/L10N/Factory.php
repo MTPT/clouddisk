@@ -92,9 +92,10 @@ class Factory implements IFactory {
 	 *
 	 * @param string $app
 	 * @param string|null $lang
+	 * @param string|null $locale
 	 * @return \OCP\IL10N
 	 */
-	public function get($app, $lang = null) {
+	public function get($app, $lang = null, $locale = null) {
 		$app = \OC_App::cleanAppId($app);
 		if ($lang !== null) {
 			$lang = str_replace(array('\0', '/', '\\', '..'), '', (string) $lang);
@@ -111,7 +112,7 @@ class Factory implements IFactory {
 
 		if (!isset($this->instances[$lang][$app])) {
 			$this->instances[$lang][$app] = new L10N(
-				$this, $app, $lang,
+				$this, $app, $lang, $locale,
 				$this->getL10nFilesForApp($app, $lang)
 			);
 		}
