@@ -382,6 +382,7 @@ vendor_style('jcrop/css/jquery.Jcrop');
 
 <div class="clear"></div>
 
+<?php if (isset($_['activelocale'])) { ?>
 <form id="locale" class="section">
 	<h2>
 		<label for="localeinput"><?php p($l->t('Locale'));?></label>
@@ -407,3 +408,4 @@ vendor_style('jcrop/css/jquery.Jcrop');
 		<?php endforeach;?>
 	</select>
 </form>
+<?php } ?>
