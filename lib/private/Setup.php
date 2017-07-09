@@ -185,6 +185,7 @@ class Setup {
 	 * Gathers system information like database type and does
 	 * a few system checks.
 	 *
+	 * @param bool $allowAllDatabases
 	 * @return array of system info, including an "errors" value
 	 * in case of errors/warnings
 	 */
