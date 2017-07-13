@@ -28,6 +28,8 @@ use OC\AppFramework\Utility\SimpleContainer;
 use OCA\DAV\CalDAV\Activity\Backend;
 use OCA\DAV\CalDAV\Activity\Provider\Event;
 use OCA\DAV\CalDAV\BirthdayService;
+use OCA\DAV\CalDAV\Reminder\Backend as ReminderBackend;
+use OCA\DAV\CalDAV\Reminder\Notifier;
 use OCA\DAV\Capabilities;
 use OCA\DAV\CardDAV\ContactsManager;
 use OCA\DAV\CardDAV\PhotoCache;
@@ -39,6 +41,8 @@ use OCP\IUser;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 class Application extends App {
+
+	const APP_ID = 'dav';
 
 	/**
 	 * Application constructor.
@@ -86,8 +90,7 @@ class Application extends App {
 			}
 		});
 
-		// carddav/caldav sync event setup
-		$listener = function($event) {
+		$birthdayListener = function ($event) {
 			if ($event instanceof GenericEvent) {
 				/** @var BirthdayService $b */
 				$b = $this->getContainer()->query(BirthdayService::class);
@@ -99,9 +102,9 @@ class Application extends App {
 			}
 		};
 
-		$dispatcher->addListener('\OCA\DAV\CardDAV\CardDavBackend::createCard', $listener);
-		$dispatcher->addListener('\OCA\DAV\CardDAV\CardDavBackend::updateCard', $listener);
-		$dispatcher->addListener('\OCA\DAV\CardDAV\CardDavBackend::deleteCard', function($event) {
+		$dispatcher->addListener('\OCA\DAV\CardDAV\CardDavBackend::createCard', $birthdayListener);
+		$dispatcher->addListener('\OCA\DAV\CardDAV\CardDavBackend::updateCard', $birthdayListener);
+		$dispatcher->addListener('\OCA\DAV\CardDAV\CardDavBackend::deleteCard', function ($event) {
 			if ($event instanceof GenericEvent) {
 				/** @var BirthdayService $b */
 				$b = $this->getContainer()->query(BirthdayService::class);
@@ -182,6 +185,16 @@ class Application extends App {
 				$event->getArgument('shares'),
 				$event->getArgument('objectData')
 			);
+
+			/** @var ReminderBackend $reminderBackend */
+			$reminderBackend = $this->getContainer()->query(ReminderBackend::class);
+
+			$reminderBackend->onTouchCalendarObject(
+				$eventName,
+				$event->getArgument('calendarData'),
+				$event->getArgument('shares'),
+				$event->getArgument('objectData')
+			);
 		};
 		$dispatcher->addListener('\OCA\DAV\CalDAV\CalDavBackend::createCalendarObject', $listener);
 		$dispatcher->addListener('\OCA\DAV\CalDAV\CalDavBackend::updateCalendarObject', $listener);
@@ -190,6 +203,18 @@ class Application extends App {
 
 	public function getSyncService() {
 		return $this->getContainer()->query(SyncService::class);
+	}
+
+	public function registerNotifier() {
+		$this->getContainer()->getServer()->getNotificationManager()->registerNotifier(function() {
+			return $this->getContainer()->query(Notifier::class);
+		}, function() {
+			$l = $this->getContainer()->getServer()->getL10NFactory()->get(self::APP_ID);
+			return [
+				'id' => self::APP_ID,
+				'name' => $l->t('Calendars and Contacts'),
+			];
+		});
 	}
 
 }

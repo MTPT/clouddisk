@@ -34,6 +34,10 @@
 		<command>OCA\DAV\Command\SyncSystemAddressBook</command>
 	</commands>
 
+	<background-jobs>
+		<job>OCA\DAV\CalDAV\Reminder\ReminderJob</job>
+	</background-jobs>
+
 	<activity>
 		<filters>
 			<filter>OCA\DAV\CalDAV\Activity\Filter\Calendar</filter>

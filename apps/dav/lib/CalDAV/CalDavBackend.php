@@ -31,6 +31,7 @@ use OCA\DAV\DAV\Sharing\IShareable;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCA\DAV\Connector\Sabre\Principal;
 use OCA\DAV\DAV\Sharing\Backend;
+use OCP\IConfig;
 use OCP\IDBConnection;
 use OCP\IUser;
 use OCP\IUserManager;
@@ -157,6 +158,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 	 * @param IDBConnection $db
 	 * @param Principal $principalBackend
 	 * @param IUserManager $userManager
+	 * @param IConfig $config
 	 * @param ISecureRandom $random
 	 * @param EventDispatcherInterface $dispatcher
 	 * @param bool $legacyEndpoint
@@ -164,6 +166,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 	public function __construct(IDBConnection $db,
 								Principal $principalBackend,
 								IUserManager $userManager,
+								IConfig $config,
 								ISecureRandom $random,
 								EventDispatcherInterface $dispatcher,
 								$legacyEndpoint = false) {
@@ -1001,7 +1004,6 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 	 */
 	function updateCalendarObject($calendarId, $objectUri, $calendarData) {
 		$extraData = $this->getDenormalizedData($calendarData);
-
 		$query = $this->db->getQueryBuilder();
 		$query->update('calendarobjects')
 				->set('calendardata', $query->createNamedParameter($calendarData, IQueryBuilder::PARAM_LOB))
