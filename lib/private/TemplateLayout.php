@@ -118,8 +118,9 @@ class TemplateLayout extends \OC_Template {
 			parent::__construct('core', 'layout.base');
 
 		}
-		// Send the language to our layouts
+		// Send the language and the locale to our layouts
 		$this->assign('language', \OC::$server->getL10NFactory()->findLanguage());
+		$this->assign('locale', \OC::$server->getL10NFactory()->findLocale());
 
 		if(\OC::$server->getSystemConfig()->getValue('installed', false)) {
 			if (empty(self::$versionHash)) {
