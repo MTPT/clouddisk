@@ -2283,6 +2283,23 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 	}
 
 	/**
+	 * Move a calendar from one user to another
+	 *
+	 * @param $uri
+	 * @param $userOrigin
+	 * @param $userDestination
+	 */
+	public function moveCalendar($uri, $userOrigin, $userDestination)
+	{
+		$query = $this->db->getQueryBuilder();
+		$query->update('calendars')
+			->set('principaluri', 'principals/users/' . $userDestination)
+			->where($query->expr()->eq('principaluri', $query->createNamedParameter('principals/users/'. $userOrigin)))
+			->andWhere($query->expr()->eq('uri', $query->createNamedParameter($uri)))
+			->execute();
+	}
+
+	/**
 	 * deletes all birthday calendars
 	 */
 	public function deleteAllBirthdayCalendars() {
