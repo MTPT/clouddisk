@@ -31,6 +31,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 class MoveCalendar extends Command {
 
@@ -45,6 +46,14 @@ class MoveCalendar extends Command {
 
 	/** @var IL10N */
 	protected $l10n;
+
+	/** @var SymfonyStyle */
+	private $io;
+
+	/** @var CalDavBackend */
+	private $caldav;
+
+	const URI_USERS = 'principals/users/';
 
 	/**
 	 * @param IUserManager $userManager
@@ -80,6 +89,8 @@ class MoveCalendar extends Command {
 		$userOrigin = $input->getArgument('userorigin');
 		$userDestination = $input->getArgument('userdestination');
 
+		$this->io = new SymfonyStyle($input, $output);
+
 		if (in_array('system', [$userOrigin, $userDestination], true)) {
 			throw new \InvalidArgumentException("User can't be system");
 		}
@@ -101,35 +112,51 @@ class MoveCalendar extends Command {
 		$dispatcher = \OC::$server->getEventDispatcher();
 
 		$name = $input->getArgument('name');
-		$caldav = new CalDavBackend($this->dbConnection, $principalBackend, $this->userManager, $random, $dispatcher);
+		$this->caldav = new CalDavBackend($this->dbConnection, $principalBackend, $this->userManager, $random, $dispatcher);
 
-		$calendar = $caldav->getCalendarByUri("principals/users/" . $userOrigin, $name);
+		$calendar = $this->caldav->getCalendarByUri(self::URI_USERS . $userOrigin, $name);
+
 		if (null === $calendar) {
+			/**  If we got no matching calendar with URI, let's try the display names */
+			$suggestedUris = $this->caldav->findCalendarsUrisByDisplayName($name, self::URI_USERS . $userOrigin);
+			if (count($suggestedUris) > 0) {
+				$this->io->note('No calendar with this URI was found, but you may want to try with these?');
+				$this->io->listing($suggestedUris);
+			}
 			throw new \InvalidArgumentException("User <$userOrigin> has no calendar named <$name>.");
 		}
 
-		if (null !== $caldav->getCalendarByUri("principals/users/" . $userDestination, $name)) {
+		if (null !== $this->caldav->getCalendarByUri(self::URI_USERS . $userDestination, $name)) {
 			throw new \InvalidArgumentException("User <$userDestination> already has a calendar named <$name>.");
 		}
 
-		/**
-		 * Check that user destination is member of the groups which whom the calendar was shared
-		 * If we ask to force the migration, the share with the group is dropped
-		 */
-		$shares = $caldav->getShares($calendar['id']);
+		$this->checkShares($calendar, $userDestination, $input->getOption('force'));
+
+		$this->caldav->moveCalendar($name, self::URI_USERS . $userOrigin, self::URI_USERS . $userDestination);
+
+		$this->io->success("Calendar <$name> was moved from user <$userOrigin> to <$userDestination>");
+	}
+
+	/**
+	 * Check that user destination is member of the groups which whom the calendar was shared
+	 * If we ask to force the migration, the share with the group is dropped
+	 *
+	 * @param $calendar
+	 * @param $userDestination
+	 * @param bool $force
+	 */
+	private function checkShares($calendar, $userDestination, $force = false)
+	{
+		$shares = $this->caldav->getShares($calendar['id']);
 		foreach ($shares as $share) {
 			list($prefix, $group) = str_split($share['href'], 28);
 			if ('principal:principals/groups/' === $prefix && !$this->groupManager->isInGroup($userDestination, $group)) {
-				if ($input->getOption('force')) {
-					$caldav->updateShares(new Calendar($caldav, $calendar, $this->l10n), [], ['href' => 'principal:principals/groups/' . $group]);
+				if ($force) {
+					$this->caldav->updateShares(new Calendar($this->caldav, $calendar, $this->l10n), [], ['href' => 'principal:principals/groups/' . $group]);
 				} else {
-					throw new \InvalidArgumentException("User <$userDestination> is not part of the group <$group> with which the calendar <$name> was shared. You may use -f to move the calendar while deleting this share.");
+					throw new \InvalidArgumentException("User <$userDestination> is not part of the group <$group> with which the calendar <" . $calendar['uri'] . "> was shared. You may use -f to move the calendar while deleting this share.");
 				}
 			}
 		}
-
-		$caldav->moveCalendar($name, $userOrigin, $userDestination);
-
-		$output->writeln("Calendar <$name> was moved from user <$userOrigin> to <$userDestination>");
 	}
 }
