@@ -27,17 +27,23 @@
 
 namespace OC\App;
 
+use OC\Cache\CappedMemoryCache;
 use OCP\ICache;
 
 class InfoParser {
 	/** @var \OCP\ICache|null */
 	private $cache;
 
+	/* @var CappedMemoryCache $localCache */
+	private $localCache;
+
 	/**
 	 * @param ICache|null $cache
+	 * @param CappedMemoryCache|null $localCache
 	 */
-	public function __construct(ICache $cache = null) {
+	public function __construct(ICache $cache = null, CappedMemoryCache $localCache = null) {
 		$this->cache = $cache;
+		$this->localCache = $localCache;
 	}
 
 	/**
@@ -51,8 +57,14 @@ class InfoParser {
 
 		if(!is_null($this->cache)) {
 			$fileCacheKey = $file . filemtime($file);
+			if ($this->localCache !== null && isset($this->localCache[$fileCacheKey])) {
+				return $this->localCache[$fileCacheKey];
+			}
+
 			if ($cachedValue = $this->cache->get($fileCacheKey)) {
-				return json_decode($cachedValue, true);
+				$data = json_decode($cachedValue, true);
+				$this->localCache[$fileCacheKey] = $data;
+				return $data;
 			}
 		}
 
@@ -166,7 +178,10 @@ class InfoParser {
 			$array['activity']['providers'] = $array['activity']['providers']['provider'];
 		}
 
-		if(!is_null($this->cache)) {
+		if($this->cache !== null) {
+			if ($this->localCache !== null) {
+				$this->localCache[$fileCacheKey] = $array;
+			}
 			$this->cache->set($fileCacheKey, json_encode($array));
 		}
 		return $array;

@@ -65,6 +65,7 @@ class OC_App {
 	static private $adminForms = array();
 	static private $personalForms = array();
 	static private $appInfo = array();
+	static private $appInfoLocal = null;
 	static private $appTypes = array();
 	static private $loadedApps = array();
 	static private $altLogin = array();
@@ -600,7 +601,11 @@ class OC_App {
 			$file = $appPath . '/appinfo/info.xml';
 		}
 
-		$parser = new InfoParser(\OC::$server->getMemCacheFactory()->create('core.appinfo'));
+		if (self::$appInfoLocal === null) {
+			self::$appInfoLocal = new \OC\Cache\CappedMemoryCache();
+		}
+
+		$parser = new InfoParser(\OC::$server->getMemCacheFactory()->create('core.appinfo'), self::$appInfoLocal);
 		$data = $parser->parse($file);
 
 		if (is_array($data)) {
