@@ -25,6 +25,6 @@ use OC\DB\QueryBuilder\QueryFunction;
 
 class OCIFunctionBuilder extends FunctionBuilder {
 	public function md5($input) {
-		return new QueryFunction('LOWER(DBMS_OBFUSCATION_TOOLKIT.md5 (input => UTL_RAW.cast_to_raw(' . $this->helper->quoteColumnName($input) .')))');
+		return new QueryFunction('LOWER(DBMS_OBFUSCATION_TOOLKIT.md5 (input => UTL_RAW.cast_to_raw(' . $this->helper->quoteColumnName($input) . ')))');
 	}
 }

@@ -49,7 +49,7 @@ class AvatarManager implements IAvatarManager {
 	/** @var IL10N */
 	private $l;
 
-	/** @var ILogger  */
+	/** @var ILogger */
 	private $logger;
 
 	/** @var IConfig */
@@ -65,11 +65,12 @@ class AvatarManager implements IAvatarManager {
 	 * @param IConfig $config
 	 */
 	public function __construct(
-			IUserManager $userManager,
-			IAppData $appData,
-			IL10N $l,
-			ILogger $logger,
-			IConfig $config) {
+		IUserManager $userManager,
+		IAppData $appData,
+		IL10N $l,
+		ILogger $logger,
+		IConfig $config
+	) {
 		$this->userManager = $userManager;
 		$this->appData = $appData;
 		$this->l = $l;
@@ -79,6 +80,7 @@ class AvatarManager implements IAvatarManager {
 
 	/**
 	 * return a user specific instance of \OCP\IAvatar
+	 *
 	 * @see \OCP\IAvatar
 	 * @param string $userId the ownCloud user id
 	 * @return \OCP\IAvatar

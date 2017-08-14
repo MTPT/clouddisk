@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
+
 namespace OC\Files\Node;
 
 use OCP\Files\IRootFolder;
@@ -87,14 +88,14 @@ class LazyRoot implements IRootFolder {
 	/**
 	 * @inheritDoc
 	 */
-	public function emit($scope, $method, $arguments = array()) {
+	public function emit($scope, $method, $arguments = []) {
 		$this->__call(__FUNCTION__, func_get_args());
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public function mount($storage, $mountPoint, $arguments = array()) {
+	public function mount($storage, $mountPoint, $arguments = []) {
 		$this->__call(__FUNCTION__, func_get_args());
 	}
 

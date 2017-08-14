@@ -24,6 +24,7 @@
  */
 
 namespace OC\Search\Result;
+
 use OCP\Files\FileInfo;
 use OCP\Files\Folder;
 
@@ -34,47 +35,52 @@ class File extends \OCP\Search\Result {
 
 	/**
 	 * Type name; translated in templates
-	 * @var string 
+	 *
+	 * @var string
 	 */
 	public $type = 'file';
 
 	/**
 	 * Path to file
+	 *
 	 * @var string
 	 */
 	public $path;
 
 	/**
 	 * Size, in bytes
-	 * @var int 
+	 *
+	 * @var int
 	 */
 	public $size;
 
 	/**
 	 * Date modified, in human readable form
+	 *
 	 * @var string
 	 */
 	public $modified;
 
 	/**
 	 * File mime type
+	 *
 	 * @var string
 	 */
 	public $mime_type;
 
 	/**
 	 * File permissions:
-	 * 
+	 *
 	 * @var string
 	 */
 	public $permissions;
 
 	/**
 	 * Create a new file search result
+	 *
 	 * @param FileInfo $data file data given by provider
 	 */
 	public function __construct(FileInfo $data) {
-
 		$path = $this->getRelativePath($data->getPath());
 
 		$info = pathinfo($path);
@@ -97,20 +103,20 @@ class File extends \OCP\Search\Result {
 	/**
 	 * @var Folder $userFolderCache
 	 */
-	static protected $userFolderCache = null;
+	protected static $userFolderCache = null;
 
 	/**
 	 * converts a path relative to the users files folder
 	 * eg /user/files/foo.txt -> /foo.txt
+	 *
 	 * @param string $path
 	 * @return string relative path
 	 */
-	protected function getRelativePath ($path) {
+	protected function getRelativePath($path) {
 		if (!isset(self::$userFolderCache)) {
 			$user = \OC::$server->getUserSession()->getUser()->getUID();
 			self::$userFolderCache = \OC::$server->getUserFolder($user);
 		}
 		return self::$userFolderCache->getRelativePath($path);
 	}
-
 }

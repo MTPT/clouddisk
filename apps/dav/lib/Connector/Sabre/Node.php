@@ -40,7 +40,6 @@ use OCP\Files\FileInfo;
 use OCP\Share\Exceptions\ShareNotFound;
 use OCP\Share\IManager;
 
-
 abstract class Node implements \Sabre\DAV\INode {
 
 	/**
@@ -126,7 +125,7 @@ abstract class Node implements \Sabre\DAV\INode {
 			throw new \Sabre\DAV\Exception\Forbidden();
 		}
 
-		list($parentPath,) = \Sabre\Uri\split($this->path);
+		list($parentPath, ) = \Sabre\Uri\split($this->path);
 		list(, $newName) = \Sabre\Uri\split($name);
 
 		// verify path of the target
@@ -191,7 +190,7 @@ abstract class Node implements \Sabre\DAV\INode {
 	 * @return int file id of updated file or -1 on failure
 	 */
 	public function setETag($etag) {
-		return $this->fileView->putFileInfo($this->path, array('etag' => $etag));
+		return $this->fileView->putFileInfo($this->path, ['etag' => $etag]);
 	}
 
 	/**

@@ -24,7 +24,7 @@ namespace OC\DB\QueryBuilder;
 
 use OCP\DB\QueryBuilder\ILiteral;
 
-class Literal implements ILiteral{
+class Literal implements ILiteral {
 	/** @var mixed */
 	protected $literal;
 
@@ -36,6 +36,6 @@ class Literal implements ILiteral{
 	 * @return string
 	 */
 	public function __toString() {
-		return (string) $this->literal;
+		return (string)$this->literal;
 	}
 }

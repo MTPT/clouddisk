@@ -40,7 +40,7 @@ class OC_FileChunking {
 	 */
 	protected $ttl;
 
-	static public function decodeName($name) {
+	public static function decodeName($name) {
 		preg_match('/(?P<name>.*)-chunking-(?P<transferid>\d+)-(?P<chunkcount>\d+)-(?P<index>\d+)/', $name, $matches);
 		return $matches;
 	}
@@ -57,7 +57,7 @@ class OC_FileChunking {
 		$name = $this->info['name'];
 		$transferid = $this->info['transferid'];
 
-		return $name.'-chunking-'.$transferid.'-';
+		return $name . '-chunking-' . $transferid . '-';
 	}
 
 	protected function getCache() {
@@ -76,7 +76,7 @@ class OC_FileChunking {
 	 */
 	public function store($index, $data) {
 		$cache = $this->getCache();
-		$name = $this->getPrefix().$index;
+		$name = $this->getPrefix() . $index;
 		$cache->set($name, $data, $this->ttl);
 
 		return $cache->size($name);
@@ -87,8 +87,8 @@ class OC_FileChunking {
 		$cache = $this->getCache();
 		$chunkcount = (int)$this->info['chunkcount'];
 
-		for($i=($chunkcount-1); $i >= 0; $i--) {
-			if (!$cache->hasKey($prefix.$i)) {
+		for ($i = ($chunkcount - 1); $i >= 0; $i--) {
+			if (!$cache->hasKey($prefix . $i)) {
 				return false;
 			}
 		}
@@ -112,9 +112,9 @@ class OC_FileChunking {
 		$prefix = $this->getPrefix();
 		$count = 0;
 		for ($i = 0; $i < $this->info['chunkcount']; $i++) {
-			$chunk = $cache->get($prefix.$i);
+			$chunk = $cache->get($prefix . $i);
 			// remove after reading to directly save space
-			$cache->remove($prefix.$i);
+			$cache->remove($prefix . $i);
 			$count += fwrite($f, $chunk);
 			// let php release the memory to work around memory exhausted error with php 5.6
 			$chunk = null;
@@ -125,6 +125,7 @@ class OC_FileChunking {
 
 	/**
 	 * Returns the size of the chunks already present
+	 *
 	 * @return integer size in bytes
 	 */
 	public function getCurrentSize() {
@@ -132,7 +133,7 @@ class OC_FileChunking {
 		$prefix = $this->getPrefix();
 		$total = 0;
 		for ($i = 0; $i < $this->info['chunkcount']; $i++) {
-			$total += $cache->size($prefix.$i);
+			$total += $cache->size($prefix . $i);
 		}
 		return $total;
 	}
@@ -143,19 +144,20 @@ class OC_FileChunking {
 	public function cleanup() {
 		$cache = $this->getCache();
 		$prefix = $this->getPrefix();
-		for($i=0; $i < $this->info['chunkcount']; $i++) {
-			$cache->remove($prefix.$i);
+		for ($i = 0; $i < $this->info['chunkcount']; $i++) {
+			$cache->remove($prefix . $i);
 		}
 	}
 
 	/**
 	 * Removes one specific chunk
+	 *
 	 * @param string $index
 	 */
 	public function remove($index) {
 		$cache = $this->getCache();
 		$prefix = $this->getPrefix();
-		$cache->remove($prefix.$index);
+		$cache->remove($prefix . $index);
 	}
 
 	/**

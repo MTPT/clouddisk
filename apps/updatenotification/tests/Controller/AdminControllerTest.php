@@ -92,7 +92,7 @@ class AdminControllerTest extends TestCase {
 		$currentChannel = \OCP\Util::getChannel();
 
 		// Remove the currently used channel from the channels list
-		if(($key = array_search($currentChannel, $channels)) !== false) {
+		if (($key = array_search($currentChannel, $channels)) !== false) {
 			unset($channels[$key]);
 		}
 
@@ -151,7 +151,7 @@ class AdminControllerTest extends TestCase {
 		$currentChannel = \OCP\Util::getChannel();
 
 		// Remove the currently used channel from the channels list
-		if(($key = array_search($currentChannel, $channels)) !== false) {
+		if (($key = array_search($currentChannel, $channels)) !== false) {
 			unset($channels[$key]);
 		}
 

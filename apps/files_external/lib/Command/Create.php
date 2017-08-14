@@ -63,11 +63,12 @@ class Create extends Base {
 	/** @var IUserSession */
 	private $userSession;
 
-	function __construct(GlobalStoragesService $globalService,
-						 UserStoragesService $userService,
-						 IUserManager $userManager,
-						 IUserSession $userSession,
-						 BackendService $backendService
+	public function __construct(
+		GlobalStoragesService $globalService,
+		UserStoragesService $userService,
+		IUserManager $userManager,
+		IUserSession $userSession,
+		BackendService $backendService
 	) {
 		parent::__construct();
 		$this->globalService = $globalService;

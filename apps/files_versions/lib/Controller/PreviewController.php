@@ -20,6 +20,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 namespace OCA\Files_Versions\Controller;
 
 use OCP\AppFramework\Controller;
@@ -48,12 +49,14 @@ class PreviewController extends Controller {
 	/** @var IPreview */
 	private $previewManager;
 
-	public function __construct($appName,
-								IRequest $request,
-								IRootFolder $rootFolder,
-								$userId,
-								IMimeTypeDetector $mimeTypeDetector,
-								IPreview $previewManager) {
+	public function __construct(
+		$appName,
+		IRequest $request,
+		IRootFolder $rootFolder,
+		$userId,
+		IMimeTypeDetector $mimeTypeDetector,
+		IPreview $previewManager
+	) {
 		parent::__construct($appName, $request);
 
 		$this->rootFolder = $rootFolder;
@@ -78,7 +81,7 @@ class PreviewController extends Controller {
 		$y = 44,
 		$version = ''
 	) {
-		if($file === '' || $version === '' || $x === 0 || $y === 0) {
+		if ($file === '' || $version === '' || $x === 0 || $y === 0) {
 			return new DataResponse([], Http::STATUS_BAD_REQUEST);
 		}
 
@@ -87,7 +90,7 @@ class PreviewController extends Controller {
 			/** @var Folder $versionFolder */
 			$versionFolder = $userFolder->getParent()->get('files_versions');
 			$mimeType = $this->mimeTypeDetector->detectPath($file);
-			$file = $versionFolder->get($file.'.v'.$version);
+			$file = $versionFolder->get($file . '.v' . $version);
 
 			/** @var File $file */
 			$f = $this->previewManager->getPreview($file, $x, $y, true, IPreview::MODE_FILL, $mimeType);

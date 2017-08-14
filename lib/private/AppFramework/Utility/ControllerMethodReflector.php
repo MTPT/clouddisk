@@ -40,19 +40,19 @@ class ControllerMethodReflector implements IControllerMethodReflector {
 	 * @param object $object an object or classname
 	 * @param string $method the method which we want to inspect
 	 */
-	public function reflect($object, $method){
+	public function reflect($object, $method) {
 		$reflection = new \ReflectionMethod($object, $method);
 		$docs = $reflection->getDocComment();
 
 		// extract everything prefixed by @ and first letter uppercase
 		preg_match_all('/^\h+\*\h+@(?P<annotation>[A-Z]\w+)((?P<parameter>.*))?$/m', $docs, $matches);
-		foreach($matches['annotation'] as $key => $annontation) {
+		foreach ($matches['annotation'] as $key => $annontation) {
 			$annotationValue = $matches['parameter'][$key];
-			if(isset($annotationValue[0]) && $annotationValue[0] === '(' && $annotationValue[strlen($annotationValue) - 1] === ')') {
+			if (isset($annotationValue[0]) && $annotationValue[0] === '(' && $annotationValue[strlen($annotationValue) - 1] === ')') {
 				$cutString = substr($annotationValue, 1, -1);
 				$cutString = str_replace(' ', '', $cutString);
 				$splittedArray = explode(',', $cutString);
-				foreach($splittedArray as $annotationValues) {
+				foreach ($splittedArray as $annotationValues) {
 					list($key, $value) = explode('=', $annotationValues);
 					$this->annotations[$annontation][$key] = $value;
 				}
@@ -72,11 +72,11 @@ class ControllerMethodReflector implements IControllerMethodReflector {
 			if (method_exists($param, 'getType')) {
 				$type = $param->getType();
 				if ($type !== null) {
-					$this->types[$param->getName()] = (string) $type;
+					$this->types[$param->getName()] = (string)$type;
 				}
 			}
 
-			if($param->isOptional()) {
+			if ($param->isOptional()) {
 				$default = $param->getDefaultValue();
 			} else {
 				$default = null;
@@ -87,13 +87,14 @@ class ControllerMethodReflector implements IControllerMethodReflector {
 
 	/**
 	 * Inspects the PHPDoc parameters for types
+	 *
 	 * @param string $parameter the parameter whose type comments should be
 	 * parsed
 	 * @return string|null type in the type parameters (@param int $something)
 	 * would return int or null if not existing
 	 */
 	public function getType($parameter) {
-		if(array_key_exists($parameter, $this->types)) {
+		if (array_key_exists($parameter, $this->types)) {
 			return $this->types[$parameter];
 		} else {
 			return null;
@@ -109,6 +110,7 @@ class ControllerMethodReflector implements IControllerMethodReflector {
 
 	/**
 	 * Check if a method contains an annotation
+	 *
 	 * @param string $name the name of the annotation
 	 * @return bool true if the annotation is found
 	 */
@@ -124,7 +126,7 @@ class ControllerMethodReflector implements IControllerMethodReflector {
 	 * @return string
 	 */
 	public function getAnnotationParameter($name, $key) {
-		if(isset($this->annotations[$name][$key])) {
+		if (isset($this->annotations[$name][$key])) {
 			return $this->annotations[$name][$key];
 		}
 

@@ -31,7 +31,7 @@ use OCP\Security\ISecureRandom;
  * @package OC\Security\CSRF
  */
 class CsrfTokenGenerator {
-	/** @var ISecureRandom  */
+	/** @var ISecureRandom */
 	private $random;
 
 	/**

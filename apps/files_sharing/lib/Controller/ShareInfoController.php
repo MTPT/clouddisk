@@ -27,9 +27,11 @@ class ShareInfoController extends ApiController {
 	 * @param IRequest $request
 	 * @param IManager $shareManager
 	 */
-	public function __construct($appName,
-								IRequest $request,
-								IManager $shareManager) {
+	public function __construct(
+		$appName,
+		IRequest $request,
+		IManager $shareManager
+	) {
 		parent::__construct($appName, $request);
 
 		$this->shareManager = $shareManager;
@@ -71,7 +73,6 @@ class ShareInfoController extends ApiController {
 			try {
 				$node = $node->get($dir);
 			} catch (NotFoundException $e) {
-
 			}
 		}
 
@@ -123,7 +124,7 @@ class ShareInfoController extends ApiController {
 		// FIXME: should not add storage wrappers outside of preSetup, need to find a better way
 		$previousLog = \OC\Files\Filesystem::logWarningWhenAddingStorageWrapper(false);
 		\OC\Files\Filesystem::addStorageWrapper('readonly', function ($mountPoint, $storage) {
-			return new \OC\Files\Storage\Wrapper\PermissionsMask(array('storage' => $storage, 'mask' => \OCP\Constants::PERMISSION_READ + \OCP\Constants::PERMISSION_SHARE));
+			return new \OC\Files\Storage\Wrapper\PermissionsMask(['storage' => $storage, 'mask' => \OCP\Constants::PERMISSION_READ + \OCP\Constants::PERMISSION_SHARE]);
 		});
 		\OC\Files\Filesystem::logWarningWhenAddingStorageWrapper($previousLog);
 	}

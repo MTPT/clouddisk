@@ -30,10 +30,11 @@ namespace OC;
 class NaturalSort {
 	private static $instance;
 	private $collator;
-	private $cache = array();
+	private $cache = [];
 
 	/**
 	 * Instantiate a new \OC\NaturalSort instance.
+	 *
 	 * @param object $injectedCollator
 	 */
 	public function __construct($injectedCollator = null) {
@@ -41,12 +42,13 @@ class NaturalSort {
 		// or inject an instance of \OC\NaturalSort_DefaultCollator to force using Owncloud's default collator
 		if (isset($injectedCollator)) {
 			$this->collator = $injectedCollator;
-			\OCP\Util::writeLog('core', 'forced use of '.get_class($injectedCollator), \OCP\Util::DEBUG);
+			\OCP\Util::writeLog('core', 'forced use of ' . get_class($injectedCollator), \OCP\Util::DEBUG);
 		}
 	}
 
 	/**
 	 * Split the given string in chunks of numbers and strings
+	 *
 	 * @param string $t string
 	 * @return array of strings and number chunks
 	 */
@@ -56,7 +58,7 @@ class NaturalSort {
 		if (isset($this->cache[$t])) {
 			return $this->cache[$t];
 		}
-		$tz = array();
+		$tz = [];
 		$x = 0;
 		$y = -1;
 		$n = null;
@@ -80,6 +82,7 @@ class NaturalSort {
 
 	/**
 	 * Returns the string collator
+	 *
 	 * @return \Collator string collator
 	 */
 	private function getCollator() {
@@ -88,8 +91,7 @@ class NaturalSort {
 			// German umlauts, so using en_US instead
 			if (class_exists('Collator')) {
 				$this->collator = new \Collator('en_US');
-			}
-			else {
+			} else {
 				$this->collator = new \OC\NaturalSort_DefaultCollator();
 			}
 		}
@@ -98,6 +100,7 @@ class NaturalSort {
 
 	/**
 	 * Compare two strings to provide a natural sort
+	 *
 	 * @param string $a first string to compare
 	 * @param string $b second string to compare
 	 * @return int -1 if $b comes before $a, 1 if $a comes before $b
@@ -129,6 +132,7 @@ class NaturalSort {
 
 	/**
 	 * Returns a singleton
+	 *
 	 * @return \OC\NaturalSort instance
 	 */
 	public static function getInstance() {

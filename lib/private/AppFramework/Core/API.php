@@ -27,8 +27,8 @@
 
 
 namespace OC\AppFramework\Core;
-use OCP\AppFramework\IApi;
 
+use OCP\AppFramework\IApi;
 
 /**
  * This is used to wrap the owncloud static api calls into an object to make the
@@ -36,39 +36,42 @@ use OCP\AppFramework\IApi;
  *
  * Should you find yourself in need for more methods, simply inherit from this
  * class and add your methods
+ *
  * @deprecated
  */
-class API implements IApi{
-
+class API implements IApi {
 	private $appName;
 
 	/**
 	 * constructor
+	 *
 	 * @param string $appName the name of your application
 	 */
-	public function __construct($appName){
+	public function __construct($appName) {
 		$this->appName = $appName;
 	}
 
 
 	/**
 	 * Gets the userid of the current user
+	 *
 	 * @return string the user id of the current user
 	 * @deprecated Use \OC::$server->getUserSession()->getUser()->getUID()
 	 */
-	public function getUserId(){
+	public function getUserId() {
 		return \OCP\User::getUser();
 	}
 
 
 	/**
 	 * Adds a new javascript file
+	 *
 	 * @deprecated include javascript and css in template files
 	 * @param string $scriptName the name of the javascript in js/ without the suffix
 	 * @param string $appName the name of the app, defaults to the current one
 	 */
-	public function addScript($scriptName, $appName=null){
-		if($appName === null){
+	public function addScript($scriptName, $appName = null) {
+		if ($appName === null) {
 			$appName = $this->appName;
 		}
 		\OCP\Util::addScript($appName, $scriptName);
@@ -77,12 +80,13 @@ class API implements IApi{
 
 	/**
 	 * Adds a new css file
+	 *
 	 * @deprecated include javascript and css in template files
 	 * @param string $styleName the name of the css file in css/without the suffix
 	 * @param string $appName the name of the app, defaults to the current one
 	 */
-	public function addStyle($styleName, $appName=null){
-		if($appName === null){
+	public function addStyle($styleName, $appName = null) {
+		if ($appName === null) {
 			$appName = $this->appName;
 		}
 		\OCP\Util::addStyle($appName, $styleName);
@@ -94,7 +98,7 @@ class API implements IApi{
 	 * shorthand for addScript for files in the 3rdparty directory
 	 * @param string $name the name of the file without the suffix
 	 */
-	public function add3rdPartyScript($name){
+	public function add3rdPartyScript($name) {
 		\OCP\Util::addScript($this->appName . '/3rdparty', $name);
 	}
 
@@ -104,7 +108,7 @@ class API implements IApi{
 	 * shorthand for addStyle for files in the 3rdparty directory
 	 * @param string $name the name of the file without the suffix
 	 */
-	public function add3rdPartyStyle($name){
+	public function add3rdPartyStyle($name) {
 		\OCP\Util::addStyle($this->appName . '/3rdparty', $name);
 	}
 
@@ -117,17 +121,18 @@ class API implements IApi{
 	 * @param string $appName the name of an app
 	 * @return bool true if app is enabled
 	 */
-	public function isAppEnabled($appName){
+	public function isAppEnabled($appName) {
 		return \OCP\App::isEnabled($appName);
 	}
 
 
 	/**
 	 * used to return and open a new event source
+	 *
 	 * @return \OCP\IEventSource a new open EventSource class
 	 * @deprecated Use \OC::$server->createEventSource();
 	 */
-	public function openEventSource(){
+	public function openEventSource() {
 		return \OC::$server->createEventSource();
 	}
 
@@ -154,17 +159,18 @@ class API implements IApi{
 	 * @param array $params default: array() array with additional data
 	 * @return bool true if slots exists or false if not
 	 */
-	public function emitHook($signalClass, $signalName, $params = array()) {
-		return  \OCP\Util::emitHook($signalClass, $signalName, $params);
+	public function emitHook($signalClass, $signalName, $params = []) {
+		return \OCP\Util::emitHook($signalClass, $signalName, $params);
 	}
 
 	/**
 	 * clear hooks
+	 *
 	 * @deprecated clear hooks directly for class that build in hook interfaces
 	 * @param string $signalClass
 	 * @param string $signalName
 	 */
-	public function clearHook($signalClass=false, $signalName=false) {
+	public function clearHook($signalClass = false, $signalName = false) {
 		if ($signalClass) {
 			\OC_Hook::clear($signalClass, $signalName);
 		}
@@ -172,17 +178,16 @@ class API implements IApi{
 
 	/**
 	 * Tells ownCloud to include a template in the admin overview
+	 *
 	 * @param string $mainPath the path to the main php file without the php
 	 * suffix, relative to your apps directory! not the template directory
 	 * @param string $appName the name of the app, defaults to the current one
 	 */
-	public function registerAdmin($mainPath, $appName=null) {
-		if($appName === null){
+	public function registerAdmin($mainPath, $appName = null) {
+		if ($appName === null) {
 			$appName = $this->appName;
 		}
 
 		\OCP\App::registerAdmin($appName, $mainPath);
 	}
-
-
 }

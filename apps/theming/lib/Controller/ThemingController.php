@@ -192,7 +192,7 @@ class ThemingController extends Controller {
 	 */
 	public function updateLogo() {
 		$backgroundColor = $this->request->getParam('backgroundColor', false);
-		if($backgroundColor) {
+		if ($backgroundColor) {
 			$this->themingDefaults->set('backgroundMime', 'backgroundColor');
 			return new DataResponse(
 				[
@@ -287,7 +287,7 @@ class ThemingController extends Controller {
 		// reprocess server scss for preview
 		$cssCached = $this->scssCacher->process(\OC::$SERVERROOT, '/core/css/server.scss', 'core');
 
-		if($setting === 'logoMime') {
+		if ($setting === 'logoMime') {
 			try {
 				$file = $this->appData->getFolder('images')->getFile('logo');
 				$file->delete();
@@ -295,7 +295,7 @@ class ThemingController extends Controller {
 			} catch (NotPermittedException $e) {
 			}
 		}
-		if($setting === 'backgroundMime') {
+		if ($setting === 'backgroundMime') {
 			try {
 				$file = $this->appData->getFolder('images')->getFile('background');
 				$file->delete();
@@ -380,7 +380,7 @@ class ThemingController extends Controller {
 		 * since we need to add the cacheBuster value to the url
 		 */
 		$cssCached = $this->scssCacher->process(\OC::$SERVERROOT, $appPath . '/css/theming.scss', 'theming');
-		if(!$cssCached) {
+		if (!$cssCached) {
 			return new NotFoundResponse();
 		}
 

@@ -20,6 +20,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 namespace OCA\Files_Trashbin\Controller;
 
 use OCP\AppFramework\Controller;
@@ -55,12 +56,14 @@ class PreviewController extends Controller {
 	 * @param IMimeTypeDetector $mimeTypeDetector
 	 * @param IPreview $previewManager
 	 */
-	public function __construct($appName,
-								IRequest $request,
-								IRootFolder $rootFolder,
-								$userId,
-								IMimeTypeDetector $mimeTypeDetector,
-								IPreview $previewManager) {
+	public function __construct(
+		$appName,
+		IRequest $request,
+		IRootFolder $rootFolder,
+		$userId,
+		IMimeTypeDetector $mimeTypeDetector,
+		IPreview $previewManager
+	) {
 		parent::__construct($appName, $request);
 
 		$this->rootFolder = $rootFolder;

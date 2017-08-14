@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
+
 namespace OC\Security\CSP;
 
 /**
@@ -196,5 +197,4 @@ class ContentSecurityPolicy extends \OCP\AppFramework\Http\ContentSecurityPolicy
 	public function setAllowedChildSrcDomains($allowedChildSrcDomains) {
 		$this->allowedChildSrcDomains = $allowedChildSrcDomains;
 	}
-
 }

@@ -46,8 +46,8 @@ class Base {
 	 * @param \OCP\IL10N $l10n
 	 * @param Defaults $theme
 	 */
-	public function __construct($template, $requestToken, $l10n, $theme ) {
-		$this->vars = array();
+	public function __construct($template, $requestToken, $l10n, $theme) {
+		$this->vars = [];
 		$this->vars['requesttoken'] = $requestToken;
 		$this->l10n = $l10n;
 		$this->template = $template;
@@ -63,15 +63,15 @@ class Base {
 	 */
 	protected function getAppTemplateDirs($theme, $app, $serverRoot, $app_dir) {
 		// Check if the app is in the app folder or in the root
-		if( file_exists($app_dir.'/templates/' )) {
+		if (file_exists($app_dir . '/templates/')) {
 			return [
-				$serverRoot.'/themes/'.$theme.'/apps/'.$app.'/templates/',
-				$app_dir.'/templates/',
+				$serverRoot . '/themes/' . $theme . '/apps/' . $app . '/templates/',
+				$app_dir . '/templates/',
 			];
 		}
 		return [
-			$serverRoot.'/themes/'.$theme.'/'.$app.'/templates/',
-			$serverRoot.'/'.$app.'/templates/',
+			$serverRoot . '/themes/' . $theme . '/' . $app . '/templates/',
+			$serverRoot . '/' . $app . '/templates/',
 		];
 	}
 
@@ -82,13 +82,14 @@ class Base {
 	 */
 	protected function getCoreTemplateDirs($theme, $serverRoot) {
 		return [
-			$serverRoot.'/themes/'.$theme.'/core/templates/',
-			$serverRoot.'/core/templates/',
+			$serverRoot . '/themes/' . $theme . '/core/templates/',
+			$serverRoot . '/core/templates/',
 		];
 	}
 
 	/**
 	 * Assign variables
+	 *
 	 * @param string $key key
 	 * @param array|bool|integer|string $value value
 	 * @return bool
@@ -98,13 +99,14 @@ class Base {
 	 *
 	 * If the key existed before, it will be overwritten
 	 */
-	public function assign( $key, $value) {
+	public function assign($key, $value) {
 		$this->vars[$key] = $value;
 		return true;
 	}
 
 	/**
 	 * Appends a variable
+	 *
 	 * @param string $key key
 	 * @param mixed $value value
 	 * @return boolean|null
@@ -113,27 +115,26 @@ class Base {
 	 * exists, the value will be appended. It can be accessed via
 	 * $_[$key][$position] in the template.
 	 */
-	public function append( $key, $value ) {
-		if( array_key_exists( $key, $this->vars )) {
+	public function append($key, $value) {
+		if (array_key_exists($key, $this->vars)) {
 			$this->vars[$key][] = $value;
-		}
-		else{
-			$this->vars[$key] = array( $value );
+		} else {
+			$this->vars[$key] = [$value];
 		}
 	}
 
 	/**
 	 * Prints the proceeded template
+	 *
 	 * @return bool
 	 *
 	 * This function proceeds the template and prints its output.
 	 */
 	public function printPage() {
 		$data = $this->fetchPage();
-		if( $data === false ) {
+		if ($data === false) {
 			return false;
-		}
-		else{
+		} else {
 			print $data;
 			return true;
 		}
@@ -166,8 +167,8 @@ class Base {
 		$l = $this->l10n;
 		$theme = $this->theme;
 
-		if( !is_null($additionalParams)) {
-			$_ = array_merge( $additionalParams, $this->vars );
+		if (!is_null($additionalParams)) {
+			$_ = array_merge($additionalParams, $this->vars);
 		}
 
 		// Include
@@ -184,5 +185,4 @@ class Base {
 		// Return data
 		return $data;
 	}
-
 }

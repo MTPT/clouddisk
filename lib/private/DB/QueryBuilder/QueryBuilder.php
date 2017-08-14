@@ -90,7 +90,7 @@ class QueryBuilder implements IQueryBuilder {
 	 * @since 8.2.0
 	 */
 	public function automaticTablePrefix($enabled) {
-		$this->automaticTablePrefix = (bool) $enabled;
+		$this->automaticTablePrefix = (bool)$enabled;
 	}
 
 	/**
@@ -112,11 +112,11 @@ class QueryBuilder implements IQueryBuilder {
 	public function expr() {
 		if ($this->connection instanceof OracleConnection) {
 			return new OCIExpressionBuilder($this->connection);
-		} else if ($this->connection->getDatabasePlatform() instanceof PostgreSqlPlatform) {
+		} elseif ($this->connection->getDatabasePlatform() instanceof PostgreSqlPlatform) {
 			return new PgSqlExpressionBuilder($this->connection);
-		} else if ($this->connection->getDatabasePlatform() instanceof MySqlPlatform) {
+		} elseif ($this->connection->getDatabasePlatform() instanceof MySqlPlatform) {
 			return new MySqlExpressionBuilder($this->connection);
-		} else if ($this->connection->getDatabasePlatform() instanceof SqlitePlatform) {
+		} elseif ($this->connection->getDatabasePlatform() instanceof SqlitePlatform) {
 			return new SqliteExpressionBuilder($this->connection);
 		} else {
 			return new ExpressionBuilder($this->connection);
@@ -142,9 +142,9 @@ class QueryBuilder implements IQueryBuilder {
 	public function func() {
 		if ($this->connection instanceof OracleConnection) {
 			return new OCIFunctionBuilder($this->helper);
-		} else if ($this->connection->getDatabasePlatform() instanceof SqlitePlatform) {
+		} elseif ($this->connection->getDatabasePlatform() instanceof SqlitePlatform) {
 			return new SqliteFunctionBuilder($this->helper);
-		} else if ($this->connection->getDatabasePlatform() instanceof PostgreSqlPlatform) {
+		} elseif ($this->connection->getDatabasePlatform() instanceof PostgreSqlPlatform) {
 			return new PgSqlFunctionBuilder($this->helper);
 		} else {
 			return new FunctionBuilder($this->helper);
@@ -271,7 +271,7 @@ class QueryBuilder implements IQueryBuilder {
 	 *
 	 * @return \OCP\DB\QueryBuilder\IQueryBuilder This QueryBuilder instance.
 	 */
-	public function setParameters(array $params, array $types = array()) {
+	public function setParameters(array $params, array $types = []) {
 		$this->queryBuilder->setParameters($params, $types);
 
 		return $this;
@@ -408,7 +408,6 @@ class QueryBuilder implements IQueryBuilder {
 	 * @return \OCP\DB\QueryBuilder\IQueryBuilder This QueryBuilder instance.
 	 */
 	public function selectAlias($select, $alias) {
-
 		$this->queryBuilder->addSelect(
 			$this->helper->quoteColumnName($select) . ' AS ' . $this->helper->quoteColumnName($alias)
 		);
@@ -430,7 +429,6 @@ class QueryBuilder implements IQueryBuilder {
 	 * @return \OCP\DB\QueryBuilder\IQueryBuilder This QueryBuilder instance.
 	 */
 	public function selectDistinct($select) {
-
 		$this->queryBuilder->addSelect(
 			'DISTINCT ' . $this->helper->quoteColumnName($select)
 		);
@@ -1141,6 +1139,7 @@ class QueryBuilder implements IQueryBuilder {
 
 	/**
 	 * Used to get the id of the last inserted element
+	 *
 	 * @return int
 	 * @throws \BadMethodCallException When being called before an insert query has been run.
 	 */
@@ -1148,7 +1147,7 @@ class QueryBuilder implements IQueryBuilder {
 		if ($this->getType() === \Doctrine\DBAL\Query\QueryBuilder::INSERT && $this->lastInsertedTable) {
 			// lastInsertId() needs the prefix but no quotes
 			$table = $this->prefixTableName($this->lastInsertedTable);
-			return (int) $this->connection->lastInsertId($table);
+			return (int)$this->connection->lastInsertId($table);
 		}
 
 		throw new \BadMethodCallException('Invalid call to getLastInsertId without using insert() before.');

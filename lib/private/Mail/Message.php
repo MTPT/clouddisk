@@ -53,17 +53,17 @@ class Message {
 			return $addresses;
 		}
 
-		$convertedAddresses = array();
+		$convertedAddresses = [];
 
-		foreach($addresses as $email => $readableName) {
-			if(!is_numeric($email)) {
+		foreach ($addresses as $email => $readableName) {
+			if (!is_numeric($email)) {
 				list($name, $domain) = explode('@', $email, 2);
 				$domain = idn_to_ascii($domain, 0, INTL_IDNA_VARIANT_UTS46);
-				$convertedAddresses[$name.'@'.$domain] = $readableName;
+				$convertedAddresses[$name . '@' . $domain] = $readableName;
 			} else {
 				list($name, $domain) = explode('@', $readableName, 2);
 				$domain = idn_to_ascii($domain, 0, INTL_IDNA_VARIANT_UTS46);
-				$convertedAddresses[$email] = $name.'@'.$domain;
+				$convertedAddresses[$email] = $name . '@' . $domain;
 			}
 		}
 
@@ -235,6 +235,7 @@ class Message {
 
 	/**
 	 * Get's the underlying SwiftMessage
+	 *
 	 * @return Swift_Message
 	 */
 	public function getSwiftMessage() {

@@ -95,7 +95,7 @@ class Event implements IEvent {
 		if (!is_string($app) || $app === '' || isset($app[32])) {
 			throw new \InvalidArgumentException('The given app is invalid');
 		}
-		$this->app = (string) $app;
+		$this->app = (string)$app;
 		return $this;
 	}
 
@@ -118,7 +118,7 @@ class Event implements IEvent {
 		if (!is_string($type) || $type === '' || isset($type[255])) {
 			throw new \InvalidArgumentException('The given type is invalid');
 		}
-		$this->type = (string) $type;
+		$this->type = (string)$type;
 		return $this;
 	}
 
@@ -141,7 +141,7 @@ class Event implements IEvent {
 		if (!is_string($affectedUser) || $affectedUser === '' || isset($affectedUser[64])) {
 			throw new \InvalidArgumentException('The given affected user is invalid');
 		}
-		$this->affectedUser = (string) $affectedUser;
+		$this->affectedUser = (string)$affectedUser;
 		return $this;
 	}
 
@@ -162,9 +162,9 @@ class Event implements IEvent {
 	 */
 	public function setAuthor($author) {
 		if (!is_string($author) || isset($author[64])) {
-			throw new \InvalidArgumentException('The given author user is invalid'. serialize($author));
+			throw new \InvalidArgumentException('The given author user is invalid' . serialize($author));
 		}
-		$this->author = (string) $author;
+		$this->author = (string)$author;
 		return $this;
 	}
 
@@ -187,7 +187,7 @@ class Event implements IEvent {
 		if (!is_int($timestamp)) {
 			throw new \InvalidArgumentException('The given timestamp is invalid');
 		}
-		$this->timestamp = (int) $timestamp;
+		$this->timestamp = (int)$timestamp;
 		return $this;
 	}
 
@@ -211,7 +211,7 @@ class Event implements IEvent {
 		if (!is_string($subject) || isset($subject[255])) {
 			throw new \InvalidArgumentException('The given subject is invalid');
 		}
-		$this->subject = (string) $subject;
+		$this->subject = (string)$subject;
 		$this->subjectParameters = $parameters;
 		return $this;
 	}
@@ -302,7 +302,7 @@ class Event implements IEvent {
 		if (!is_string($message) || isset($message[255])) {
 			throw new \InvalidArgumentException('The given message is invalid');
 		}
-		$this->message = (string) $message;
+		$this->message = (string)$message;
 		$this->messageParameters = $parameters;
 		return $this;
 	}
@@ -400,9 +400,9 @@ class Event implements IEvent {
 		if (!is_string($objectName) || isset($objectName[4000])) {
 			throw new \InvalidArgumentException('The given object name is invalid');
 		}
-		$this->objectType = (string) $objectType;
-		$this->objectId = (int) $objectId;
-		$this->objectName = (string) $objectName;
+		$this->objectType = (string)$objectType;
+		$this->objectId = (int)$objectId;
+		$this->objectName = (string)$objectName;
 		return $this;
 	}
 
@@ -439,7 +439,7 @@ class Event implements IEvent {
 		if (!is_string($link) || isset($link[4000])) {
 			throw new \InvalidArgumentException('The given link is invalid');
 		}
-		$this->link = (string) $link;
+		$this->link = (string)$link;
 		return $this;
 	}
 
@@ -496,8 +496,7 @@ class Event implements IEvent {
 		return
 			$this->isValidCommon()
 			&&
-			$this->getSubject() !== ''
-		;
+			$this->getSubject() !== '';
 	}
 
 	/**
@@ -524,8 +523,7 @@ class Event implements IEvent {
 		return
 			$this->isValidCommon()
 			&&
-			$this->getParsedSubject() !== ''
-		;
+			$this->getParsedSubject() !== '';
 	}
 
 	/**
@@ -539,14 +537,13 @@ class Event implements IEvent {
 			&&
 			$this->getAffectedUser() !== ''
 			&&
-			$this->getTimestamp() !== 0
-			/**
-			 * Disabled for BC with old activities
-			&&
-			$this->getObjectType() !== ''
-			&&
-			$this->getObjectId() !== 0
-			 */
-		;
+			$this->getTimestamp() !== 0/**
+	     * Disabled for BC with old activities
+	     * &&
+	     * $this->getObjectType() !== ''
+	     * &&
+	     * $this->getObjectId() !== 0
+	     */
+			;
 	}
 }

@@ -35,11 +35,13 @@ class CategoryFetcher extends Fetcher {
 	 * @param IConfig $config
 	 * @param ILogger $logger
 	 */
-	public function __construct(Factory $appDataFactory,
-								IClientService $clientService,
-								ITimeFactory $timeFactory,
-								IConfig $config,
-								ILogger $logger) {
+	public function __construct(
+		Factory $appDataFactory,
+		IClientService $clientService,
+		ITimeFactory $timeFactory,
+		IConfig $config,
+		ILogger $logger
+	) {
 		parent::__construct(
 			$appDataFactory,
 			$clientService,

@@ -74,15 +74,17 @@ class Listener {
 	 * @param IRootFolder $rootFolder
 	 * @param IShareHelper $shareHelper
 	 */
-	public function __construct(IGroupManager $groupManager,
-								IManager $activityManager,
-								IUserSession $session,
-								IConfig $config,
-								ISystemTagManager $tagManager,
-								IAppManager $appManager,
-								IMountProviderCollection $mountCollection,
-								IRootFolder $rootFolder,
-								IShareHelper $shareHelper) {
+	public function __construct(
+		IGroupManager $groupManager,
+		IManager $activityManager,
+		IUserSession $session,
+		IConfig $config,
+		ISystemTagManager $tagManager,
+		IAppManager $appManager,
+		IMountProviderCollection $mountCollection,
+		IRootFolder $rootFolder,
+		IShareHelper $shareHelper
+	) {
 		$this->groupManager = $groupManager;
 		$this->activityManager = $activityManager;
 		$this->session = $session;
@@ -116,13 +118,13 @@ class Listener {
 				$actor,
 				$this->prepareTagAsParameter($event->getTag()),
 			]);
-		} else if ($event->getEvent() === ManagerEvent::EVENT_UPDATE) {
+		} elseif ($event->getEvent() === ManagerEvent::EVENT_UPDATE) {
 			$activity->setSubject(Provider::UPDATE_TAG, [
 				$actor,
 				$this->prepareTagAsParameter($event->getTag()),
 				$this->prepareTagAsParameter($event->getTagBefore()),
 			]);
-		} else if ($event->getEvent() === ManagerEvent::EVENT_DELETE) {
+		} elseif ($event->getEvent() === ManagerEvent::EVENT_DELETE) {
 			$activity->setSubject(Provider::DELETE_TAG, [
 				$actor,
 				$this->prepareTagAsParameter($event->getTag()),
@@ -150,7 +152,7 @@ class Listener {
 	 */
 	public function mapperEvent(MapperEvent $event) {
 		$tagIds = $event->getTags();
-		if ($event->getObjectType() !== 'files' ||empty($tagIds)
+		if ($event->getObjectType() !== 'files' || empty($tagIds)
 			|| !in_array($event->getEvent(), [MapperEvent::EVENT_ASSIGN, MapperEvent::EVENT_UNASSIGN])
 			|| !$this->appManager->isInstalled('activity')) {
 			// System tags not for files, no tags, not (un-)assigning or no activity-app enabled (save the energy)
@@ -199,7 +201,7 @@ class Listener {
 		$activity->setApp('systemtags')
 			->setType('systemtags')
 			->setAuthor($actor)
-			->setObject($event->getObjectType(), (int) $event->getObjectId());
+			->setObject($event->getObjectType(), (int)$event->getObjectId());
 
 		foreach ($users as $user => $path) {
 			$activity->setAffectedUser($user);
@@ -215,7 +217,7 @@ class Listener {
 						$path,
 						$this->prepareTagAsParameter($tag),
 					]);
-				} else if ($event->getEvent() === MapperEvent::EVENT_UNASSIGN) {
+				} elseif ($event->getEvent() === MapperEvent::EVENT_UNASSIGN) {
 					$activity->setSubject(Provider::UNASSIGN_TAG, [
 						$actor,
 						$path,

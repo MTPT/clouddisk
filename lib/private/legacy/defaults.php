@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  *
@@ -30,7 +31,6 @@
  *
  */
 class OC_Defaults {
-
 	private $theme;
 	private $l;
 
@@ -87,6 +87,7 @@ class OC_Defaults {
 
 	/**
 	 * Returns the base URL
+	 *
 	 * @return string URL
 	 */
 	public function getBaseUrl() {
@@ -99,6 +100,7 @@ class OC_Defaults {
 
 	/**
 	 * Returns the URL where the sync clients are listed
+	 *
 	 * @return string URL
 	 */
 	public function getSyncClientUrl() {
@@ -111,6 +113,7 @@ class OC_Defaults {
 
 	/**
 	 * Returns the URL to the App Store for the iOS Client
+	 *
 	 * @return string URL
 	 */
 	public function getiOSClientUrl() {
@@ -123,6 +126,7 @@ class OC_Defaults {
 
 	/**
 	 * Returns the AppId for the App Store for the iOS Client
+	 *
 	 * @return string AppId
 	 */
 	public function getiTunesAppId() {
@@ -135,6 +139,7 @@ class OC_Defaults {
 
 	/**
 	 * Returns the URL to Google Play for the Android Client
+	 *
 	 * @return string URL
 	 */
 	public function getAndroidClientUrl() {
@@ -147,6 +152,7 @@ class OC_Defaults {
 
 	/**
 	 * Returns the documentation URL
+	 *
 	 * @return string URL
 	 */
 	public function getDocBaseUrl() {
@@ -159,6 +165,7 @@ class OC_Defaults {
 
 	/**
 	 * Returns the title
+	 *
 	 * @return string title
 	 */
 	public function getTitle() {
@@ -171,6 +178,7 @@ class OC_Defaults {
 
 	/**
 	 * Returns the short name of the software
+	 *
 	 * @return string title
 	 */
 	public function getName() {
@@ -183,6 +191,7 @@ class OC_Defaults {
 
 	/**
 	 * Returns the short name of the software containing HTML strings
+	 *
 	 * @return string title
 	 */
 	public function getHTMLName() {
@@ -195,6 +204,7 @@ class OC_Defaults {
 
 	/**
 	 * Returns entity (e.g. company name) - used for footer, copyright
+	 *
 	 * @return string entity name
 	 */
 	public function getEntity() {
@@ -207,6 +217,7 @@ class OC_Defaults {
 
 	/**
 	 * Returns slogan
+	 *
 	 * @return string slogan
 	 */
 	public function getSlogan() {
@@ -219,6 +230,7 @@ class OC_Defaults {
 
 	/**
 	 * Returns logo claim
+	 *
 	 * @return string logo claim
 	 * @deprecated 13.0.0
 	 */
@@ -228,14 +240,15 @@ class OC_Defaults {
 
 	/**
 	 * Returns short version of the footer
+	 *
 	 * @return string short footer
 	 */
 	public function getShortFooter() {
 		if ($this->themeExist('getShortFooter')) {
 			$footer = $this->theme->getShortFooter();
 		} else {
-			$footer = '<a href="'. $this->getBaseUrl() . '" target="_blank"' .
-				' rel="noreferrer">' .$this->getEntity() . '</a>'.
+			$footer = '<a href="' . $this->getBaseUrl() . '" target="_blank"' .
+				' rel="noreferrer">' . $this->getEntity() . '</a>' .
 				' – ' . $this->getSlogan();
 		}
 
@@ -244,6 +257,7 @@ class OC_Defaults {
 
 	/**
 	 * Returns long version of the footer
+	 *
 	 * @return string long footer
 	 */
 	public function getLongFooter() {
@@ -269,10 +283,10 @@ class OC_Defaults {
 
 	/**
 	 * Returns primary color
+	 *
 	 * @return string
 	 */
 	public function getColorPrimary() {
-
 		if ($this->themeExist('getColorPrimary')) {
 			return $this->theme->getColorPrimary();
 		}
@@ -286,7 +300,7 @@ class OC_Defaults {
 	 * @return array scss variables to overwrite
 	 */
 	public function getScssVariables() {
-		if($this->themeExist('getScssVariables')) {
+		if ($this->themeExist('getScssVariables')) {
 			return $this->theme->getScssVariables();
 		}
 		return [];
@@ -307,11 +321,11 @@ class OC_Defaults {
 			return $this->theme->getLogo($useSvg);
 		}
 
-		if($useSvg) {
+		if ($useSvg) {
 			$logo = \OC::$server->getURLGenerator()->imagePath('core', 'logo.svg');
 		} else {
 			$logo = \OC::$server->getURLGenerator()->imagePath('core', 'logo.png');
 		}
-	    return $logo . '?v=' . hash('sha1', implode('.', \OCP\Util::getVersion()));
+		return $logo . '?v=' . hash('sha1', implode('.', \OCP\Util::getVersion()));
 	}
 }

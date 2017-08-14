@@ -20,6 +20,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 namespace OCA\Files_Sharing\Controller;
 
 use OCP\AppFramework\Controller;
@@ -42,10 +43,12 @@ class PublicPreviewController extends Controller {
 	/** @var IPreview */
 	private $previewManager;
 
-	public function __construct($appName,
-								IRequest $request,
-								ShareManager $shareManger,
-								IPreview $previewManager) {
+	public function __construct(
+		$appName,
+		IRequest $request,
+		ShareManager $shareManger,
+		IPreview $previewManager
+	) {
 		parent::__construct($appName, $request);
 
 		$this->shareManager = $shareManger;
@@ -70,7 +73,6 @@ class PublicPreviewController extends Controller {
 		$t = '',
 		$a = false
 	) {
-
 		if ($t === '' || $x === 0 || $y === 0) {
 			return new DataResponse([], Http::STATUS_BAD_REQUEST);
 		}

@@ -74,6 +74,7 @@ class DependencyAnalyzer {
 	 * Truncates both versions to the lowest common version, e.g.
 	 * 5.1.2.3 and 5.1 will be turned into 5.1 and 5.1,
 	 * 5.2.6.5 and 5.1 will be turned into 5.2 and 5.1
+	 *
 	 * @param string $first
 	 * @param string $second
 	 * @return string[] first element is the first version, second element is the
@@ -94,6 +95,7 @@ class DependencyAnalyzer {
 	/**
 	 * Parameters will be normalized and then passed into version_compare
 	 * in the same order they are specified in the method header
+	 *
 	 * @param string $first
 	 * @param string $second
 	 * @param string $operator
@@ -112,6 +114,7 @@ class DependencyAnalyzer {
 
 	/**
 	 * Checks if a version is bigger than another version
+	 *
 	 * @param string $first
 	 * @param string $second
 	 * @return bool true if the first version is bigger than the second
@@ -122,6 +125,7 @@ class DependencyAnalyzer {
 
 	/**
 	 * Checks if a version is smaller than another version
+	 *
 	 * @param string $first
 	 * @param string $second
 	 * @return bool true if the first version is smaller than the second
@@ -150,7 +154,7 @@ class DependencyAnalyzer {
 		}
 		if (isset($dependencies['php']['@attributes']['min-int-size'])) {
 			$intSize = $dependencies['php']['@attributes']['min-int-size'];
-			if ($intSize > $this->platform->getIntSize()*8) {
+			if ($intSize > $this->platform->getIntSize() * 8) {
 				$missing[] = (string)$this->l->t('%sbit or higher PHP required.', $intSize);
 			}
 		}
@@ -172,7 +176,7 @@ class DependencyAnalyzer {
 			return $missing;
 		}
 		if (!is_array($supportedDatabases)) {
-			$supportedDatabases = array($supportedDatabases);
+			$supportedDatabases = [$supportedDatabases];
 		}
 		$supportedDatabases = array_map(function ($db) {
 			return $this->getValue($db);
@@ -196,7 +200,7 @@ class DependencyAnalyzer {
 
 		$commands = $dependencies['command'];
 		if (!is_array($commands)) {
-			$commands = array($commands);
+			$commands = [$commands];
 		}
 		if (isset($commands['@value'])) {
 			$commands = [$commands];
@@ -226,7 +230,7 @@ class DependencyAnalyzer {
 
 		$libs = $dependencies['lib'];
 		if (!is_array($libs)) {
-			$libs = array($libs);
+			$libs = [$libs];
 		}
 		if (isset($libs['@value'])) {
 			$libs = [$libs];
@@ -243,15 +247,19 @@ class DependencyAnalyzer {
 				if (isset($lib['@attributes']['min-version'])) {
 					$minVersion = $lib['@attributes']['min-version'];
 					if ($this->compareSmaller($libVersion, $minVersion)) {
-						$missing[] = (string)$this->l->t('Library %s with a version higher than %s is required - available version %s.',
-							array($libName, $minVersion, $libVersion));
+						$missing[] = (string)$this->l->t(
+							'Library %s with a version higher than %s is required - available version %s.',
+							[$libName, $minVersion, $libVersion]
+						);
 					}
 				}
 				if (isset($lib['@attributes']['max-version'])) {
 					$maxVersion = $lib['@attributes']['max-version'];
 					if ($this->compareBigger($libVersion, $maxVersion)) {
-						$missing[] = (string)$this->l->t('Library %s with a version lower than %s is required - available version %s.',
-							array($libName, $maxVersion, $libVersion));
+						$missing[] = (string)$this->l->t(
+							'Library %s with a version lower than %s is required - available version %s.',
+							[$libName, $maxVersion, $libVersion]
+						);
 					}
 				}
 			}
@@ -278,7 +286,7 @@ class DependencyAnalyzer {
 				return $this->getValue($os);
 			}, $oss);
 		} else {
-			$oss = array($oss);
+			$oss = [$oss];
 		}
 		$currentOS = $this->platform->getOS();
 		if (!in_array($currentOS, $oss)) {

@@ -64,9 +64,9 @@ class OC_User {
 		return OC::$server->getUserSession();
 	}
 
-	private static $_usedBackends = array();
+	private static $_usedBackends = [];
 
-	private static $_setupedBackends = array();
+	private static $_setupedBackends = [];
 
 	// bool, stores if a user want to access a resource anonymously, e.g if they open a public link
 	private static $incognitoMode = false;
@@ -86,7 +86,7 @@ class OC_User {
 			\OC::$server->getUserManager()->registerBackend($backend);
 		} else {
 			// You'll never know what happens
-			if (null === $backend OR !is_string($backend)) {
+			if (null === $backend or !is_string($backend)) {
 				$backend = 'database';
 			}
 
@@ -118,12 +118,13 @@ class OC_User {
 	 * remove all used backends
 	 */
 	public static function clearBackends() {
-		self::$_usedBackends = array();
+		self::$_usedBackends = [];
 		\OC::$server->getUserManager()->clearBackends();
 	}
 
 	/**
 	 * setup the configured backends in config.php
+	 *
 	 * @suppress PhanDeprecatedFunction
 	 */
 	public static function setupBackends() {
@@ -167,10 +168,9 @@ class OC_User {
 	 * @return bool
 	 */
 	public static function loginWithApache(\OCP\Authentication\IApacheBackend $backend) {
-
 		$uid = $backend->getCurrentUserId();
 		$run = true;
-		OC_Hook::emit("OC_User", "pre_login", array("run" => &$run, "uid" => $uid));
+		OC_Hook::emit("OC_User", "pre_login", ["run" => &$run, "uid" => $uid]);
 
 		if ($uid) {
 			if (self::getUser() !== $uid) {
@@ -185,7 +185,7 @@ class OC_User {
 				// completed before we can safely create the users folder.
 				// For example encryption needs to initialize the users keys first
 				// before we can create the user folder with the skeleton files
-				OC_Hook::emit("OC_User", "post_login", array("uid" => $uid, 'password' => ''));
+				OC_Hook::emit("OC_User", "post_login", ["uid" => $uid, 'password' => '']);
 				//trigger creation of user home and /files folder
 				\OC::$server->getUserFolder($uid);
 			}
@@ -300,7 +300,7 @@ class OC_User {
 			]
 		);
 
-		return 'href="'.$logoutUrl.'"';
+		return 'href="' . $logoutUrl . '"';
 	}
 
 	/**
@@ -423,7 +423,7 @@ class OC_User {
 	 */
 	public static function getUsers($search = '', $limit = null, $offset = null) {
 		$users = \OC::$server->getUserManager()->search($search, $limit, $offset);
-		$uids = array();
+		$uids = [];
 		foreach ($users as $user) {
 			$uids[] = $user->getUID();
 		}
@@ -442,7 +442,7 @@ class OC_User {
 	 * @deprecated Use \OC::$server->getUserManager->searchDisplayName($search, $limit, $offset) instead.
 	 */
 	public static function getDisplayNames($search = '', $limit = null, $offset = null) {
-		$displayNames = array();
+		$displayNames = [];
 		$users = \OC::$server->getUserManager()->searchDisplayName($search, $limit, $offset);
 		foreach ($users as $user) {
 			$displayNames[$user->getUID()] = $user->getDisplayName();

@@ -66,7 +66,7 @@ class Adapter {
 	 */
 	public function lockTable($tableName) {
 		$this->conn->beginTransaction();
-		$this->conn->executeUpdate('LOCK TABLE `' .$tableName . '` IN EXCLUSIVE MODE');
+		$this->conn->executeUpdate('LOCK TABLE `' . $tableName . '` IN EXCLUSIVE MODE');
 	}
 
 	/**
@@ -84,8 +84,8 @@ class Adapter {
 	 * @param string $table The table name (will replace *PREFIX* with the actual prefix)
 	 * @param array $input data that should be inserted into the table  (column name => value)
 	 * @param array|null $compare List of values that should be checked for "if not exists"
-	 *				If this is null or an empty array, all keys of $input will be compared
-	 *				Please note: text fields (clob) must not be used in the compare array
+	 *                If this is null or an empty array, all keys of $input will be compared
+	 *                Please note: text fields (clob) must not be used in the compare array
 	 * @return int number of inserted rows
 	 * @throws \Doctrine\DBAL\DBALException
 	 */
@@ -93,13 +93,13 @@ class Adapter {
 		if (empty($compare)) {
 			$compare = array_keys($input);
 		}
-		$query = 'INSERT INTO `' .$table . '` (`'
+		$query = 'INSERT INTO `' . $table . '` (`'
 			. implode('`,`', array_keys($input)) . '`) SELECT '
-			. str_repeat('?,', count($input)-1).'? ' // Is there a prettier alternative?
+			. str_repeat('?,', count($input) - 1) . '? ' // Is there a prettier alternative?
 			. 'FROM `' . $table . '` WHERE ';
 
 		$inserts = array_values($input);
-		foreach($compare as $key) {
+		foreach ($compare as $key) {
 			$query .= '`' . $key . '`';
 			if (is_null($input[$key])) {
 				$query .= ' IS NULL AND ';

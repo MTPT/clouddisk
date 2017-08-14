@@ -45,17 +45,19 @@ class IpAddress {
 	 * @param int $maskBits
 	 * @return string
 	 */
-	private function getIPv4Subnet($ip,
-								   $maskBits = 32) {
+	private function getIPv4Subnet(
+		$ip,
+		$maskBits = 32
+	) {
 		$binary = \inet_pton($ip);
 		for ($i = 32; $i > $maskBits; $i -= 8) {
 			$j = \intdiv($i, 8) - 1;
-			$k = (int) \min(8, $i - $maskBits);
+			$k = (int)\min(8, $i - $maskBits);
 			$mask = (0xff - ((pow(2, $k)) - 1));
 			$int = \unpack('C', $binary[$j]);
 			$binary[$j] = \pack('C', $int[1] & $mask);
 		}
-		return \inet_ntop($binary).'/'.$maskBits;
+		return \inet_ntop($binary) . '/' . $maskBits;
 	}
 
 	/**
@@ -69,12 +71,12 @@ class IpAddress {
 		$binary = \inet_pton($ip);
 		for ($i = 128; $i > $maskBits; $i -= 8) {
 			$j = \intdiv($i, 8) - 1;
-			$k = (int) \min(8, $i - $maskBits);
+			$k = (int)\min(8, $i - $maskBits);
 			$mask = (0xff - ((pow(2, $k)) - 1));
 			$int = \unpack('C', $binary[$j]);
 			$binary[$j] = \pack('C', $int[1] & $mask);
 		}
-		return \inet_ntop($binary).'/'.$maskBits;
+		return \inet_ntop($binary) . '/' . $maskBits;
 	}
 
 	/**

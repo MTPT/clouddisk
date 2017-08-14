@@ -49,6 +49,7 @@ class MDB2SchemaManager {
 
 	/**
 	 * saves database scheme to xml file
+	 *
 	 * @param string $file name of file
 	 * @return bool
 	 *
@@ -60,6 +61,7 @@ class MDB2SchemaManager {
 
 	/**
 	 * Creates tables from XML file
+	 *
 	 * @param string $file file to read structure from
 	 * @return bool
 	 *
@@ -82,11 +84,11 @@ class MDB2SchemaManager {
 		$dispatcher = \OC::$server->getEventDispatcher();
 		if ($platform instanceof SqlitePlatform) {
 			return new SQLiteMigrator($this->conn, $random, $config, $dispatcher);
-		} else if ($platform instanceof OraclePlatform) {
+		} elseif ($platform instanceof OraclePlatform) {
 			return new OracleMigrator($this->conn, $random, $config, $dispatcher);
-		} else if ($platform instanceof MySqlPlatform) {
+		} elseif ($platform instanceof MySqlPlatform) {
 			return new MySQLMigrator($this->conn, $random, $config, $dispatcher);
-		} else if ($platform instanceof PostgreSqlPlatform) {
+		} elseif ($platform instanceof PostgreSqlPlatform) {
 			return new PostgreSqlMigrator($this->conn, $random, $config, $dispatcher);
 		} else {
 			return new NoCheckMigrator($this->conn, $random, $config, $dispatcher);
@@ -108,6 +110,7 @@ class MDB2SchemaManager {
 
 	/**
 	 * update the database scheme
+	 *
 	 * @param string $file file to read structure from
 	 * @param bool $generateSql only return the sql needed for the upgrade
 	 * @return string|boolean

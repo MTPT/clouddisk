@@ -35,6 +35,7 @@ class HookManager {
 	public static function postShared($params) {
 		self::getUpdate()->postShared($params);
 	}
+
 	public static function postUnshared($params) {
 		self::getUpdate()->postUnshared($params);
 	}
@@ -63,7 +64,8 @@ class HookManager {
 					new View(),
 					\OC::$server->getUserManager(),
 					\OC::$server->getGroupManager(),
-					\OC::$server->getConfig()),
+					\OC::$server->getConfig()
+				),
 				Filesystem::getMountManager(),
 				\OC::$server->getEncryptionManager(),
 				\OC::$server->getEncryptionFilesHelper(),

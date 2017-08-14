@@ -1,6 +1,6 @@
 <?php
 // @codeCoverageIgnoreStart
-if(!isset($_)) {//standalone  page is not supported anymore - redirect to /
+if (!isset($_)) {//standalone  page is not supported anymore - redirect to /
 	require_once '../../lib/base.php';
 
 	$urlGenerator = \OC::$server->getURLGenerator();
@@ -11,7 +11,9 @@ if(!isset($_)) {//standalone  page is not supported anymore - redirect to /
 ?>
 <ul>
 	<li class='error'>
-		<?php p($l->t( 'Access forbidden' )); ?><br>
-		<p class='hint'><?php if(isset($_['file'])) p($_['file'])?></p>
+		<?php p($l->t('Access forbidden')); ?><br>
+		<p class='hint'><?php if (isset($_['file'])) {
+	p($_['file']);
+}?></p>
 	</li>
 </ul>

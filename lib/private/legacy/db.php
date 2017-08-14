@@ -44,6 +44,7 @@ class OC_DB {
 
 	/**
 	 * Prepare a SQL query
+	 *
 	 * @param string $query Query string
 	 * @param int|null $limit
 	 * @param int|null $offset
@@ -53,7 +54,7 @@ class OC_DB {
 	 *
 	 * SQL query via Doctrine prepare(), needs to be execute()'d!
 	 */
-	static public function prepare( $query , $limit = null, $offset = null, $isManipulation = null) {
+	public static function prepare($query, $limit = null, $offset = null, $isManipulation = null) {
 		$connection = \OC::$server->getDatabaseConnection();
 
 		if ($isManipulation === null) {
@@ -63,7 +64,7 @@ class OC_DB {
 
 		// return the result
 		try {
-			$result =$connection->prepare($query, $limit, $offset);
+			$result = $connection->prepare($query, $limit, $offset);
 		} catch (\Doctrine\DBAL\DBALException $e) {
 			throw new \OC\DatabaseException($e->getMessage());
 		}
@@ -79,7 +80,7 @@ class OC_DB {
 	 * @param string $sql
 	 * @return bool
 	 */
-	static public function isManipulation( $sql ) {
+	public static function isManipulation($sql) {
 		$selectOccurrence = stripos($sql, 'SELECT');
 		if ($selectOccurrence !== false && $selectOccurrence < 10) {
 			return false;
@@ -101,34 +102,35 @@ class OC_DB {
 
 	/**
 	 * execute a prepared statement, on error write log and throw exception
+	 *
 	 * @param mixed $stmt OC_DB_StatementWrapper,
-	 *					  an array with 'sql' and optionally 'limit' and 'offset' keys
-	 *					.. or a simple sql query string
+	 *                      an array with 'sql' and optionally 'limit' and 'offset' keys
+	 *                    .. or a simple sql query string
 	 * @param array|null $parameters
 	 * @return OC_DB_StatementWrapper
 	 * @throws \OC\DatabaseException
 	 */
-	static public function executeAudited( $stmt, array $parameters = null) {
+	public static function executeAudited($stmt, array $parameters = null) {
 		if (is_string($stmt)) {
 			// convert to an array with 'sql'
 			if (stripos($stmt, 'LIMIT') !== false) { //OFFSET requires LIMIT, so we only need to check for LIMIT
 				// TODO try to convert LIMIT OFFSET notation to parameters
 				$message = 'LIMIT and OFFSET are forbidden for portability reasons,'
-						 . ' pass an array with \'limit\' and \'offset\' instead';
+					. ' pass an array with \'limit\' and \'offset\' instead';
 				throw new \OC\DatabaseException($message);
 			}
-			$stmt = array('sql' => $stmt, 'limit' => null, 'offset' => null);
+			$stmt = ['sql' => $stmt, 'limit' => null, 'offset' => null];
 		}
 		if (is_array($stmt)) {
 			// convert to prepared statement
-			if ( ! array_key_exists('sql', $stmt) ) {
+			if (!array_key_exists('sql', $stmt)) {
 				$message = 'statement array must at least contain key \'sql\'';
 				throw new \OC\DatabaseException($message);
 			}
-			if ( ! array_key_exists('limit', $stmt) ) {
+			if (!array_key_exists('limit', $stmt)) {
 				$stmt['limit'] = null;
 			}
-			if ( ! array_key_exists('limit', $stmt) ) {
+			if (!array_key_exists('limit', $stmt)) {
 				$stmt['offset'] = null;
 			}
 			$stmt = self::prepare($stmt['sql'], $stmt['limit'], $stmt['offset']);
@@ -150,6 +152,7 @@ class OC_DB {
 
 	/**
 	 * saves database schema to xml file
+	 *
 	 * @param string $file name of file
 	 * @return bool
 	 *
@@ -162,12 +165,13 @@ class OC_DB {
 
 	/**
 	 * Creates tables from XML file
+	 *
 	 * @param string $file file to read structure from
 	 * @return bool
 	 *
 	 * TODO: write more documentation
 	 */
-	public static function createDbFromStructure( $file ) {
+	public static function createDbFromStructure($file) {
 		$schemaManager = self::getMDB2SchemaManager();
 		$result = $schemaManager->createDbFromStructure($file);
 		return $result;
@@ -175,6 +179,7 @@ class OC_DB {
 
 	/**
 	 * update the database schema
+	 *
 	 * @param string $file file to read structure from
 	 * @throws Exception
 	 * @return string|boolean
@@ -185,7 +190,7 @@ class OC_DB {
 		try {
 			$result = $schemaManager->updateDbFromStructure($file);
 		} catch (Exception $e) {
-			\OCP\Util::writeLog('core', 'Failed to update database structure ('.$e.')', \OCP\Util::FATAL);
+			\OCP\Util::writeLog('core', 'Failed to update database structure (' . $e . ')', \OCP\Util::FATAL);
 			throw $e;
 		}
 		return $result;
@@ -193,6 +198,7 @@ class OC_DB {
 
 	/**
 	 * remove all tables defined in a database structure xml file
+	 *
 	 * @param string $file the xml file describing the tables
 	 */
 	public static function removeDBStructure($file) {
@@ -202,13 +208,14 @@ class OC_DB {
 
 	/**
 	 * check if a result is an error and throws an exception, works with \Doctrine\DBAL\DBALException
+	 *
 	 * @param mixed $result
 	 * @param string $message
 	 * @return void
 	 * @throws \OC\DatabaseException
 	 */
 	public static function raiseExceptionOnError($result, $message = null) {
-		if($result === false) {
+		if ($result === false) {
 			if ($message === null) {
 				$message = self::getErrorMessage();
 			} else {
@@ -221,6 +228,7 @@ class OC_DB {
 	/**
 	 * returns the error code and message as a string for logging
 	 * works with DoctrineException
+	 *
 	 * @return string
 	 */
 	public static function getErrorMessage() {

@@ -31,6 +31,6 @@ class EncryptionHeaderKeyExistsException extends GenericEncryptionException {
 	 * @param string $key
 	 */
 	public function __construct($key) {
-		parent::__construct('header key "'. $key . '" already reserved by ownCloud');
+		parent::__construct('header key "' . $key . '" already reserved by ownCloud');
 	}
 }

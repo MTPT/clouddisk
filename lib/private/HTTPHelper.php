@@ -38,21 +38,24 @@ class HTTPHelper {
 
 	/** @var \OCP\IConfig */
 	private $config;
-	/** @var IClientService  */
+	/** @var IClientService */
 	private $clientService;
 
 	/**
 	 * @param IConfig $config
 	 * @param IClientService $clientService
 	 */
-	public function __construct(IConfig $config,
-								IClientService $clientService) {
+	public function __construct(
+		IConfig $config,
+		IClientService $clientService
+	) {
 		$this->config = $config;
 		$this->clientService = $clientService;
 	}
 
 	/**
 	 * Get URL content
+	 *
 	 * @param string $url Url to get content
 	 * @throws \Exception If the URL does not start with http:// or https://
 	 * @return string of the response or false on error
@@ -72,6 +75,7 @@ class HTTPHelper {
 
 	/**
 	 * Returns the response headers of a HTTP URL without following redirects
+	 *
 	 * @param string $location Needs to be a HTTPS or HTTP URL
 	 * @return array
 	 * @deprecated Use \OCP\Http\Client\IClientService
@@ -84,6 +88,7 @@ class HTTPHelper {
 
 	/**
 	 * Checks whether the supplied URL begins with HTTPS:// or HTTP:// (case insensitive)
+	 *
 	 * @param string $url
 	 * @return bool
 	 */
@@ -116,5 +121,4 @@ class HTTPHelper {
 
 		return ['success' => true, 'result' => $response->getBody()];
 	}
-
 }

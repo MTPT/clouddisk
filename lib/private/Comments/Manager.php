@@ -437,7 +437,7 @@ class Manager implements ICommentsManager {
 
 		$results = [];
 		while ($row = $resultStatement->fetch()) {
-			$results[$row['fileid']] = (int) $row['num_ids'];
+			$results[$row['fileid']] = (int)$row['num_ids'];
 		}
 		$resultStatement->closeCursor();
 		return $results;

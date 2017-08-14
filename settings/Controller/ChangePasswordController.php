@@ -65,14 +65,16 @@ class ChangePasswordController extends Controller {
 	 * @param IAppManager $appManager
 	 * @param IL10N $l
 	 */
-	public function __construct($appName,
+	public function __construct(
+		$appName,
 								IRequest $request,
 								$userId,
 								IUserManager $userManager,
 								IUserSession $userSession,
 								IGroupManager $groupManager,
 								IAppManager $appManager,
-								IL10N $l) {
+								IL10N $l
+	) {
 		parent::__construct($appName, $request);
 
 		$this->userId = $userId;
@@ -113,8 +115,8 @@ class ChangePasswordController extends Controller {
 					'status' => 'error'
 				]);
 			}
-		// password policy app throws exception
-		} catch(HintException $e) {
+			// password policy app throws exception
+		} catch (HintException $e) {
 			return new JSONResponse([
 				'status' => 'error',
 				'data' => [
@@ -182,7 +184,8 @@ class ChangePasswordController extends Controller {
 				\OC::$server->getLogger(),
 				\OC::$server->getUserSession(),
 				\OC::$server->getConfig(),
-				\OC::$server->getL10N('encryption'));
+				\OC::$server->getL10N('encryption')
+			);
 			$keyStorage = \OC::$server->getEncryptionKeyStorage();
 			$util = new \OCA\Encryption\Util(
 				new \OC\Files\View(),
@@ -190,7 +193,8 @@ class ChangePasswordController extends Controller {
 				\OC::$server->getLogger(),
 				\OC::$server->getUserSession(),
 				\OC::$server->getConfig(),
-				\OC::$server->getUserManager());
+				\OC::$server->getUserManager()
+			);
 			$keyManager = new \OCA\Encryption\KeyManager(
 				$keyStorage,
 				$crypt,
@@ -198,7 +202,8 @@ class ChangePasswordController extends Controller {
 				\OC::$server->getUserSession(),
 				new \OCA\Encryption\Session(\OC::$server->getSession()),
 				\OC::$server->getLogger(),
-				$util);
+				$util
+			);
 			$recovery = new \OCA\Encryption\Recovery(
 				\OC::$server->getUserSession(),
 				$crypt,
@@ -207,7 +212,8 @@ class ChangePasswordController extends Controller {
 				\OC::$server->getConfig(),
 				$keyStorage,
 				\OC::$server->getEncryptionFilesHelper(),
-				new \OC\Files\View());
+				new \OC\Files\View()
+			);
 			$recoveryAdminEnabled = $recovery->isRecoveryKeyEnabled();
 
 			$validRecoveryPassword = false;
@@ -234,8 +240,8 @@ class ChangePasswordController extends Controller {
 			} else { // now we know that everything is fine regarding the recovery password, let's try to change the password
 				try {
 					$result = $targetUser->setPassword($password, $recoveryPassword);
-				// password policy app throws exception
-				} catch(HintException $e) {
+					// password policy app throws exception
+				} catch (HintException $e) {
 					return new JSONResponse([
 						'status' => 'error',
 						'data' => [
@@ -269,8 +275,8 @@ class ChangePasswordController extends Controller {
 						],
 					]);
 				}
-			// password policy app throws exception
-			} catch(HintException $e) {
+				// password policy app throws exception
+			} catch (HintException $e) {
 				return new JSONResponse([
 					'status' => 'error',
 					'data' => [

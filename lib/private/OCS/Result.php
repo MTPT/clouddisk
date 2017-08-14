@@ -32,7 +32,7 @@ namespace OC\OCS;
 
 class Result {
 
-	/** @var array  */
+	/** @var array */
 	protected $data;
 
 	/** @var null|string */
@@ -52,6 +52,7 @@ class Result {
 
 	/**
 	 * create the OCS_Result object
+	 *
 	 * @param mixed $data the data to return
 	 * @param int $code
 	 * @param null|string $message
@@ -59,9 +60,9 @@ class Result {
 	 */
 	public function __construct($data = null, $code = 100, $message = null, $headers = []) {
 		if ($data === null) {
-			$this->data = array();
+			$this->data = [];
 		} elseif (!is_array($data)) {
-			$this->data = array($this->data);
+			$this->data = [$this->data];
 		} else {
 			$this->data = $data;
 		}
@@ -72,6 +73,7 @@ class Result {
 
 	/**
 	 * optionally set the total number of items available
+	 *
 	 * @param int $items
 	 */
 	public function setTotalItems($items) {
@@ -80,6 +82,7 @@ class Result {
 
 	/**
 	 * optionally set the the number of items per page
+	 *
 	 * @param int $items
 	 */
 	public function setItemsPerPage($items) {
@@ -88,6 +91,7 @@ class Result {
 
 	/**
 	 * get the status code
+	 *
 	 * @return int
 	 */
 	public function getStatusCode() {
@@ -96,25 +100,26 @@ class Result {
 
 	/**
 	 * get the meta data for the result
+	 *
 	 * @return array
 	 */
 	public function getMeta() {
-		$meta = array();
+		$meta = [];
 		$meta['status'] = $this->succeeded() ? 'ok' : 'failure';
 		$meta['statuscode'] = $this->statusCode;
 		$meta['message'] = $this->message;
-		if(isset($this->items)) {
+		if (isset($this->items)) {
 			$meta['totalitems'] = $this->items;
 		}
-		if(isset($this->perPage)) {
+		if (isset($this->perPage)) {
 			$meta['itemsperpage'] = $this->perPage;
 		}
 		return $meta;
-
 	}
 
 	/**
 	 * get the result data
+	 *
 	 * @return array
 	 */
 	public function getData() {
@@ -123,6 +128,7 @@ class Result {
 
 	/**
 	 * return bool Whether the method succeeded
+	 *
 	 * @return bool
 	 */
 	public function succeeded() {
@@ -131,6 +137,7 @@ class Result {
 
 	/**
 	 * Adds a new header to the response
+	 *
 	 * @param string $name The name of the HTTP header
 	 * @param string $value The value, null will delete it
 	 * @return $this
@@ -140,7 +147,7 @@ class Result {
 		// to be able to reliably check for security
 		// headers
 
-		if(is_null($value)) {
+		if (is_null($value)) {
 			unset($this->headers[$name]);
 		} else {
 			$this->headers[$name] = $value;
@@ -151,10 +158,10 @@ class Result {
 
 	/**
 	 * Returns the set headers
+	 *
 	 * @return array the headers
 	 */
 	public function getHeaders() {
 		return $this->headers;
 	}
-
 }

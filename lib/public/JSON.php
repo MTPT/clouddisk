@@ -48,7 +48,7 @@ class JSON {
 	 *
 	 * @suppress PhanDeprecatedFunction
 	 */
-	public static function encodedPrint( $data, $setContentType=true ) {
+	public static function encodedPrint($data, $setContentType = true) {
 		\OC_JSON::encodedPrint($data, $setContentType);
 	}
 
@@ -107,7 +107,7 @@ class JSON {
 	 * @deprecated 8.1.0 Use a AppFramework JSONResponse instead
 	 * @suppress PhanDeprecatedFunction
 	 */
-	public static function success( $data = array() ) {
+	public static function success($data = []) {
 		\OC_JSON::success($data);
 	}
 
@@ -130,7 +130,7 @@ class JSON {
 	 * @deprecated 8.1.0 Use a AppFramework JSONResponse instead
 	 * @suppress PhanDeprecatedFunction
 	 */
-	public static function error( $data = array() ) {
+	public static function error($data = []) {
 		\OC_JSON::error($data);
 	}
 
@@ -140,7 +140,7 @@ class JSON {
 	 * @deprecated 8.1.0 Use a AppFramework JSONResponse instead
 	 * @suppress PhanDeprecatedFunction
 	 */
-	public static function setContentTypeHeader( $type='application/json' ) {
+	public static function setContentTypeHeader($type = 'application/json') {
 		\OC_JSON::setContentTypeHeader($type);
 	}
 
@@ -161,7 +161,7 @@ class JSON {
 	 * @deprecated 8.1.0 Use the AppFramework instead. It will automatically check if the app is enabled.
 	 * @suppress PhanDeprecatedFunction
 	 */
-	public static function checkAppEnabled( $app ) {
+	public static function checkAppEnabled($app) {
 		\OC_JSON::checkAppEnabled($app);
 	}
 

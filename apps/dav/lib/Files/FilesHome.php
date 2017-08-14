@@ -48,16 +48,16 @@ class FilesHome extends Directory {
 		parent::__construct($view, $rootInfo);
 	}
 
-	function delete() {
+	public function delete() {
 		throw new Forbidden('Permission denied to delete home folder');
 	}
 
-	function getName() {
-		list(,$name) = \Sabre\Uri\split($this->principalInfo['uri']);
+	public function getName() {
+		list(, $name) = \Sabre\Uri\split($this->principalInfo['uri']);
 		return $name;
 	}
 
-	function setName($name) {
+	public function setName($name) {
 		throw new Forbidden('Permission denied to rename this folder');
 	}
 }

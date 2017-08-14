@@ -32,7 +32,7 @@ class EventLogger implements IEventLogger {
 	 * @var \OC\Diagnostics\Event[]
 	 */
 	private $events = [];
-	
+
 	/**
 	 * @var bool - Module needs to be activated by some app
 	 */
@@ -42,7 +42,7 @@ class EventLogger implements IEventLogger {
 	 * @inheritdoc
 	 */
 	public function start($id, $description) {
-		if ($this->activated){
+		if ($this->activated) {
 			$this->events[$id] = new Event($id, $description, microtime(true));
 		}
 	}
@@ -73,7 +73,7 @@ class EventLogger implements IEventLogger {
 	public function getEvents() {
 		return $this->events;
 	}
-	
+
 	/**
 	 * @inheritdoc
 	 */

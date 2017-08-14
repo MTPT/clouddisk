@@ -24,7 +24,6 @@
 
 namespace OCA\Federation\Tests\BackgroundJob;
 
-
 use OCA\Federation\BackgroundJob\RequestSharedSecret;
 use OCA\Federation\DbHandler;
 use OCA\Federation\TrustedServers;
@@ -156,7 +155,6 @@ class RequestSharedSecretTest extends TestCase {
 		}
 
 		$requestSharedSecret->execute($this->jobList);
-
 	}
 
 	public function dataTestExecute() {
@@ -173,7 +171,6 @@ class RequestSharedSecretTest extends TestCase {
 	 * @param int $statusCode
 	 */
 	public function testRun($statusCode) {
-
 		$target = 'targetURL';
 		$source = 'sourceURL';
 		$token = 'token';

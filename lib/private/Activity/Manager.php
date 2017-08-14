@@ -22,8 +22,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-namespace OC\Activity;
 
+namespace OC\Activity;
 
 use OCP\Activity\IConsumer;
 use OCP\Activity\IEvent;
@@ -71,10 +71,12 @@ class Manager implements IManager {
 	 * @param IConfig $config
 	 * @param IValidator $validator
 	 */
-	public function __construct(IRequest $request,
-								IUserSession $session,
-								IConfig $config,
-								IValidator $validator) {
+	public function __construct(
+		IRequest $request,
+		IUserSession $session,
+		IConfig $config,
+		IValidator $validator
+	) {
 		$this->request = $request;
 		$this->session = $session;
 		$this->config = $config;
@@ -82,29 +84,29 @@ class Manager implements IManager {
 	}
 
 	/** @var \Closure[] */
-	private $consumersClosures = array();
+	private $consumersClosures = [];
 
 	/** @var IConsumer[] */
-	private $consumers = array();
+	private $consumers = [];
 
 	/** @var \Closure[] */
-	private $extensionsClosures = array();
+	private $extensionsClosures = [];
 
 	/** @var IExtension[] */
-	private $extensions = array();
+	private $extensions = [];
 
 	/** @var array list of filters "name" => "is valid" */
-	protected $validFilters = array(
-		'all'	=> true,
-		'by'	=> true,
-		'self'	=> true,
-	);
+	protected $validFilters = [
+		'all' => true,
+		'by' => true,
+		'self' => true,
+	];
 
 	/** @var array list of type icons "type" => "css class" */
-	protected $typeIcons = array();
+	protected $typeIcons = [];
 
 	/** @var array list of special parameters "app" => ["text" => ["parameter" => "type"]] */
-	protected $specialParameters = array();
+	protected $specialParameters = [];
 
 	/**
 	 * @return \OCP\Activity\IConsumer[]
@@ -115,7 +117,7 @@ class Manager implements IManager {
 		}
 
 		$this->consumers = [];
-		foreach($this->consumersClosures as $consumer) {
+		foreach ($this->consumersClosures as $consumer) {
 			$c = $consumer();
 			if ($c instanceof IConsumer) {
 				$this->consumers[] = $c;
@@ -136,7 +138,7 @@ class Manager implements IManager {
 		}
 
 		$this->extensions = [];
-		foreach($this->extensionsClosures as $extension) {
+		foreach ($this->extensionsClosures as $extension) {
 			$e = $extension();
 			if ($e instanceof IExtension) {
 				$this->extensions[] = $e;
@@ -197,16 +199,16 @@ class Manager implements IManager {
 	}
 
 	/**
-	 * @param string $app           The app where this event is associated with
-	 * @param string $subject       A short description of the event
-	 * @param array  $subjectParams Array with parameters that are filled in the subject
-	 * @param string $message       A longer description of the event
-	 * @param array  $messageParams Array with parameters that are filled in the message
-	 * @param string $file          The file including path where this event is associated with
-	 * @param string $link          A link where this event is associated with
-	 * @param string $affectedUser  Recipient of the activity
-	 * @param string $type          Type of the notification
-	 * @param int    $priority      Priority of the notification
+	 * @param string $app The app where this event is associated with
+	 * @param string $subject A short description of the event
+	 * @param array $subjectParams Array with parameters that are filled in the subject
+	 * @param string $message A longer description of the event
+	 * @param array $messageParams Array with parameters that are filled in the message
+	 * @param string $file The file including path where this event is associated with
+	 * @param string $link A link where this event is associated with
+	 * @param string $affectedUser Recipient of the activity
+	 * @param string $type Type of the notification
+	 * @param int $priority Priority of the notification
 	 */
 	public function publishActivity($app, $subject, $subjectParams, $message, $messageParams, $file, $link, $affectedUser, $type, $priority) {
 		$event = $this->generateEvent();
@@ -274,13 +276,19 @@ class Manager implements IManager {
 
 			foreach ($legacyFilters['top'] as $filter => $data) {
 				$this->filters[$filter] = new LegacyFilter(
-					$this, $filter, $data['name'], true
+					$this,
+					$filter,
+					$data['name'],
+					true
 				);
 			}
 
 			foreach ($legacyFilters['apps'] as $filter => $data) {
 				$this->filters[$filter] = new LegacyFilter(
-					$this, $filter, $data['name'], false
+					$this,
+					$filter,
+					$data['name'],
+					false
 				);
 			}
 			$this->loadedLegacyFilters = true;
@@ -390,9 +398,12 @@ class Manager implements IManager {
 				}
 
 				$this->settings[$type] = new LegacySetting(
-					$type, $desc,
-					$canChangeStream, in_array($type, $streamTypes),
-					$canChangeMail, in_array($type, $mailTypes)
+					$type,
+					$desc,
+					$canChangeStream,
+					in_array($type, $streamTypes),
+					$canChangeMail,
+					in_array($type, $mailTypes)
 				);
 			}
 			$this->loadedLegacyTypes = true;
@@ -456,7 +467,7 @@ class Manager implements IManager {
 	 */
 	public function setFormattingObject($type, $id) {
 		$this->formattingObjectType = $type;
-		$this->formattingObjectId = (string) $id;
+		$this->formattingObjectId = (string)$id;
 	}
 
 	/**
@@ -513,7 +524,7 @@ class Manager implements IManager {
 		}
 
 		if (!isset($this->specialParameters[$app])) {
-			$this->specialParameters[$app] = array();
+			$this->specialParameters[$app] = [];
 		}
 
 		foreach ($this->getExtensions() as $c) {
@@ -567,7 +578,7 @@ class Manager implements IManager {
 	public function getCurrentUserId() {
 		if ($this->currentUserId !== null) {
 			return $this->currentUserId;
-		} else if (!$this->session->isLoggedIn()) {
+		} elseif (!$this->session->isLoggedIn()) {
 			return $this->getUserFromToken();
 		} else {
 			return $this->session->getUser()->getUID();
@@ -581,7 +592,7 @@ class Manager implements IManager {
 	 * @throws \UnexpectedValueException If the token is invalid, does not exist or is not unique
 	 */
 	protected function getUserFromToken() {
-		$token = (string) $this->request->getParam('token', '');
+		$token = (string)$this->request->getParam('token', '');
 		if (strlen($token) !== 30) {
 			throw new \UnexpectedValueException('The token is invalid');
 		}
@@ -602,10 +613,10 @@ class Manager implements IManager {
 	 * @deprecated 11.0.0 - Use getFilters() instead
 	 */
 	public function getNavigation() {
-		$entries = array(
-			'apps' => array(),
-			'top' => array(),
-		);
+		$entries = [
+			'apps' => [],
+			'top' => [],
+		];
 		foreach ($this->getExtensions() as $c) {
 			$additionalEntries = $c->getNavigation();
 			if (is_array($additionalEntries)) {
@@ -668,8 +679,8 @@ class Manager implements IManager {
 			return [null, null];
 		}
 
-		$conditions = array();
-		$parameters = array();
+		$conditions = [];
+		$parameters = [];
 
 		foreach ($this->getExtensions() as $c) {
 			$result = $c->getQueryForFilter($filter);
@@ -683,10 +694,10 @@ class Manager implements IManager {
 		}
 
 		if (empty($conditions)) {
-			return array(null, null);
+			return [null, null];
 		}
 
-		return array(' and ((' . implode(') or (', $conditions) . '))', $parameters);
+		return [' and ((' . implode(') or (', $conditions) . '))', $parameters];
 	}
 
 	/**
@@ -714,7 +725,7 @@ class Manager implements IManager {
 	 * @deprecated 11.0.0 - Use getSettings()->isDefaulEnabled<method>() instead
 	 */
 	public function getDefaultTypes($method) {
-		$defaultTypes = array();
+		$defaultTypes = [];
 		foreach ($this->getExtensions() as $c) {
 			$types = $c->getDefaultTypes($method);
 			if (is_array($types)) {

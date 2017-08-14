@@ -65,12 +65,13 @@ class Import extends Base {
 	/** @var BackendService */
 	private $backendService;
 
-	function __construct(GlobalStoragesService $globalService,
-						 UserStoragesService $userService,
-						 IUserSession $userSession,
-						 IUserManager $userManager,
-						 ImportLegacyStoragesService $importLegacyStorageService,
-						 BackendService $backendService
+	public function __construct(
+		GlobalStoragesService $globalService,
+		UserStoragesService $userService,
+		IUserSession $userSession,
+		IUserManager $userManager,
+		ImportLegacyStoragesService $importLegacyStorageService,
+		BackendService $backendService
 	) {
 		parent::__construct();
 		$this->globalService = $globalService;

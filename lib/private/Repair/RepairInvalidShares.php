@@ -32,7 +32,6 @@ use OCP\Migration\IRepairStep;
  * Repairs shares with invalid data
  */
 class RepairInvalidShares implements IRepairStep {
-
 	const CHUNK_SIZE = 200;
 
 	/** @var \OCP\IConfig */
@@ -56,6 +55,7 @@ class RepairInvalidShares implements IRepairStep {
 
 	/**
 	 * Adjust file share permissions
+	 *
 	 * @suppress SqlInjectionChecker
 	 */
 	private function adjustFileSharePermissions(IOutput $out) {
@@ -85,7 +85,7 @@ class RepairInvalidShares implements IRepairStep {
 		$query->select('s1.parent')
 			->from('share', 's1')
 			->where($query->expr()->isNotNull('s1.parent'))
-				->andWhere($query->expr()->isNull('s2.id'))
+			->andWhere($query->expr()->isNull('s2.id'))
 			->leftJoin('s1', 'share', 's2', $query->expr()->eq('s1.parent', 's2.id'))
 			->groupBy('s1.parent')
 			->setMaxResults(self::CHUNK_SIZE);
@@ -100,7 +100,7 @@ class RepairInvalidShares implements IRepairStep {
 			$result = $query->execute();
 			while ($row = $result->fetch()) {
 				$deletedInLastChunk++;
-				$deletedEntries += $deleteQuery->setParameter('parent', (int) $row['parent'])
+				$deletedEntries += $deleteQuery->setParameter('parent', (int)$row['parent'])
 					->execute();
 			}
 			$result->closeCursor();

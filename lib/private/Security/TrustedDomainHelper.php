@@ -23,6 +23,7 @@
  */
 
 namespace OC\Security;
+
 use OC\AppFramework\Http\Request;
 use OCP\IConfig;
 
@@ -44,6 +45,7 @@ class TrustedDomainHelper {
 
 	/**
 	 * Strips a potential port from a domain (in format domain:port)
+	 *
 	 * @param string $host
 	 * @return string $host without appended port
 	 */
@@ -63,6 +65,7 @@ class TrustedDomainHelper {
 	 * of trusted domains. If no trusted domains have been configured, returns
 	 * true.
 	 * This is used to prevent Host Header Poisoning.
+	 *
 	 * @param string $domainWithPort
 	 * @return bool true if the given domain is trusted or if no trusted domains
 	 * have been configured
@@ -81,7 +84,7 @@ class TrustedDomainHelper {
 			return true;
 		}
 		// Reject misformed domains in any case
-		if (strpos($domain,'-') === 0 || strpos($domain,'..') !== false) {
+		if (strpos($domain, '-') === 0 || strpos($domain, '..') !== false) {
 			return false;
 		}
 		// Match, allowing for * wildcards
@@ -89,11 +92,13 @@ class TrustedDomainHelper {
 			if (gettype($trusted) !== 'string') {
 				break;
 			}
-			$regex = '/^' . implode('[-\.a-zA-Z0-9]*', array_map(function($v) { return preg_quote($v, '/'); }, explode('*', $trusted))) . '$/';
+			$regex = '/^' . implode('[-\.a-zA-Z0-9]*', array_map(function ($v) {
+				return preg_quote($v, '/');
+			}, explode('*', $trusted))) . '$/';
 			if (preg_match($regex, $domain) || preg_match($regex, $domainWithPort)) {
- 				return true;
- 			}
- 		}
- 		return false;
+				return true;
+			}
+		}
+		return false;
 	}
 }

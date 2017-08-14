@@ -87,7 +87,7 @@ class DBLockingProvider extends AbstractLockingProvider {
 		parent::markChange($path, $targetType);
 		if ($targetType === self::LOCK_SHARED) {
 			$this->sharedLocks[$path] = true;
-		} else if ($targetType === self::LOCK_EXCLUSIVE) {
+		} elseif ($targetType === self::LOCK_EXCLUSIVE) {
 			$this->sharedLocks[$path] = false;
 		}
 	}
@@ -134,7 +134,7 @@ class DBLockingProvider extends AbstractLockingProvider {
 		if ($this->hasAcquiredLock($path, $type)) {
 			return true;
 		}
-		$query = $this->connection->prepare('SELECT `lock` from `*PREFIX*file_locks` WHERE `key` = ?');
+		$query = $this->connection->prepare('SELECT `lock` FROM `*PREFIX*file_locks` WHERE `key` = ?');
 		$query->execute([$path]);
 		$lockValue = (int)$query->fetchColumn();
 		if ($type === self::LOCK_SHARED) {
@@ -144,7 +144,7 @@ class DBLockingProvider extends AbstractLockingProvider {
 			} else {
 				return $lockValue > 0;
 			}
-		} else if ($type === self::LOCK_EXCLUSIVE) {
+		} elseif ($type === self::LOCK_EXCLUSIVE) {
 			return $lockValue === -1;
 		} else {
 			return false;
@@ -255,6 +255,7 @@ class DBLockingProvider extends AbstractLockingProvider {
 
 	/**
 	 * release all lock acquired by this instance which were marked using the mark* methods
+	 *
 	 * @suppress SqlInjectionChecker
 	 */
 	public function releaseAll() {

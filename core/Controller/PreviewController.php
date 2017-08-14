@@ -57,12 +57,13 @@ class PreviewController extends Controller {
 	 * @param IRootFolder $root
 	 * @param string $userId
 	 */
-	public function __construct($appName,
-								IRequest $request,
-								IPreview $preview,
-								IRootFolder $root,
-								$userId,
-								ITimeFactory $timeFactory
+	public function __construct(
+		$appName,
+		IRequest $request,
+		IPreview $preview,
+		IRootFolder $root,
+		$userId,
+		ITimeFactory $timeFactory
 	) {
 		parent::__construct($appName, $request);
 
@@ -90,8 +91,8 @@ class PreviewController extends Controller {
 		$y = 32,
 		$a = false,
 		$forceIcon = true,
-		$mode = 'fill') {
-
+		$mode = 'fill'
+	) {
 		if ($file === '' || $x === 0 || $y === 0) {
 			return new DataResponse([], Http::STATUS_BAD_REQUEST);
 		}
@@ -105,7 +106,7 @@ class PreviewController extends Controller {
 
 		if (!($file instanceof File) || (!$forceIcon && !$this->preview->isAvailable($file))) {
 			return new DataResponse([], Http::STATUS_NOT_FOUND);
-		} else if (!$file->isReadable()) {
+		} elseif (!$file->isReadable()) {
 			return new DataResponse([], Http::STATUS_FORBIDDEN);
 		}
 
@@ -129,6 +130,5 @@ class PreviewController extends Controller {
 		} catch (\InvalidArgumentException $e) {
 			return new DataResponse([], Http::STATUS_BAD_REQUEST);
 		}
-
 	}
 }

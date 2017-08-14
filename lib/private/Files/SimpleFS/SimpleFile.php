@@ -20,13 +20,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 namespace OC\Files\SimpleFS;
 
 use OCP\Files\File;
 use OCP\Files\NotPermittedException;
 use OCP\Files\SimpleFS\ISimpleFile;
 
-class SimpleFile implements ISimpleFile  {
+class SimpleFile implements ISimpleFile {
 
 	/** @var File $file */
 	private $file;

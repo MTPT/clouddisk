@@ -32,6 +32,7 @@ namespace OC\Log;
  */
 class Rotate extends \OC\BackgroundJob\Job {
 	private $max_log_size;
+
 	public function run($dummy) {
 		$systemConfig = \OC::$server->getSystemConfig();
 		$logFile = $systemConfig->getValue('logfile', $systemConfig->getValue('datadirectory', \OC::$SERVERROOT . '/data') . '/nextcloud.log');
@@ -45,9 +46,9 @@ class Rotate extends \OC\BackgroundJob\Job {
 	}
 
 	protected function rotate($logfile) {
-		$rotatedLogfile = $logfile.'.1';
+		$rotatedLogfile = $logfile . '.1';
 		rename($logfile, $rotatedLogfile);
-		$msg = 'Log file "'.$logfile.'" was over '.$this->max_log_size.' bytes, moved to "'.$rotatedLogfile.'"';
+		$msg = 'Log file "' . $logfile . '" was over ' . $this->max_log_size . ' bytes, moved to "' . $rotatedLogfile . '"';
 		\OCP\Util::writeLog('OC\Log\Rotate', $msg, \OCP\Util::WARN);
 	}
 }

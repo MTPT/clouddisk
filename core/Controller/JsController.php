@@ -20,6 +20,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 namespace OC\Core\Controller;
 
 use OC\Files\AppData\Factory;
@@ -68,7 +69,7 @@ class JsController extends Controller {
 			$folder = $this->appData->getFolder($appName);
 			$gzip = false;
 			$file = $this->getFile($folder, $fileName, $gzip);
-		} catch(NotFoundException $e) {
+		} catch (NotFoundException $e) {
 			return new NotFoundResponse();
 		}
 

@@ -21,6 +21,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
+
 namespace OCA\Federation;
 
 use OC\OCS\DiscoveryService;
@@ -44,9 +45,10 @@ class SyncFederationAddressBooks {
 	 * @param SyncService $syncService
 	 * @param IDiscoveryService $ocsDiscoveryService
 	 */
-	public function __construct(DbHandler $dbHandler,
-								SyncService $syncService,
-								IDiscoveryService $ocsDiscoveryService
+	public function __construct(
+		DbHandler $dbHandler,
+		SyncService $syncService,
+		IDiscoveryService $ocsDiscoveryService
 	) {
 		$this->syncService = $syncService;
 		$this->dbHandler = $dbHandler;
@@ -57,7 +59,6 @@ class SyncFederationAddressBooks {
 	 * @param \Closure $callback
 	 */
 	public function syncThemAll(\Closure $callback) {
-
 		$trustedServers = $this->dbHandler->getAllServer();
 		foreach ($trustedServers as $trustedServer) {
 			$url = $trustedServer['url'];
@@ -75,7 +76,7 @@ class SyncFederationAddressBooks {
 			$targetBookId = $trustedServer['url_hash'];
 			$targetPrincipal = "principals/system/system";
 			$targetBookProperties = [
-					'{DAV:}displayname' => $url
+				'{DAV:}displayname' => $url
 			];
 			try {
 				$newToken = $this->syncService->syncRemoteAddressBook($url, $cardDavUser, $addressBookUrl, $sharedSecret, $syncToken, $targetBookId, $targetPrincipal, $targetBookProperties);

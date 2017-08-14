@@ -132,5 +132,4 @@ class ShareInfoMiddlewareTest extends TestCase {
 }
 
 class ShareInfoMiddlewareTestController extends Controller {
-
 }

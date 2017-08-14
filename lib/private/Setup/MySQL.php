@@ -25,6 +25,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
+
 namespace OC\Setup;
 
 use OC\DB\MySqlTools;
@@ -50,15 +51,15 @@ class MySQL extends AbstractDatabase {
 		$this->createDatabase($connection);
 
 		//fill the database if needed
-		$query='select count(*) from information_schema.tables where table_schema=? AND table_name = ?';
-		$connection->executeQuery($query, [$this->dbName, $this->tablePrefix.'users']);
+		$query = 'SELECT count(*) FROM information_schema.tables WHERE table_schema=? AND table_name = ?';
+		$connection->executeQuery($query, [$this->dbName, $this->tablePrefix . 'users']);
 	}
 
 	/**
 	 * @param \OC\DB\Connection $connection
 	 */
 	private function createDatabase($connection) {
-		try{
+		try {
 			$name = $this->dbName;
 			$user = $this->dbUser;
 			//we can't use OC_DB functions here because we need to connect as the administrative user.
@@ -75,7 +76,7 @@ class MySQL extends AbstractDatabase {
 
 		try {
 			//this query will fail if there aren't the right permissions, ignore the error
-			$query="GRANT ALL PRIVILEGES ON `$name` . * TO '$user'";
+			$query = "GRANT ALL PRIVILEGES ON `$name` . * TO '$user'";
 			$connection->executeUpdate($query);
 		} catch (\Exception $ex) {
 			$this->logger->debug('Could not automatically grant privileges, this can be ignored if database user already had privileges: {error}', [
@@ -90,7 +91,7 @@ class MySQL extends AbstractDatabase {
 	 * @throws \OC\DatabaseSetupException
 	 */
 	private function createDBUser($connection) {
-		try{
+		try {
 			$name = $this->dbUser;
 			$password = $this->dbPassword;
 			// we need to create 2 accounts, one for global use and one for local user. if we don't specify the local one,
@@ -99,12 +100,11 @@ class MySQL extends AbstractDatabase {
 			$connection->executeUpdate($query);
 			$query = "CREATE USER '$name'@'%' IDENTIFIED BY '$password'";
 			$connection->executeUpdate($query);
-		}
-		catch (\Exception $ex){
+		} catch (\Exception $ex) {
 			$this->logger->error('Database User creation failed: {error}', [
-                                'app' => 'mysql.setup',
-                                'error' => $ex->getMessage()
-                        ]);
+				'app' => 'mysql.setup',
+				'error' => $ex->getMessage()
+			]);
 		}
 	}
 
@@ -138,7 +138,7 @@ class MySQL extends AbstractDatabase {
 							$this->dbUser = $adminUser;
 
 							//create a random password so we don't need to store the admin password in the config file
-							$this->dbPassword =  $this->random->generate(30);
+							$this->dbPassword = $this->random->generate(30);
 
 							$this->createDBUser($connection);
 

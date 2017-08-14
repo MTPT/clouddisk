@@ -53,7 +53,7 @@ use OCP\IUserSession;
 class ApiController extends Controller {
 	/** @var TagService */
 	private $tagService;
-	/** @var IManager **/
+	/** @var IManager * */
 	private $shareManager;
 	/** @var IPreview */
 	private $previewManager;
@@ -74,14 +74,16 @@ class ApiController extends Controller {
 	 * @param IConfig $config
 	 * @param Folder $userFolder
 	 */
-	public function __construct($appName,
-								IRequest $request,
-								IUserSession $userSession,
-								TagService $tagService,
-								IPreview $previewManager,
-								IManager $shareManager,
-								IConfig $config,
-								Folder $userFolder) {
+	public function __construct(
+		$appName,
+		IRequest $request,
+		IUserSession $userSession,
+		TagService $tagService,
+		IPreview $previewManager,
+		IManager $shareManager,
+		IConfig $config,
+		Folder $userFolder
+	) {
 		parent::__construct($appName, $request);
 		$this->userSession = $userSession;
 		$this->tagService = $tagService;
@@ -106,7 +108,7 @@ class ApiController extends Controller {
 	 * @return DataResponse|FileDisplayResponse
 	 */
 	public function getThumbnail($x, $y, $file) {
-		if($x < 1 || $y < 1) {
+		if ($x < 1 || $y < 1) {
 			return new DataResponse(['message' => 'Requested size must be numeric and a positive value.'], Http::STATUS_BAD_REQUEST);
 		}
 
@@ -260,8 +262,7 @@ class ApiController extends Controller {
 	 * @param bool $show
 	 */
 	public function showHiddenFiles($show) {
-		$this->config->setUserValue($this->userSession->getUser()->getUID(), 'files', 'show_hidden', (int) $show);
+		$this->config->setUserValue($this->userSession->getUser()->getUID(), 'files', 'show_hidden', (int)$show);
 		return new Response();
 	}
-
 }

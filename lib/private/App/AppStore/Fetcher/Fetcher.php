@@ -58,11 +58,13 @@ abstract class Fetcher {
 	 * @param IConfig $config
 	 * @param ILogger $logger
 	 */
-	public function __construct(Factory $appDataFactory,
-								IClientService $clientService,
-								ITimeFactory $timeFactory,
-								IConfig $config,
-								ILogger $logger) {
+	public function __construct(
+		Factory $appDataFactory,
+		IClientService $clientService,
+		ITimeFactory $timeFactory,
+		IConfig $config,
+		ILogger $logger
+	) {
 		$this->appData = $appDataFactory->get('appstore');
 		$this->clientService = $clientService;
 		$this->timeFactory = $timeFactory;
@@ -172,6 +174,7 @@ abstract class Fetcher {
 
 	/**
 	 * Get the currently Nextcloud version
+	 *
 	 * @return string
 	 */
 	protected function getVersion() {
@@ -183,6 +186,7 @@ abstract class Fetcher {
 
 	/**
 	 * Set the current Nextcloud version
+	 *
 	 * @param string $version
 	 */
 	public function setVersion($version) {

@@ -23,6 +23,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
+
 namespace OC\Preview;
 
 abstract class Office extends Provider {
@@ -75,7 +76,6 @@ abstract class Office extends Provider {
 			return $image;
 		}
 		return false;
-
 	}
 
 	private function initCmd() {

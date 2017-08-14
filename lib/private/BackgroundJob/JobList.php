@@ -142,7 +142,7 @@ class JobList implements IJobList {
 		$row = $result->fetch();
 		$result->closeCursor();
 
-		return (bool) $row;
+		return (bool)$row;
 	}
 
 	/**
@@ -303,7 +303,7 @@ class JobList implements IJobList {
 	 *    executors to run in parallel, it's not used to calculate the next job.
 	 */
 	public function getLastJob() {
-		return (int) $this->config->getAppValue('backgroundjob', 'lastjob', 0);
+		return (int)$this->config->getAppValue('backgroundjob', 'lastjob', 0);
 	}
 
 	/**

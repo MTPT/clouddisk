@@ -46,7 +46,7 @@ class SyncJob extends TimedJob {
 	}
 
 	protected function run($argument) {
-		$this->syncService->syncThemAll(function($url, $ex) {
+		$this->syncService->syncThemAll(function ($url, $ex) {
 			if ($ex instanceof \Exception) {
 				$this->logger->error("Error while syncing $url : " . $ex->getMessage(), ['app' => 'fed-sync']);
 			}

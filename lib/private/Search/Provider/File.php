@@ -25,6 +25,7 @@
  */
 
 namespace OC\Search\Provider;
+
 use OC\Files\Filesystem;
 
 /**
@@ -34,12 +35,13 @@ class File extends \OCP\Search\Provider {
 
 	/**
 	 * Search for files and folders matching the given query
+	 *
 	 * @param string $query
 	 * @return \OCP\Search\Result
 	 */
 	public function search($query) {
 		$files = Filesystem::search($query);
-		$results = array();
+		$results = [];
 		// edit results
 		foreach ($files as $fileData) {
 			// skip versions
@@ -51,19 +53,16 @@ class File extends \OCP\Search\Provider {
 				continue;
 			}
 			// create audio result
-			if($fileData['mimepart'] === 'audio'){
+			if ($fileData['mimepart'] === 'audio') {
 				$result = new \OC\Search\Result\Audio($fileData);
-			}
-			// create image result
-			elseif($fileData['mimepart'] === 'image'){
+			} // create image result
+			elseif ($fileData['mimepart'] === 'image') {
 				$result = new \OC\Search\Result\Image($fileData);
-			}
-			// create folder result
-			elseif($fileData['mimetype'] === 'httpd/unix-directory'){
+			} // create folder result
+			elseif ($fileData['mimetype'] === 'httpd/unix-directory') {
 				$result = new \OC\Search\Result\Folder($fileData);
-			}
-			// or create file result
-			else{
+			} // or create file result
+			else {
 				$result = new \OC\Search\Result\File($fileData);
 			}
 			// add to results
@@ -72,5 +71,4 @@ class File extends \OCP\Search\Provider {
 		// return
 		return $results;
 	}
-	
 }

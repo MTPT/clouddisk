@@ -181,7 +181,6 @@ class ObjectTree extends \Sabre\DAV\Tree {
 
 		$this->cache[$path] = $node;
 		return $node;
-
 	}
 
 	/**
@@ -238,7 +237,7 @@ class ObjectTree extends \Sabre\DAV\Tree {
 			throw new FileLocked($e->getMessage(), $e->getCode(), $e);
 		}
 
-		list($destinationDir,) = \Sabre\Uri\split($destination);
+		list($destinationDir, ) = \Sabre\Uri\split($destination);
 		$this->markDirty($destinationDir);
 	}
 }

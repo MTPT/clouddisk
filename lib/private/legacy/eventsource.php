@@ -77,8 +77,8 @@ class OC_EventSource implements \OCP\IEventSource {
 		} else {
 			header("Content-Type: text/event-stream");
 		}
-		if(!\OC::$server->getRequest()->passesStrictCookieCheck()) {
-			header('Location: '.\OC::$WEBROOT);
+		if (!\OC::$server->getRequest()->passesStrictCookieCheck()) {
+			header('Location: ' . \OC::$WEBROOT);
 			exit();
 		}
 		if (!(\OC::$server->getRequest()->passesCSRFCheck())) {
@@ -101,7 +101,7 @@ class OC_EventSource implements \OCP\IEventSource {
 	 */
 	public function send($type, $data = null) {
 		if ($data and !preg_match('/^[A-Za-z0-9_]+$/', $type)) {
-			throw new BadMethodCallException('Type needs to be alphanumeric ('. $type .')');
+			throw new BadMethodCallException('Type needs to be alphanumeric (' . $type . ')');
 		}
 		$this->init();
 		if (is_null($data)) {

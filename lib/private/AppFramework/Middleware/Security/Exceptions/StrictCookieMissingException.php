@@ -1,6 +1,5 @@
 <?php
 /**
-
  *
  * @author Lukas Reschke <lukas@statuscode.ch>
  *

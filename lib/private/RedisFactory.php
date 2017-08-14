@@ -60,7 +60,6 @@ class RedisFactory {
 				$this->instance->setOption(\RedisCluster::OPT_SLAVE_FAILOVER, $config['failover_mode']);
 			}
 		} else {
-
 			$this->instance = new \Redis();
 			$config = $this->config->getValue('redis', []);
 			if (isset($config['host'])) {
@@ -103,6 +102,6 @@ class RedisFactory {
 
 	public function isAvailable() {
 		return extension_loaded('redis')
-		&& version_compare(phpversion('redis'), '2.2.5', '>=');
+			&& version_compare(phpversion('redis'), '2.2.5', '>=');
 	}
 }

@@ -45,6 +45,7 @@ class Route extends SymfonyRoute implements IRoute {
 
 	/**
 	 * Specify POST as the method to use with this route
+	 *
 	 * @return \OC\Route\Route
 	 */
 	public function post() {
@@ -54,6 +55,7 @@ class Route extends SymfonyRoute implements IRoute {
 
 	/**
 	 * Specify GET as the method to use with this route
+	 *
 	 * @return \OC\Route\Route
 	 */
 	public function get() {
@@ -63,6 +65,7 @@ class Route extends SymfonyRoute implements IRoute {
 
 	/**
 	 * Specify PUT as the method to use with this route
+	 *
 	 * @return \OC\Route\Route
 	 */
 	public function put() {
@@ -72,6 +75,7 @@ class Route extends SymfonyRoute implements IRoute {
 
 	/**
 	 * Specify DELETE as the method to use with this route
+	 *
 	 * @return \OC\Route\Route
 	 */
 	public function delete() {
@@ -81,6 +85,7 @@ class Route extends SymfonyRoute implements IRoute {
 
 	/**
 	 * Specify PATCH as the method to use with this route
+	 *
 	 * @return \OC\Route\Route
 	 */
 	public function patch() {
@@ -133,7 +138,7 @@ class Route extends SymfonyRoute implements IRoute {
 	 * to the class with $function
 	 */
 	public function action($class, $function = null) {
-		$action = array($class, $function);
+		$action = [$class, $function];
 		if (is_null($function)) {
 			$action = $class;
 		}
@@ -144,16 +149,17 @@ class Route extends SymfonyRoute implements IRoute {
 	/**
 	 * The action to execute when this route matches, includes a file like
 	 * it is called directly
+	 *
 	 * @param string $file
 	 * @return void
 	 */
 	public function actionInclude($file) {
-		$function = function($param) use ($file) {
+		$function = function ($param) use ($file) {
 			unset($param["_route"]);
-			$_GET=array_merge($_GET, $param);
+			$_GET = array_merge($_GET, $param);
 			unset($param);
 			require_once "$file";
-		} ;
+		};
 		$this->action($function);
 	}
 }

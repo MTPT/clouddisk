@@ -63,15 +63,17 @@ class AdminController extends Controller implements ISettings {
 	 * @param UpdateChecker $updateChecker
 	 * @param IDateTimeFormatter $dateTimeFormatter
 	 */
-	public function __construct($appName,
-								IRequest $request,
-								IJobList $jobList,
-								ISecureRandom $secureRandom,
-								IConfig $config,
-								ITimeFactory $timeFactory,
-								IL10N $l10n,
-								UpdateChecker $updateChecker,
-								IDateTimeFormatter $dateTimeFormatter) {
+	public function __construct(
+		$appName,
+		IRequest $request,
+		IJobList $jobList,
+		ISecureRandom $secureRandom,
+		IConfig $config,
+		ITimeFactory $timeFactory,
+		IL10N $l10n,
+		UpdateChecker $updateChecker,
+		IDateTimeFormatter $dateTimeFormatter
+	) {
 		parent::__construct($appName, $request);
 		$this->jobList = $jobList;
 		$this->secureRandom = $secureRandom;
@@ -98,7 +100,7 @@ class AdminController extends Controller implements ISettings {
 		$currentChannel = \OCP\Util::getChannel();
 
 		// Remove the currently used channel from the channels list
-		if(($key = array_search($currentChannel, $channels)) !== false) {
+		if (($key = array_search($currentChannel, $channels)) !== false) {
 			unset($channels[$key]);
 		}
 		$updateState = $this->updateChecker->getUpdateState();

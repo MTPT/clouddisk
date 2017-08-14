@@ -25,6 +25,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
+
 namespace OC\Setup;
 
 use OC\DatabaseException;
@@ -78,7 +79,7 @@ class PostgreSQL extends AbstractDatabase {
 
 			//create the database
 			$this->createDatabase($connection);
-			$query = $connection->prepare("select count(*) FROM pg_class WHERE relname=? limit 1");
+			$query = $connection->prepare("SELECT count(*) FROM pg_class WHERE relname=? LIMIT 1");
 			$query->execute([$this->tablePrefix . "users"]);
 			$tablesSetup = $query->fetchColumn() > 0;
 
@@ -102,8 +103,10 @@ class PostgreSQL extends AbstractDatabase {
 			$connection->connect();
 		} catch (\Exception $e) {
 			$this->logger->logException($e);
-			throw new \OC\DatabaseSetupException($this->trans->t('PostgreSQL username and/or password not valid'),
-				$this->trans->t('You need to enter details of an existing account.'));
+			throw new \OC\DatabaseSetupException(
+				$this->trans->t('PostgreSQL username and/or password not valid'),
+				$this->trans->t('You need to enter details of an existing account.')
+			);
 		}
 	}
 

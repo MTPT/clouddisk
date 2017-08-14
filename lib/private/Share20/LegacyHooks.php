@@ -20,6 +20,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 namespace OC\Share20;
 
 use OCP\Files\File;
@@ -69,7 +70,7 @@ class LegacyHooks {
 		/** @var IShare[] $deletedShares */
 		$deletedShares = $e->getArgument('deletedShares');
 
-		$formattedDeletedShares = array_map(function($share) {
+		$formattedDeletedShares = array_map(function ($share) {
 			return $this->formatHookParams($share);
 		}, $deletedShares);
 
@@ -167,6 +168,5 @@ class LegacyHooks {
 		];
 
 		\OC_Hook::emit('OCP\Share', 'post_shared', $postHookData);
-
 	}
 }

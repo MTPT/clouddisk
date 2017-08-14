@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
+
 namespace OC\Preview;
 
 class MarkDown extends TXT {
@@ -28,5 +29,4 @@ class MarkDown extends TXT {
 	public function getMimeType() {
 		return '/text\/(x-)?markdown/';
 	}
-
 }

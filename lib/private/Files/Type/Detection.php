@@ -62,9 +62,11 @@ class Detection implements IMimeTypeDetector {
 	 * @param string $customConfigDir
 	 * @param string $defaultConfigDir
 	 */
-	public function __construct(IURLGenerator $urlGenerator,
-								$customConfigDir,
-								$defaultConfigDir) {
+	public function __construct(
+		IURLGenerator $urlGenerator,
+		$customConfigDir,
+		$defaultConfigDir
+	) {
 		$this->urlGenerator = $urlGenerator;
 		$this->customConfigDir = $customConfigDir;
 		$this->defaultConfigDir = $defaultConfigDir;
@@ -81,10 +83,12 @@ class Detection implements IMimeTypeDetector {
 	 * @param string $mimetype
 	 * @param string|null $secureMimeType
 	 */
-	public function registerType($extension,
-								 $mimetype,
-								 $secureMimeType = null) {
-		$this->mimetypes[$extension] = array($mimetype, $secureMimeType);
+	public function registerType(
+		$extension,
+		$mimetype,
+		$secureMimeType = null
+	) {
+		$this->mimetypes[$extension] = [$mimetype, $secureMimeType];
 		$this->secureMimeTypes[$mimetype] = $secureMimeType ?: $mimetype;
 	}
 
@@ -102,7 +106,7 @@ class Detection implements IMimeTypeDetector {
 
 		// Update the alternative mimetypes to avoid having to look them up each time.
 		foreach ($this->mimetypes as $mimeType) {
-			$this->secureMimeTypes[$mimeType[0]] = isset($mimeType[1]) ? $mimeType[1]: $mimeType[0];
+			$this->secureMimeTypes[$mimeType[0]] = isset($mimeType[1]) ? $mimeType[1] : $mimeType[0];
 		}
 	}
 
@@ -209,7 +213,6 @@ class Detection implements IMimeTypeDetector {
 				$mimeType = strpos($info, ';') !== false ? substr($info, 0, strpos($info, ';')) : $info;
 				return empty($mimeType) ? 'application/octet-stream' : $mimeType;
 			}
-
 		}
 		$isWrapped = (strpos($path, '://') !== false) and (substr($path, 0, 7) === 'file://');
 		if (!$isWrapped and $mimeType === 'application/octet-stream' && function_exists("mime_content_type")) {
@@ -230,7 +233,6 @@ class Detection implements IMimeTypeDetector {
 			if (empty($mimeType)) {
 				$mimeType = 'application/octet-stream';
 			}
-
 		}
 		return $mimeType;
 	}
@@ -273,6 +275,7 @@ class Detection implements IMimeTypeDetector {
 
 	/**
 	 * Get path to the icon of a file type
+	 *
 	 * @param string $mimetype the MIME type
 	 * @return string the url
 	 */

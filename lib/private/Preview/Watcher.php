@@ -20,6 +20,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 namespace OC\Preview;
 
 use OCP\Files\File;
@@ -85,7 +86,7 @@ class Watcher {
 		foreach ($nodes as $node) {
 			if ($node instanceof File) {
 				$this->toDelete[] = $node->getId();
-			} else if ($node instanceof Folder) {
+			} elseif ($node instanceof Folder) {
 				$this->deleteFolder($node);
 			}
 		}

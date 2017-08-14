@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
+
 namespace OC\Repair;
 
 use OCP\Files\IRootFolder;
@@ -51,9 +52,11 @@ class RemoveRootShares implements IRepairStep {
 	 * @param IUserManager $userManager
 	 * @param IRootFolder $rootFolder
 	 */
-	public function __construct(IDBConnection $connection,
-								IUserManager $userManager,
-								IRootFolder $rootFolder) {
+	public function __construct(
+		IDBConnection $connection,
+		IUserManager $userManager,
+		IRootFolder $rootFolder
+	) {
 		$this->connection = $connection;
 		$this->userManager = $userManager;
 		$this->rootFolder = $rootFolder;
@@ -79,7 +82,7 @@ class RemoveRootShares implements IRepairStep {
 	 * @param IOutput $output
 	 */
 	private function removeRootShares(IOutput $output) {
-		$function = function(IUser $user) use ($output) {
+		$function = function (IUser $user) use ($output) {
 			$userFolder = $this->rootFolder->getUserFolder($user->getUID());
 			$fileId = $userFolder->getId();
 
@@ -138,4 +141,3 @@ class RemoveRootShares implements IRepairStep {
 		return true;
 	}
 }
-

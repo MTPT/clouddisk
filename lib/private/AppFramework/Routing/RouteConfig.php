@@ -33,6 +33,7 @@ use OCP\Route\IRouter;
 
 /**
  * Class RouteConfig
+ *
  * @package OC\AppFramework\routing
  */
 class RouteConfig {
@@ -79,7 +80,7 @@ class RouteConfig {
 		 * OCS routes go into a different collection
 		 */
 		$oldCollection = $this->router->getCurrentCollection();
-		$this->router->useCollection($oldCollection.'.ocs');
+		$this->router->useCollection($oldCollection . '.ocs');
 
 		// parse ocs simple routes
 		$this->processOCS($this->routes);
@@ -100,7 +101,7 @@ class RouteConfig {
 			if (isset($ocsRoute['root'])) {
 				$root = $ocsRoute['root'];
 			} else {
-				$root = '/apps/'.$this->appName;
+				$root = '/apps/' . $this->appName;
 			}
 
 			$url = $root . $ocsRoute['url'];
@@ -119,19 +120,19 @@ class RouteConfig {
 			// register the route
 			$handler = new RouteActionHandler($this->container, $controllerName, $actionName);
 
-			$router = $this->router->create('ocs.'.$this->appName.'.'.$controller.'.'.$action . $postfix, $url)
+			$router = $this->router->create('ocs.' . $this->appName . '.' . $controller . '.' . $action . $postfix, $url)
 				->method($verb)
 				->action($handler);
 
 			// optionally register requirements for route. This is used to
 			// tell the route parser how url parameters should be matched
-			if(array_key_exists('requirements', $ocsRoute)) {
+			if (array_key_exists('requirements', $ocsRoute)) {
 				$router->requirements($ocsRoute['requirements']);
 			}
 
 			// optionally register defaults for route. This is used to
 			// tell the route parser how url parameters should be default valued
-			if(array_key_exists('defaults', $ocsRoute)) {
+			if (array_key_exists('defaults', $ocsRoute)) {
 				$router->defaults($ocsRoute['defaults']);
 			}
 		}
@@ -139,12 +140,12 @@ class RouteConfig {
 
 	/**
 	 * Creates one route base on the give configuration
+	 *
 	 * @param array $routes
 	 * @throws \UnexpectedValueException
 	 */
-	private function processSimpleRoutes($routes)
-	{
-		$simpleRoutes = isset($routes['routes']) ? $routes['routes'] : array();
+	private function processSimpleRoutes($routes) {
+		$simpleRoutes = isset($routes['routes']) ? $routes['routes'] : [];
 		foreach ($simpleRoutes as $simpleRoute) {
 			$name = $simpleRoute['name'];
 			$postfix = '';
@@ -168,19 +169,19 @@ class RouteConfig {
 
 			// register the route
 			$handler = new RouteActionHandler($this->container, $controllerName, $actionName);
-			$router = $this->router->create($this->appName.'.'.$controller.'.'.$action . $postfix, $url)
-							->method($verb)
-							->action($handler);
+			$router = $this->router->create($this->appName . '.' . $controller . '.' . $action . $postfix, $url)
+				->method($verb)
+				->action($handler);
 
 			// optionally register requirements for route. This is used to
 			// tell the route parser how url parameters should be matched
-			if(array_key_exists('requirements', $simpleRoute)) {
+			if (array_key_exists('requirements', $simpleRoute)) {
 				$router->requirements($simpleRoute['requirements']);
 			}
 
 			// optionally register defaults for route. This is used to
 			// tell the route parser how url parameters should be default valued
-			if(array_key_exists('defaults', $simpleRoute)) {
+			if (array_key_exists('defaults', $simpleRoute)) {
 				$router->defaults($simpleRoute['defaults']);
 			}
 		}
@@ -197,22 +198,21 @@ class RouteConfig {
 	 *
 	 * @param array $routes
 	 */
-	private function processResources($routes)
-	{
+	private function processResources($routes) {
 		// declaration of all restful actions
-		$actions = array(
-			array('name' => 'index', 'verb' => 'GET', 'on-collection' => true),
-			array('name' => 'show', 'verb' => 'GET'),
-			array('name' => 'create', 'verb' => 'POST', 'on-collection' => true),
-			array('name' => 'update', 'verb' => 'PUT'),
-			array('name' => 'destroy', 'verb' => 'DELETE'),
-		);
+		$actions = [
+			['name' => 'index', 'verb' => 'GET', 'on-collection' => true],
+			['name' => 'show', 'verb' => 'GET'],
+			['name' => 'create', 'verb' => 'POST', 'on-collection' => true],
+			['name' => 'update', 'verb' => 'PUT'],
+			['name' => 'destroy', 'verb' => 'DELETE'],
+		];
 
-		$resources = isset($routes['resources']) ? $routes['resources'] : array();
+		$resources = isset($routes['resources']) ? $routes['resources'] : [];
 		foreach ($resources as $resource => $config) {
 
 			// the url parameter used as id to the resource
-			foreach($actions as $action) {
+			foreach ($actions as $action) {
 				$url = $config['url'];
 				$method = $action['name'];
 				$verb = isset($action['verb']) ? strtoupper($action['verb']) : 'GET';
@@ -240,11 +240,11 @@ class RouteConfig {
 
 	/**
 	 * Based on a given route name the controller name is generated
+	 *
 	 * @param string $controller
 	 * @return string
 	 */
-	private function buildControllerName($controller)
-	{
+	private function buildControllerName($controller) {
 		if (!isset($this->controllerNameCache[$controller])) {
 			$this->controllerNameCache[$controller] = $this->underScoreToCamelCase(ucfirst($controller)) . 'Controller';
 		}
@@ -253,6 +253,7 @@ class RouteConfig {
 
 	/**
 	 * Based on the action part of the route name the controller method name is generated
+	 *
 	 * @param string $action
 	 * @return string
 	 */
@@ -262,6 +263,7 @@ class RouteConfig {
 
 	/**
 	 * Underscored strings are converted to camel case strings
+	 *
 	 * @param string $str
 	 * @return string
 	 */
@@ -272,6 +274,7 @@ class RouteConfig {
 			function ($matches) {
 				return strtoupper(ltrim($matches[0], "_"));
 			},
-			$str);
+			$str
+		);
 	}
 }

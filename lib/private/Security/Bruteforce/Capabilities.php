@@ -18,6 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 namespace OC\Security\Bruteforce;
 
 use OCP\Capabilities\IPublicCapability;
@@ -36,8 +37,10 @@ class Capabilities implements IPublicCapability {
 	 * @param IRequest $request
 	 * @param Throttler $throttler
 	 */
-	public function __construct(IRequest $request,
-								Throttler $throttler) {
+	public function __construct(
+		IRequest $request,
+		Throttler $throttler
+	) {
 		$this->request = $request;
 		$this->throttler = $throttler;
 	}

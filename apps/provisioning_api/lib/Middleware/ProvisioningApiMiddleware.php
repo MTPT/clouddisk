@@ -30,7 +30,8 @@ class ProvisioningApiMiddleware extends Middleware {
 	public function __construct(
 		IControllerMethodReflector $reflector,
 		$isAdmin,
-		$isSubAdmin) {
+		$isSubAdmin
+	) {
 		$this->reflector = $reflector;
 		$this->isAdmin = $isAdmin;
 		$this->isSubAdmin = $isSubAdmin;

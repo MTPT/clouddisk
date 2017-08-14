@@ -86,7 +86,6 @@ class RepairMimeTypesTest extends \Test\TestCase {
 				]
 			);
 		}
-
 	}
 
 	private function checkEntries($entries) {
@@ -283,4 +282,3 @@ class RepairMimeTypesTest extends \Test\TestCase {
 		$this->renameMimeTypes($currentMimeTypes, $fixedMimeTypes);
 	}
 }
-

@@ -24,7 +24,6 @@
 use Behat\Behat\Context\Context;
 
 class ThemingAppContext implements Context, ActorAwareInterface {
-
 	use ActorAware;
 
 	/**
@@ -94,7 +93,7 @@ class ThemingAppContext implements Context, ActorAwareInterface {
 
 		$actor = $this->actor;
 
-		$colorSelectorLoadedCallback = function() use($actor) {
+		$colorSelectorLoadedCallback = function () use ($actor) {
 			$colorSelectorValue = $actor->getSession()->evaluateScript("return $('#theming-color')[0].value;");
 
 			if ($colorSelectorValue[0] === '#') {
@@ -117,7 +116,7 @@ class ThemingAppContext implements Context, ActorAwareInterface {
 
 		if ($headerColor[0] === '#') {
 			$headerColor = substr($headerColor, 1);
-		} else if (preg_match("/rgb\(\s*(\d+),\s*(\d+),\s*(\d+)\)/", $headerColor, $matches)) {
+		} elseif (preg_match("/rgb\(\s*(\d+),\s*(\d+),\s*(\d+)\)/", $headerColor, $matches)) {
 			// Convert from hex string to RGB array
 			$color = sscanf($color, "%02X%02X%02X");
 
@@ -138,7 +137,7 @@ class ThemingAppContext implements Context, ActorAwareInterface {
 
 		$actor = $this->actor;
 
-		$savedStatusMessageShownCallback = function() use($actor) {
+		$savedStatusMessageShownCallback = function () use ($actor) {
 			if ($actor->find(self::statusMessage())->getText() !== "Saved") {
 				return false;
 			}
@@ -150,5 +149,4 @@ class ThemingAppContext implements Context, ActorAwareInterface {
 			PHPUnit_Framework_Assert::fail("The 'Saved' status messages in Theming app has not been shown after $timeout seconds");
 		}
 	}
-
 }

@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
+
 namespace OC\Migration;
 
 use OC\BackgroundJob\JobList;
@@ -49,6 +50,7 @@ class BackgroundRepair extends TimedJob {
 	public function setDispatcher(EventDispatcher $dispatcher) {
 		$this->dispatcher = $dispatcher;
 	}
+
 	/**
 	 * run the job, then remove it from the job list
 	 *
@@ -57,7 +59,7 @@ class BackgroundRepair extends TimedJob {
 	 */
 	public function execute($jobList, ILogger $logger = null) {
 		// add an interval of 15 mins
-		$this->setInterval(15*60);
+		$this->setInterval(15 * 60);
 
 		$this->jobList = $jobList;
 		$this->logger = $logger;
@@ -90,7 +92,7 @@ class BackgroundRepair extends TimedJob {
 		try {
 			$repair->addStep($step);
 		} catch (\Exception $ex) {
-			$this->logger->logException($ex,[
+			$this->logger->logException($ex, [
 				'app' => 'migration'
 			]);
 

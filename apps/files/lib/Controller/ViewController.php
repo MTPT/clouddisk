@@ -79,15 +79,16 @@ class ViewController extends Controller {
 	 * @param IAppManager $appManager
 	 * @param IRootFolder $rootFolder
 	 */
-	public function __construct($appName,
-								IRequest $request,
-								IURLGenerator $urlGenerator,
-								IL10N $l10n,
-								IConfig $config,
-								EventDispatcherInterface $eventDispatcherInterface,
-								IUserSession $userSession,
-								IAppManager $appManager,
-								IRootFolder $rootFolder
+	public function __construct(
+		$appName,
+		IRequest $request,
+		IURLGenerator $urlGenerator,
+		IL10N $l10n,
+		IConfig $config,
+		EventDispatcherInterface $eventDispatcherInterface,
+		IUserSession $userSession,
+		IAppManager $appManager,
+		IRootFolder $rootFolder
 	) {
 		parent::__construct($appName, $request);
 		$this->appName = $appName;
@@ -170,7 +171,7 @@ class ViewController extends Controller {
 		);
 
 		$navItems = \OCA\Files\App::getNavigationManager()->getAll();
-		usort($navItems, function($item1, $item2) {
+		usort($navItems, function ($item1, $item2) {
 			return $item1['order'] - $item2['order'];
 		});
 		$nav->assign('navigationItems', $navItems);
@@ -212,7 +213,7 @@ class ViewController extends Controller {
 		$user = $this->userSession->getUser()->getUID();
 		$params['defaultFileSorting'] = $this->config->getUserValue($user, 'files', 'file_sorting', 'name');
 		$params['defaultFileSortingDirection'] = $this->config->getUserValue($user, 'files', 'file_sorting_direction', 'asc');
-		$showHidden = (bool) $this->config->getUserValue($this->userSession->getUser()->getUID(), 'files', 'show_hidden', false);
+		$showHidden = (bool)$this->config->getUserValue($this->userSession->getUser()->getUID(), 'files', 'show_hidden', false);
 		$params['showHiddenFiles'] = $showHidden ? 1 : 0;
 		$params['fileNotFound'] = $fileNotFound ? 1 : 0;
 		$params['appNavigation'] = $nav;

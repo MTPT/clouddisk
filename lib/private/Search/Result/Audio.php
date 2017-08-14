@@ -31,10 +31,11 @@ class Audio extends File {
 
 	/**
 	 * Type name; translated in templates
-	 * @var string 
+	 *
+	 * @var string
 	 */
 	public $type = 'audio';
-	
+
 	/**
 	 * @TODO add ID3 information
 	 */

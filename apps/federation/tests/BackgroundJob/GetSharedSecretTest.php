@@ -25,7 +25,6 @@
 
 namespace OCA\Federation\Tests\BackgroundJob;
 
-
 use OCA\Federation\BackgroundJob\GetSharedSecret;
 use OCA\Files_Sharing\Tests\TestCase;
 use OCA\Federation\DbHandler;
@@ -164,7 +163,6 @@ class GetSharedSecretTest extends TestCase {
 		}
 
 		$getSharedSecret->execute($this->jobList);
-
 	}
 
 	public function dataTestExecute() {
@@ -214,7 +212,7 @@ class GetSharedSecretTest extends TestCase {
 			&& $statusCode !== Http::STATUS_FORBIDDEN
 		) {
 			$this->dbHandler->expects($this->never())->method('addToken');
-		}  else {
+		} else {
 			$this->dbHandler->expects($this->once())->method('addToken')->with($target, '');
 		}
 

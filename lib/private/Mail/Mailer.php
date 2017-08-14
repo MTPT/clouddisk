@@ -35,13 +35,13 @@ use OCP\ILogger;
  *
  * Example usage:
  *
- * 	$mailer = \OC::$server->getMailer();
- * 	$message = $mailer->createMessage();
- * 	$message->setSubject('Your Subject');
- * 	$message->setFrom(array('cloud@domain.org' => 'ownCloud Notifier');
- * 	$message->setTo(array('recipient@domain.org' => 'Recipient');
- * 	$message->setBody('The message text');
- * 	$mailer->send($message);
+ *    $mailer = \OC::$server->getMailer();
+ *    $message = $mailer->createMessage();
+ *    $message->setSubject('Your Subject');
+ *    $message->setFrom(array('cloud@domain.org' => 'ownCloud Notifier');
+ *    $message->setTo(array('recipient@domain.org' => 'Recipient');
+ *    $message->setBody('The message text');
+ *    $mailer->send($message);
  *
  * This message can then be passed to send() of \OC\Mail\Mailer
  *
@@ -68,11 +68,13 @@ class Mailer implements IMailer {
 	 * @param IURLGenerator $urlGenerator
 	 * @param IL10N $l10n
 	 */
-	public function __construct(IConfig $config,
-						 ILogger $logger,
-						 Defaults $defaults,
-						 IURLGenerator $urlGenerator,
-						 IL10N $l10n) {
+	public function __construct(
+		IConfig $config,
+		ILogger $logger,
+		Defaults $defaults,
+		IURLGenerator $urlGenerator,
+		IL10N $l10n
+	) {
 		$this->config = $config;
 		$this->logger = $logger;
 		$this->defaults = $defaults;
@@ -129,7 +131,7 @@ class Mailer implements IMailer {
 		$mailer = $this->getInstance();
 
 		// Enable logger if debug mode is enabled
-		if($debugMode) {
+		if ($debugMode) {
 			$mailLogger = new \Swift_Plugins_Loggers_ArrayLogger();
 			$mailer->registerPlugin(new \Swift_Plugins_LoggerPlugin($mailLogger));
 		}
@@ -139,7 +141,7 @@ class Mailer implements IMailer {
 		// Debugging logging
 		$logMessage = sprintf('Sent mail to "%s" with subject "%s"', print_r($message->getTo(), true), $message->getSubject());
 		$this->logger->debug($logMessage, ['app' => 'core']);
-		if($debugMode && isset($mailLogger)) {
+		if ($debugMode && isset($mailLogger)) {
 			$this->logger->debug($mailLogger->dump(), ['app' => 'core']);
 		}
 
@@ -170,8 +172,8 @@ class Mailer implements IMailer {
 		}
 
 		list($name, $domain) = explode('@', $email, 2);
-		$domain = idn_to_ascii($domain, 0,INTL_IDNA_VARIANT_UTS46);
-		return $name.'@'.$domain;
+		$domain = idn_to_ascii($domain, 0, INTL_IDNA_VARIANT_UTS46);
+		return $name . '@' . $domain;
 	}
 
 	/**
@@ -251,5 +253,4 @@ class Mailer implements IMailer {
 	protected function getMailInstance() {
 		return \Swift_MailTransport::newInstance();
 	}
-
 }

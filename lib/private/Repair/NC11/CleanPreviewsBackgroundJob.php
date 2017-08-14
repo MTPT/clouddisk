@@ -20,6 +20,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 namespace OC\Repair\NC11;
 
 use OC\BackgroundJob\QueuedJob;
@@ -52,10 +53,12 @@ class CleanPreviewsBackgroundJob extends QueuedJob {
 	 * @param IJobList $jobList
 	 * @param ITimeFactory $timeFactory
 	 */
-	public function __construct(IRootFolder $rootFolder,
-								ILogger $logger,
-								IJobList $jobList,
-								ITimeFactory $timeFactory) {
+	public function __construct(
+		IRootFolder $rootFolder,
+		ILogger $logger,
+		IJobList $jobList,
+		ITimeFactory $timeFactory
+	) {
 		$this->rootFolder = $rootFolder;
 		$this->logger = $logger;
 		$this->jobList = $jobList;

@@ -20,6 +20,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 namespace OC\Core\Controller;
 
 use bantu\IniGetWrapper\IniGetWrapper;
@@ -57,17 +58,19 @@ class OCJSController extends Controller {
 	 * @param IniGetWrapper $iniWrapper
 	 * @param IURLGenerator $urlGenerator
 	 */
-	public function __construct($appName,
-								IRequest $request,
-								IL10N $l,
-								Defaults $defaults,
-								IAppManager $appManager,
-								ISession $session,
-								IUserSession $userSession,
-								IConfig $config,
-								IGroupManager $groupManager,
-								IniGetWrapper $iniWrapper,
-								IURLGenerator $urlGenerator) {
+	public function __construct(
+		$appName,
+		IRequest $request,
+		IL10N $l,
+		Defaults $defaults,
+		IAppManager $appManager,
+		ISession $session,
+		IUserSession $userSession,
+		IConfig $config,
+		IGroupManager $groupManager,
+		IniGetWrapper $iniWrapper,
+		IURLGenerator $urlGenerator
+	) {
 		parent::__construct($appName, $request);
 
 		$this->helper = new JSConfigHelper(

@@ -22,7 +22,6 @@
 
 namespace OCA\Theming;
 
-
 use OCP\Files\IAppData;
 use OCP\ICacheFactory;
 use OCP\IConfig;
@@ -69,12 +68,13 @@ class ThemingDefaults extends \OC_Defaults {
 	 * @param ICacheFactory $cacheFactory
 	 * @param Util $util
 	 */
-	public function __construct(IConfig $config,
-								IL10N $l,
-								IURLGenerator $urlGenerator,
-								IAppData $appData,
-								ICacheFactory $cacheFactory,
-								Util $util
+	public function __construct(
+		IConfig $config,
+		IL10N $l,
+		IURLGenerator $urlGenerator,
+		IAppData $appData,
+		ICacheFactory $cacheFactory,
+		Util $util
 	) {
 		parent::__construct();
 		$this->config = $config;
@@ -119,8 +119,8 @@ class ThemingDefaults extends \OC_Defaults {
 
 	public function getShortFooter() {
 		$slogan = $this->getSlogan();
-		$footer = '<a href="'. $this->getBaseUrl() . '" target="_blank"' .
-			' rel="noreferrer">' .$this->getEntity() . '</a>'.
+		$footer = '<a href="' . $this->getBaseUrl() . '" target="_blank"' .
+			' rel="noreferrer">' . $this->getEntity() . '</a>' .
 			($slogan !== '' ? ' – ' . $slogan : '');
 
 		return $footer;
@@ -153,8 +153,8 @@ class ThemingDefaults extends \OC_Defaults {
 
 		$cacheBusterCounter = $this->config->getAppValue('theming', 'cachebuster', '0');
 
-		if(!$logo || !$logoExists) {
-			if($useSvg) {
+		if (!$logo || !$logoExists) {
+			if ($useSvg) {
 				$logo = $this->urlGenerator->imagePath('core', 'logo.svg');
 			} else {
 				$logo = $this->urlGenerator->imagePath('core', 'logo.png');
@@ -171,7 +171,7 @@ class ThemingDefaults extends \OC_Defaults {
 	 * @return string
 	 */
 	public function getBackground() {
-		$backgroundLogo = $this->config->getAppValue('theming', 'backgroundMime',false);
+		$backgroundLogo = $this->config->getAppValue('theming', 'backgroundMime', false);
 
 		$backgroundExists = true;
 		try {
@@ -182,8 +182,8 @@ class ThemingDefaults extends \OC_Defaults {
 
 		$cacheBusterCounter = $this->config->getAppValue('theming', 'cachebuster', '0');
 
-		if(!$backgroundLogo || !$backgroundExists) {
-			return $this->urlGenerator->imagePath('core','background.jpg') . '?v=' . $cacheBusterCounter;
+		if (!$backgroundLogo || !$backgroundExists) {
+			return $this->urlGenerator->imagePath('core', 'background.jpg') . '?v=' . $cacheBusterCounter;
 		}
 
 		return $this->urlGenerator->linkToRoute('theming.Theming.getLoginBackground') . '?v=' . $cacheBusterCounter;
@@ -226,8 +226,8 @@ class ThemingDefaults extends \OC_Defaults {
 			'theming-background-mime' => "'" . $this->config->getAppValue('theming', 'backgroundMime', '') . "'"
 		];
 
-		$variables['image-logo'] = "'".$this->urlGenerator->getAbsoluteURL($this->getLogo())."'";
-		$variables['image-login-background'] = "'".$this->urlGenerator->getAbsoluteURL($this->getBackground())."'";
+		$variables['image-logo'] = "'" . $this->urlGenerator->getAbsoluteURL($this->getLogo()) . "'";
+		$variables['image-login-background'] = "'" . $this->urlGenerator->getAbsoluteURL($this->getBackground()) . "'";
 		$variables['image-login-plain'] = 'false';
 
 		if ($this->config->getAppValue('theming', 'color', null) !== null) {
@@ -255,11 +255,11 @@ class ThemingDefaults extends \OC_Defaults {
 	 */
 	public function shouldReplaceIcons() {
 		$cache = $this->cacheFactory->create('theming');
-		if($value = $cache->get('shouldReplaceIcons')) {
+		if ($value = $cache->get('shouldReplaceIcons')) {
 			return (bool)$value;
 		}
 		$value = false;
-		if(extension_loaded('imagick')) {
+		if (extension_loaded('imagick')) {
 			$checkImagick = new \Imagick();
 			if (count($checkImagick->queryFormats('SVG')) >= 1) {
 				$value = true;
@@ -275,7 +275,7 @@ class ThemingDefaults extends \OC_Defaults {
 	 */
 	private function increaseCacheBuster() {
 		$cacheBusterKey = $this->config->getAppValue('theming', 'cachebuster', '0');
-		$this->config->setAppValue('theming', 'cachebuster', (int)$cacheBusterKey+1);
+		$this->config->setAppValue('theming', 'cachebuster', (int)$cacheBusterKey + 1);
 		$this->cacheFactory->create('theming')->clear('getScssVariables');
 	}
 

@@ -20,13 +20,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
+
 namespace OC\Setup;
 
 class Sqlite extends AbstractDatabase {
 	public $dbprettyname = 'Sqlite';
 
 	public function validate($config) {
-		return array();
+		return [];
 	}
 
 	public function initialize($config) {
@@ -36,7 +37,7 @@ class Sqlite extends AbstractDatabase {
 		$datadir = $this->config->getValue('datadirectory', \OC::$SERVERROOT . '/data');
 
 		//delete the old sqlite database first, might cause infinte loops otherwise
-		if(file_exists("$datadir/owncloud.db")) {
+		if (file_exists("$datadir/owncloud.db")) {
 			unlink("$datadir/owncloud.db");
 		}
 		//in case of sqlite, we can always fill the database

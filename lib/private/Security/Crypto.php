@@ -68,7 +68,7 @@ class Crypto implements ICrypto {
 	 * @return string Calculated HMAC
 	 */
 	public function calculateHMAC($message, $password = '') {
-		if($password === '') {
+		if ($password === '') {
 			$password = $this->config->getSystemValue('secret');
 		}
 
@@ -82,12 +82,13 @@ class Crypto implements ICrypto {
 
 	/**
 	 * Encrypts a value and adds an HMAC (Encrypt-Then-MAC)
+	 *
 	 * @param string $plaintext
 	 * @param string $password Password to encrypt, if not specified the secret from config.php will be taken
 	 * @return string Authenticated ciphertext
 	 */
 	public function encrypt($plaintext, $password = '') {
-		if($password === '') {
+		if ($password === '') {
 			$password = $this->config->getSystemValue('secret');
 		}
 		$this->cipher->setPassword($password);
@@ -96,26 +97,27 @@ class Crypto implements ICrypto {
 		$this->cipher->setIV($iv);
 
 		$ciphertext = bin2hex($this->cipher->encrypt($plaintext));
-		$hmac = bin2hex($this->calculateHMAC($ciphertext.$iv, $password));
+		$hmac = bin2hex($this->calculateHMAC($ciphertext . $iv, $password));
 
-		return $ciphertext.'|'.$iv.'|'.$hmac;
+		return $ciphertext . '|' . $iv . '|' . $hmac;
 	}
 
 	/**
 	 * Decrypts a value and verifies the HMAC (Encrypt-Then-Mac)
+	 *
 	 * @param string $authenticatedCiphertext
 	 * @param string $password Password to encrypt, if not specified the secret from config.php will be taken
 	 * @return string plaintext
 	 * @throws \Exception If the HMAC does not match
 	 */
 	public function decrypt($authenticatedCiphertext, $password = '') {
-		if($password === '') {
+		if ($password === '') {
 			$password = $this->config->getSystemValue('secret');
 		}
 		$this->cipher->setPassword($password);
 
 		$parts = explode('|', $authenticatedCiphertext);
-		if(count($parts) !== 3) {
+		if (count($parts) !== 3) {
 			throw new \Exception('Authenticated ciphertext could not be decoded.');
 		}
 
@@ -125,11 +127,10 @@ class Crypto implements ICrypto {
 
 		$this->cipher->setIV($iv);
 
-		if(!hash_equals($this->calculateHMAC($parts[0].$parts[1], $password), $hmac)) {
+		if (!hash_equals($this->calculateHMAC($parts[0] . $parts[1], $password), $hmac)) {
 			throw new \Exception('HMAC does not match.');
 		}
 
 		return $this->cipher->decrypt($ciphertext);
 	}
-
 }

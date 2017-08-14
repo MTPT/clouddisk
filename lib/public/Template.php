@@ -39,7 +39,6 @@
 // This means that they should be used by apps instead of the internal ownCloud classes
 namespace OCP;
 
-
 /**
  * Make OC_Helper::imagePath available as a simple function
  * @param string $app
@@ -139,7 +138,7 @@ function simple_file_size($bytes) {
  * @deprecated 8.0.0 Use \OCP\Template::html_select_options() instead
  * @suppress PhanDeprecatedFunction
  */
-function html_select_options($options, $selected, $params=array()) {
+function html_select_options($options, $selected, $params = []) {
 	return \html_select_options($options, $selected, $params);
 }
 
@@ -242,7 +241,7 @@ class Template extends \OC_Template {
 	 * @since 8.0.0
 	 * @suppress PhanDeprecatedFunction
 	 */
-	public static function html_select_options($options, $selected, $params=array()) {
+	public static function html_select_options($options, $selected, $params = []) {
 		return \html_select_options($options, $selected, $params);
 	}
 }

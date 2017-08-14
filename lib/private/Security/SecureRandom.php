@@ -32,6 +32,7 @@ use OCP\Security\ISecureRandom;
  *
  * Usage:
  * \OC::$server->getSecureRandom()->generate(10);
+ *
  * @package OC\Security
  */
 class SecureRandom implements ISecureRandom {
@@ -65,17 +66,20 @@ class SecureRandom implements ISecureRandom {
 
 	/**
 	 * Generate a random string of specified length.
+	 *
 	 * @param int $length The length of the generated string
 	 * @param string $characters An optional list of characters to use if no character list is
-	 * 							specified all valid base64 characters are used.
+	 *                            specified all valid base64 characters are used.
 	 * @return string
 	 */
-	public function generate($length,
-							 $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/') {
+	public function generate(
+		$length,
+		$characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+	) {
 		$maxCharIndex = strlen($characters) - 1;
 		$randomString = '';
 
-		while($length > 0) {
+		while ($length > 0) {
 			$randomNumber = \random_int(0, $maxCharIndex);
 			$randomString .= $characters[$randomNumber];
 			$length--;

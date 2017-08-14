@@ -23,7 +23,7 @@
  */
 $config = \OC::$server->getConfig();
 $state = $config->getSystemValue('ldapIgnoreNamingRules', 'doSet');
-if($state === 'doSet') {
+if ($state === 'doSet') {
 	OCP\Config::setSystemValue('ldapIgnoreNamingRules', false);
 }
 

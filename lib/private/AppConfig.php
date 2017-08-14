@@ -168,7 +168,7 @@ class AppConfig implements IAppConfig {
 	 */
 	public function setValue($app, $key, $value) {
 		if (!$this->hasKey($app, $key)) {
-			$inserted = (bool) $this->conn->insertIfNotExist('*PREFIX*appconfig', [
+			$inserted = (bool)$this->conn->insertIfNotExist('*PREFIX*appconfig', [
 				'appid' => $app,
 				'configkey' => $key,
 				'configvalue' => $value,
@@ -207,7 +207,7 @@ class AppConfig implements IAppConfig {
 				->setParameter('configvalue', $value);
 		}
 
-		$changedRow = (bool) $sql->execute();
+		$changedRow = (bool)$sql->execute();
 
 		$this->cache[$app][$key] = $value;
 
@@ -275,7 +275,7 @@ class AppConfig implements IAppConfig {
 			return $this->getAppValues($app);
 		} else {
 			$appIds = $this->getApps();
-			$values = array_map(function($appId) use ($key) {
+			$values = array_map(function ($appId) use ($key) {
 				return isset($this->cache[$appId][$key]) ? $this->cache[$appId][$key] : null;
 			}, $appIds);
 			$result = array_combine($appIds, $values);

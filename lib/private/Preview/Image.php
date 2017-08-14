@@ -25,6 +25,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
+
 namespace OC\Preview;
 
 abstract class Image extends Provider {
@@ -66,5 +67,4 @@ abstract class Image extends Provider {
 		}
 		return false;
 	}
-
 }

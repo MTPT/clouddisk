@@ -38,7 +38,7 @@ class SettingsController extends Controller {
 	private $clientMapper;
 	/** @var ISecureRandom */
 	private $secureRandom;
-	/** @var AccessTokenMapper  */
+	/** @var AccessTokenMapper */
 	private $accessTokenMapper;
 	/** @var  DefaultTokenMapper */
 	private $defaultTokenMapper;
@@ -54,13 +54,14 @@ class SettingsController extends Controller {
 	 * @param AccessTokenMapper $accessTokenMapper
 	 * @param DefaultTokenMapper $defaultTokenMapper
 	 */
-	public function __construct($appName,
-								IRequest $request,
-								IURLGenerator $urlGenerator,
-								ClientMapper $clientMapper,
-								ISecureRandom $secureRandom,
-								AccessTokenMapper $accessTokenMapper,
-								DefaultTokenMapper $defaultTokenMapper
+	public function __construct(
+		$appName,
+		IRequest $request,
+		IURLGenerator $urlGenerator,
+		ClientMapper $clientMapper,
+		ISecureRandom $secureRandom,
+		AccessTokenMapper $accessTokenMapper,
+		DefaultTokenMapper $defaultTokenMapper
 	) {
 		parent::__construct($appName, $request);
 		$this->urlGenerator = $urlGenerator;
@@ -75,8 +76,10 @@ class SettingsController extends Controller {
 	 * @param string $redirectUri
 	 * @return RedirectResponse
 	 */
-	public function addClient($name,
-							  $redirectUri) {
+	public function addClient(
+		$name,
+		$redirectUri
+	) {
 		$client = new Client();
 		$client->setName($name);
 		$client->setRedirectUri($redirectUri);

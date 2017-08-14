@@ -25,7 +25,6 @@
 
 namespace OC;
 
-
 use OCP\IConfig;
 
 /**
@@ -77,6 +76,7 @@ class SystemConfig {
 
 	/**
 	 * Lists all available config keys
+	 *
 	 * @return array an array of key names
 	 */
 	public function getKeys() {

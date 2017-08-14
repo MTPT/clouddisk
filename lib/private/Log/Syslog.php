@@ -26,13 +26,13 @@
 namespace OC\Log;
 
 class Syslog {
-	static protected $levels = array(
+	protected static $levels = [
 		\OCP\Util::DEBUG => LOG_DEBUG,
 		\OCP\Util::INFO => LOG_INFO,
 		\OCP\Util::WARN => LOG_WARNING,
 		\OCP\Util::ERROR => LOG_ERR,
 		\OCP\Util::FATAL => LOG_CRIT,
-	);
+	];
 
 	/**
 	 * Init class data
@@ -45,12 +45,13 @@ class Syslog {
 
 	/**
 	 * write a message in the log
+	 *
 	 * @param string $app
 	 * @param string $message
 	 * @param int $level
 	 */
 	public static function write($app, $message, $level) {
 		$syslog_level = self::$levels[$level];
-		syslog($syslog_level, '{'.$app.'} '.$message);
+		syslog($syslog_level, '{' . $app . '} ' . $message);
 	}
 }

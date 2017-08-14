@@ -32,7 +32,6 @@ use OCP\Security\ICredentialsManager;
  * @package OC\Security
  */
 class CredentialsManager implements ICredentialsManager {
-
 	const DB_TABLE = 'credentials';
 
 	/** @var ICrypto */
@@ -80,8 +79,7 @@ class CredentialsManager implements ICredentialsManager {
 		$qb->select('credentials')
 			->from(self::DB_TABLE)
 			->where($qb->expr()->eq('user', $qb->createNamedParameter($userId)))
-			->andWhere($qb->expr()->eq('identifier', $qb->createNamedParameter($identifier)))
-		;
+			->andWhere($qb->expr()->eq('identifier', $qb->createNamedParameter($identifier)));
 		$result = $qb->execute()->fetch();
 
 		if (!$result) {
@@ -103,8 +101,7 @@ class CredentialsManager implements ICredentialsManager {
 		$qb = $this->dbConnection->getQueryBuilder();
 		$qb->delete(self::DB_TABLE)
 			->where($qb->expr()->eq('user', $qb->createNamedParameter($userId)))
-			->andWhere($qb->expr()->eq('identifier', $qb->createNamedParameter($identifier)))
-		;
+			->andWhere($qb->expr()->eq('identifier', $qb->createNamedParameter($identifier)));
 		return $qb->execute();
 	}
 
@@ -117,9 +114,7 @@ class CredentialsManager implements ICredentialsManager {
 	public function erase($userId) {
 		$qb = $this->dbConnection->getQueryBuilder();
 		$qb->delete(self::DB_TABLE)
-			->where($qb->expr()->eq('user', $qb->createNamedParameter($userId)))
-		;
+			->where($qb->expr()->eq('user', $qb->createNamedParameter($userId)));
 		return $qb->execute();
 	}
-
 }

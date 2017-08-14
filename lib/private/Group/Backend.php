@@ -41,16 +41,17 @@ abstract class Backend implements \OCP\GroupInterface {
 	];
 
 	/**
-	* Get all supported actions
-	* @return int bitwise-or'ed actions
-	*
-	* Returns the supported actions as int to be
-	* compared with \OC\Group\Backend::CREATE_GROUP etc.
-	*/
+	 * Get all supported actions
+	 *
+	 * @return int bitwise-or'ed actions
+	 *
+	 * Returns the supported actions as int to be
+	 * compared with \OC\Group\Backend::CREATE_GROUP etc.
+	 */
 	public function getSupportedActions() {
 		$actions = 0;
-		foreach($this->possibleActions AS $action => $methodName) {
-			if(method_exists($this, $methodName)) {
+		foreach ($this->possibleActions as $action => $methodName) {
+			if (method_exists($this, $methodName)) {
 				$actions |= $action;
 			}
 		}
@@ -59,19 +60,21 @@ abstract class Backend implements \OCP\GroupInterface {
 	}
 
 	/**
-	* Check if backend implements actions
-	* @param int $actions bitwise-or'ed actions
-	* @return bool
-	*
-	* Returns the supported actions as int to be
-	* compared with \OC\Group\Backend::CREATE_GROUP etc.
-	*/
+	 * Check if backend implements actions
+	 *
+	 * @param int $actions bitwise-or'ed actions
+	 * @return bool
+	 *
+	 * Returns the supported actions as int to be
+	 * compared with \OC\Group\Backend::CREATE_GROUP etc.
+	 */
 	public function implementsActions($actions) {
 		return (bool)($this->getSupportedActions() & $actions);
 	}
 
 	/**
 	 * is user in group?
+	 *
 	 * @param string $uid uid of the user
 	 * @param string $gid gid of the group
 	 * @return bool
@@ -84,6 +87,7 @@ abstract class Backend implements \OCP\GroupInterface {
 
 	/**
 	 * Get all groups a user belongs to
+	 *
 	 * @param string $uid Name of the user
 	 * @return array an array of group names
 	 *
@@ -91,11 +95,12 @@ abstract class Backend implements \OCP\GroupInterface {
 	 * if the user exists at all.
 	 */
 	public function getUserGroups($uid) {
-		return array();
+		return [];
 	}
 
 	/**
 	 * get a list of all groups
+	 *
 	 * @param string $search
 	 * @param int $limit
 	 * @param int $offset
@@ -105,11 +110,12 @@ abstract class Backend implements \OCP\GroupInterface {
 	 */
 
 	public function getGroups($search = '', $limit = -1, $offset = 0) {
-		return array();
+		return [];
 	}
 
 	/**
 	 * check if a group exists
+	 *
 	 * @param string $gid
 	 * @return bool
 	 */
@@ -119,6 +125,7 @@ abstract class Backend implements \OCP\GroupInterface {
 
 	/**
 	 * get a list of all users in a group
+	 *
 	 * @param string $gid
 	 * @param string $search
 	 * @param int $limit
@@ -126,6 +133,6 @@ abstract class Backend implements \OCP\GroupInterface {
 	 * @return array an array of user ids
 	 */
 	public function usersInGroup($gid, $search = '', $limit = -1, $offset = 0) {
-		return array();
+		return [];
 	}
 }

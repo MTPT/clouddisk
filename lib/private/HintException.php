@@ -34,16 +34,15 @@ namespace OC;
  * @package OC
  */
 class HintException extends \Exception {
-
 	private $hint;
 
 	/**
 	 * HintException constructor.
 	 *
-	 * @param string $message  The error message. It will be not revealed to the
+	 * @param string $message The error message. It will be not revealed to the
 	 *                         the user (unless the hint is empty) and thus
 	 *                         should be not translated.
-	 * @param string $hint     A useful message that is presented to the end
+	 * @param string $hint A useful message that is presented to the end
 	 *                         user. It should be translated, but must not
 	 *                         contain sensitive data.
 	 * @param int $code

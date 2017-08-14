@@ -23,6 +23,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
+
 namespace OC;
 
 use OC\Preview\Generator;
@@ -80,11 +81,13 @@ class PreviewManager implements IPreview {
 	 * @param EventDispatcherInterface $eventDispatcher
 	 * @param string $userId
 	 */
-	public function __construct(IConfig $config,
-								IRootFolder $rootFolder,
-								IAppData $appData,
-								EventDispatcherInterface $eventDispatcher,
-								$userId) {
+	public function __construct(
+		IConfig $config,
+		IRootFolder $rootFolder,
+		IAppData $appData,
+		EventDispatcherInterface $eventDispatcher,
+		$userId
+	) {
 		$this->config = $config;
 		$this->rootFolder = $rootFolder;
 		$this->appData = $appData;
@@ -116,6 +119,7 @@ class PreviewManager implements IPreview {
 
 	/**
 	 * Get all providers
+	 *
 	 * @return array
 	 */
 	public function getProviders() {
@@ -135,6 +139,7 @@ class PreviewManager implements IPreview {
 
 	/**
 	 * Does the manager have any providers
+	 *
 	 * @return bool
 	 */
 	public function hasProviders() {
@@ -245,7 +250,7 @@ class PreviewManager implements IPreview {
 		}
 
 		$mount = $file->getMountPoint();
-		if ($mount and !$mount->getOption('previews', true)){
+		if ($mount and !$mount->getOption('previews', true)) {
 			return false;
 		}
 
@@ -360,13 +365,13 @@ class PreviewManager implements IPreview {
 			$checkImagick = new \Imagick();
 
 			$imagickProviders = [
-				'SVG'	=> ['mimetype' => '/image\/svg\+xml/', 'class' => '\OC\Preview\SVG'],
-				'TIFF'	=> ['mimetype' => '/image\/tiff/', 'class' => '\OC\Preview\TIFF'],
-				'PDF'	=> ['mimetype' => '/application\/pdf/', 'class' => '\OC\Preview\PDF'],
-				'AI'	=> ['mimetype' => '/application\/illustrator/', 'class' => '\OC\Preview\Illustrator'],
-				'PSD'	=> ['mimetype' => '/application\/x-photoshop/', 'class' => '\OC\Preview\Photoshop'],
-				'EPS'	=> ['mimetype' => '/application\/postscript/', 'class' => '\OC\Preview\Postscript'],
-				'TTF'	=> ['mimetype' => '/application\/(?:font-sfnt|x-font$)/', 'class' => '\OC\Preview\Font'],
+				'SVG' => ['mimetype' => '/image\/svg\+xml/', 'class' => '\OC\Preview\SVG'],
+				'TIFF' => ['mimetype' => '/image\/tiff/', 'class' => '\OC\Preview\TIFF'],
+				'PDF' => ['mimetype' => '/application\/pdf/', 'class' => '\OC\Preview\PDF'],
+				'AI' => ['mimetype' => '/application\/illustrator/', 'class' => '\OC\Preview\Illustrator'],
+				'PSD' => ['mimetype' => '/application\/x-photoshop/', 'class' => '\OC\Preview\Photoshop'],
+				'EPS' => ['mimetype' => '/application\/postscript/', 'class' => '\OC\Preview\Postscript'],
+				'TTF' => ['mimetype' => '/application\/(?:font-sfnt|x-font$)/', 'class' => '\OC\Preview\Font'],
 			];
 
 			foreach ($imagickProviders as $queryFormat => $provider) {

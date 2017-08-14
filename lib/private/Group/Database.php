@@ -20,6 +20,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
+
 /*
  *
  * The following SQL statement is just a help for developers and will not be
@@ -70,13 +71,14 @@ class Database extends \OC\Group\Backend {
 
 	/**
 	 * Try to create a new group
+	 *
 	 * @param string $gid The name of the group to create
 	 * @return bool
 	 *
 	 * Tries to create a new group. If the group name already exists, false will
 	 * be returned.
 	 */
-	public function createGroup( $gid ) {
+	public function createGroup($gid) {
 		$this->fixDI();
 
 		// Add group
@@ -92,12 +94,13 @@ class Database extends \OC\Group\Backend {
 
 	/**
 	 * delete a group
+	 *
 	 * @param string $gid gid of the group to delete
 	 * @return bool
 	 *
 	 * Deletes a group and removes it from the group_user-table
 	 */
-	public function deleteGroup( $gid ) {
+	public function deleteGroup($gid) {
 		$this->fixDI();
 
 		// Delete the group
@@ -126,13 +129,14 @@ class Database extends \OC\Group\Backend {
 
 	/**
 	 * is user in group?
+	 *
 	 * @param string $uid uid of the user
 	 * @param string $gid gid of the group
 	 * @return bool
 	 *
 	 * Checks whether the user is member of a group or not.
 	 */
-	public function inGroup( $uid, $gid ) {
+	public function inGroup($uid, $gid) {
 		$this->fixDI();
 
 		// check
@@ -151,37 +155,39 @@ class Database extends \OC\Group\Backend {
 
 	/**
 	 * Add a user to a group
+	 *
 	 * @param string $uid Name of the user to add to group
 	 * @param string $gid Name of the group in which add the user
 	 * @return bool
 	 *
 	 * Adds a user to a group.
 	 */
-	public function addToGroup( $uid, $gid ) {
+	public function addToGroup($uid, $gid) {
 		$this->fixDI();
 
 		// No duplicate entries!
-		if( !$this->inGroup( $uid, $gid )) {
+		if (!$this->inGroup($uid, $gid)) {
 			$qb = $this->dbConn->getQueryBuilder();
 			$qb->insert('group_user')
 				->setValue('uid', $qb->createNamedParameter($uid))
 				->setValue('gid', $qb->createNamedParameter($gid))
 				->execute();
 			return true;
-		}else{
+		} else {
 			return false;
 		}
 	}
 
 	/**
 	 * Removes a user from a group
+	 *
 	 * @param string $uid Name of the user to remove from group
 	 * @param string $gid Name of the group from which remove the user
 	 * @return bool
 	 *
 	 * removes the user from a group.
 	 */
-	public function removeFromGroup( $uid, $gid ) {
+	public function removeFromGroup($uid, $gid) {
 		$this->fixDI();
 
 		$qb = $this->dbConn->getQueryBuilder();
@@ -195,13 +201,14 @@ class Database extends \OC\Group\Backend {
 
 	/**
 	 * Get all groups a user belongs to
+	 *
 	 * @param string $uid Name of the user
 	 * @return array an array of group names
 	 *
 	 * This function fetches all groups a user belongs to. It does not check
 	 * if the user exists at all.
 	 */
-	public function getUserGroups( $uid ) {
+	public function getUserGroups($uid) {
 		//guests has empty or null $uid
 		if ($uid === null || $uid === '') {
 			return [];
@@ -217,7 +224,7 @@ class Database extends \OC\Group\Backend {
 			->execute();
 
 		$groups = [];
-		while( $row = $cursor->fetch()) {
+		while ($row = $cursor->fetch()) {
 			$groups[] = $row["gid"];
 			$this->groupCache[$row['gid']] = $row['gid'];
 		}
@@ -228,6 +235,7 @@ class Database extends \OC\Group\Backend {
 
 	/**
 	 * get a list of all groups
+	 *
 	 * @param string $search
 	 * @param int $limit
 	 * @param int $offset
@@ -245,7 +253,7 @@ class Database extends \OC\Group\Backend {
 
 		$stmt = \OC_DB::prepare('SELECT `gid` FROM `*PREFIX*groups`' . $searchLike . ' ORDER BY `gid` ASC', $limit, $offset);
 		$result = $stmt->execute($parameters);
-		$groups = array();
+		$groups = [];
 		while ($row = $result->fetchRow()) {
 			$groups[] = $row['gid'];
 		}
@@ -254,6 +262,7 @@ class Database extends \OC\Group\Backend {
 
 	/**
 	 * check if a group exists
+	 *
 	 * @param string $gid
 	 * @return bool
 	 */
@@ -282,6 +291,7 @@ class Database extends \OC\Group\Backend {
 
 	/**
 	 * get a list of all users in a group
+	 *
 	 * @param string $gid
 	 * @param string $search
 	 * @param int $limit
@@ -296,11 +306,13 @@ class Database extends \OC\Group\Backend {
 			$searchLike = ' AND `uid` LIKE ?';
 		}
 
-		$stmt = \OC_DB::prepare('SELECT `uid` FROM `*PREFIX*group_user` WHERE `gid` = ?' . $searchLike . ' ORDER BY `uid` ASC',
+		$stmt = \OC_DB::prepare(
+			'SELECT `uid` FROM `*PREFIX*group_user` WHERE `gid` = ?' . $searchLike . ' ORDER BY `uid` ASC',
 			$limit,
-			$offset);
+			$offset
+		);
 		$result = $stmt->execute($parameters);
-		$users = array();
+		$users = [];
 		while ($row = $result->fetchRow()) {
 			$users[] = $row['uid'];
 		}
@@ -309,6 +321,7 @@ class Database extends \OC\Group\Backend {
 
 	/**
 	 * get the number of all users matching the search string in a group
+	 *
 	 * @param string $gid
 	 * @param string $search
 	 * @return int|false
@@ -325,10 +338,9 @@ class Database extends \OC\Group\Backend {
 		$stmt = \OC_DB::prepare('SELECT COUNT(`uid`) AS `count` FROM `*PREFIX*group_user` WHERE `gid` = ?' . $searchLike);
 		$result = $stmt->execute($parameters);
 		$count = $result->fetchOne();
-		if($count !== false) {
+		if ($count !== false) {
 			$count = intval($count);
 		}
 		return $count;
 	}
-
 }

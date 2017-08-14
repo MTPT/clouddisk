@@ -23,7 +23,6 @@
 
 namespace OC\Notification;
 
-
 use OCP\Notification\IAction;
 use OCP\Notification\INotification;
 use OCP\RichObjectStrings\InvalidObjectExeption;
@@ -208,7 +207,7 @@ class Notification implements INotification {
 		if (!is_int($id) && (!is_string($id) || $id === '' || isset($id[64]))) {
 			throw new \InvalidArgumentException('The given object id is invalid');
 		}
-		$this->objectId = (string) $id;
+		$this->objectId = (string)$id;
 		return $this;
 	}
 
@@ -534,8 +533,7 @@ class Notification implements INotification {
 		return
 			$this->isValidCommon()
 			&&
-			$this->getSubject() !== ''
-		;
+			$this->getSubject() !== '';
 	}
 
 	/**
@@ -562,8 +560,7 @@ class Notification implements INotification {
 		return
 			$this->isValidCommon()
 			&&
-			$this->getParsedSubject() !== ''
-		;
+			$this->getParsedSubject() !== '';
 	}
 
 	/**
@@ -579,7 +576,6 @@ class Notification implements INotification {
 			&&
 			$this->getObjectType() !== ''
 			&&
-			$this->getObjectId() !== ''
-		;
+			$this->getObjectId() !== '';
 	}
 }

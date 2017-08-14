@@ -32,7 +32,7 @@ class TemplateFileLocator {
 	/**
 	 * @param string[] $dirs
 	 */
-	public function __construct( $dirs ) {
+	public function __construct($dirs) {
 		$this->dirs = $dirs;
 	}
 
@@ -41,19 +41,19 @@ class TemplateFileLocator {
 	 * @return string
 	 * @throws \Exception
 	 */
-	public function find( $template ) {
+	public function find($template) {
 		if ($template === '') {
 			throw new \InvalidArgumentException('Empty template name');
 		}
 
-		foreach($this->dirs as $dir) {
-			$file = $dir.$template.'.php';
+		foreach ($this->dirs as $dir) {
+			$file = $dir . $template . '.php';
 			if (is_file($file)) {
 				$this->path = $dir;
 				return $file;
 			}
 		}
-		throw new \Exception('template file not found: template:'.$template);
+		throw new \Exception('template file not found: template:' . $template);
 	}
 
 	public function getPath() {

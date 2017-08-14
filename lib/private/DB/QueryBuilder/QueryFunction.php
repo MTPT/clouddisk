@@ -36,6 +36,6 @@ class QueryFunction implements IQueryFunction {
 	 * @return string
 	 */
 	public function __toString() {
-		return (string) $this->function;
+		return (string)$this->function;
 	}
 }

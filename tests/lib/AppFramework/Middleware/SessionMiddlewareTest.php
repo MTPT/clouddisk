@@ -18,7 +18,6 @@ use OC\AppFramework\Utility\ControllerMethodReflector;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\Response;
 
-
 class SessionMiddlewareTest extends \Test\TestCase {
 
 	/** @var ControllerMethodReflector */
@@ -92,5 +91,4 @@ class SessionMiddlewareTest extends \Test\TestCase {
 			->method('close');
 		return $session;
 	}
-
 }

@@ -43,7 +43,6 @@ use OCP\ILogger;
 /**
  * This class gets and sets users avatars.
  */
-
 class Avatar implements IAvatar {
 	/** @var ISimpleFolder */
 	private $folder;
@@ -51,7 +50,7 @@ class Avatar implements IAvatar {
 	private $l;
 	/** @var User */
 	private $user;
-	/** @var ILogger  */
+	/** @var ILogger */
 	private $logger;
 	/** @var IConfig */
 	private $config;
@@ -65,11 +64,13 @@ class Avatar implements IAvatar {
 	 * @param ILogger $logger
 	 * @param IConfig $config
 	 */
-	public function __construct(ISimpleFolder $folder,
-								IL10N $l,
-								$user,
-								ILogger $logger,
-								IConfig $config) {
+	public function __construct(
+		ISimpleFolder $folder,
+		IL10N $l,
+		$user,
+		ILogger $logger,
+		IConfig $config
+	) {
 		$this->folder = $folder;
 		$this->l = $l;
 		$this->user = $user;
@@ -80,7 +81,7 @@ class Avatar implements IAvatar {
 	/**
 	 * @inheritdoc
 	 */
-	public function get ($size = 64) {
+	public function get($size = 64) {
 		try {
 			$file = $this->getFile($size);
 		} catch (NotFoundException $e) {
@@ -98,21 +99,20 @@ class Avatar implements IAvatar {
 	 * @return bool
 	 */
 	public function exists() {
-
 		return $this->folder->fileExists('avatar.jpg') || $this->folder->fileExists('avatar.png');
 	}
 
 	/**
 	 * sets the users avatar
+	 *
 	 * @param IImage|resource|string $data An image object, imagedata or path to set a new avatar
 	 * @throws \Exception if the provided file is not a jpg or png image
 	 * @throws \Exception if the provided image is not valid
 	 * @throws NotSquareException if the image is not square
 	 * @return void
-	*/
-	public function set ($data) {
-
-		if($data instanceOf IImage) {
+	 */
+	public function set($data) {
+		if ($data instanceof IImage) {
 			$img = $data;
 			$data = $img->data();
 		} else {
@@ -135,20 +135,25 @@ class Avatar implements IAvatar {
 		}
 
 		$this->remove();
-		$this->folder->newFile('avatar.'.$type)->putContent($data);
+		$this->folder->newFile('avatar.' . $type)->putContent($data);
 		$this->user->triggerChange('avatar');
 	}
 
 	/**
 	 * remove the users avatar
+	 *
 	 * @return void
-	*/
-	public function remove () {
+	 */
+	public function remove() {
 		$regex = '/^avatar\.([0-9]+\.)?(jpg|png)$/';
 		$avatars = $this->folder->getDirectoryListing();
 
-		$this->config->setUserValue($this->user->getUID(), 'avatar', 'version',
-			(int)$this->config->getUserValue($this->user->getUID(), 'avatar', 'version', 0) + 1);
+		$this->config->setUserValue(
+			$this->user->getUID(),
+			'avatar',
+			'version',
+			(int)$this->config->getUserValue($this->user->getUID(), 'avatar', 'version', 0) + 1
+		);
 
 		foreach ($avatars as $avatar) {
 			if (preg_match($regex, $avatar->getName())) {

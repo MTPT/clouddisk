@@ -20,6 +20,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 namespace OC\Template;
 
 use bantu\IniGetWrapper\IniGetWrapper;
@@ -72,15 +73,17 @@ class JSConfigHelper {
 	 * @param IniGetWrapper $iniWrapper
 	 * @param IURLGenerator $urlGenerator
 	 */
-	public function __construct(IL10N $l,
-								Defaults $defaults,
-								IAppManager $appManager,
-								ISession $session,
-								$currentUser,
-								IConfig $config,
-								IGroupManager $groupManager,
-								IniGetWrapper $iniWrapper,
-								IURLGenerator $urlGenerator) {
+	public function __construct(
+		IL10N $l,
+		Defaults $defaults,
+		IAppManager $appManager,
+		ISession $session,
+		$currentUser,
+		IConfig $config,
+		IGroupManager $groupManager,
+		IniGetWrapper $iniWrapper,
+		IURLGenerator $urlGenerator
+	) {
 		$this->l = $l;
 		$this->defaults = $defaults;
 		$this->appManager = $appManager;
@@ -93,7 +96,6 @@ class JSConfigHelper {
 	}
 
 	public function getConfig() {
-
 		if ($this->currentUser !== null) {
 			$uid = $this->currentUser->getUID();
 		} else {
@@ -109,7 +111,7 @@ class JSConfigHelper {
 			$apps = $this->appManager->getEnabledAppsForUser($this->currentUser);
 		}
 
-		foreach($apps as $app) {
+		foreach ($apps as $app) {
 			$apps_paths[$app] = \OC_App::getAppWebPath($app);
 		}
 
@@ -119,14 +121,14 @@ class JSConfigHelper {
 		$defaultExpireDateEnabled = $this->config->getAppValue('core', 'shareapi_default_expire_date', 'no') === 'yes';
 		$defaultExpireDate = $enforceDefaultExpireDate = null;
 		if ($defaultExpireDateEnabled) {
-			$defaultExpireDate = (int) $this->config->getAppValue('core', 'shareapi_expire_after_n_days', '7');
+			$defaultExpireDate = (int)$this->config->getAppValue('core', 'shareapi_expire_after_n_days', '7');
 			$enforceDefaultExpireDate = $this->config->getAppValue('core', 'shareapi_enforce_expire_date', 'no') === 'yes';
 		}
 		$outgoingServer2serverShareEnabled = $this->config->getAppValue('files_sharing', 'outgoing_server2server_share_enabled', 'yes') === 'yes';
 
 		$countOfDataLocation = 0;
-		$dataLocation = str_replace(\OC::$SERVERROOT .'/', '', $this->config->getSystemValue('datadirectory', ''), $countOfDataLocation);
-		if($countOfDataLocation !== 1 || !$this->groupManager->isAdmin($uid)) {
+		$dataLocation = str_replace(\OC::$SERVERROOT . '/', '', $this->config->getSystemValue('datadirectory', ''), $countOfDataLocation);
+		if ($countOfDataLocation !== 1 || !$this->groupManager->isAdmin($uid)) {
 			$dataLocation = false;
 		}
 
@@ -142,12 +144,12 @@ class JSConfigHelper {
 		$array = [
 			"oc_debug" => $this->config->getSystemValue('debug', false) ? 'true' : 'false',
 			"oc_isadmin" => $this->groupManager->isAdmin($uid) ? 'true' : 'false',
-			"oc_dataURL" => is_string($dataLocation) ? "\"".$dataLocation."\"" : 'false',
-			"oc_webroot" => "\"".\OC::$WEBROOT."\"",
-			"oc_appswebroots" =>  str_replace('\\/', '/', json_encode($apps_paths)), // Ugly unescape slashes waiting for better solution
+			"oc_dataURL" => is_string($dataLocation) ? "\"" . $dataLocation . "\"" : 'false',
+			"oc_webroot" => "\"" . \OC::$WEBROOT . "\"",
+			"oc_appswebroots" => str_replace('\\/', '/', json_encode($apps_paths)), // Ugly unescape slashes waiting for better solution
 			"datepickerFormatDate" => json_encode($this->l->l('jsdate', null)),
 			'nc_lastLogin' => $lastConfirmTimestamp,
-			"dayNames" =>  json_encode([
+			"dayNames" => json_encode([
 				(string)$this->l->t('Sunday'),
 				(string)$this->l->t('Monday'),
 				(string)$this->l->t('Tuesday'),
@@ -156,7 +158,7 @@ class JSConfigHelper {
 				(string)$this->l->t('Friday'),
 				(string)$this->l->t('Saturday')
 			]),
-			"dayNamesShort" =>  json_encode([
+			"dayNamesShort" => json_encode([
 				(string)$this->l->t('Sun.'),
 				(string)$this->l->t('Mon.'),
 				(string)$this->l->t('Tue.'),
@@ -165,7 +167,7 @@ class JSConfigHelper {
 				(string)$this->l->t('Fri.'),
 				(string)$this->l->t('Sat.')
 			]),
-			"dayNamesMin" =>  json_encode([
+			"dayNamesMin" => json_encode([
 				(string)$this->l->t('Su'),
 				(string)$this->l->t('Mo'),
 				(string)$this->l->t('Tu'),
@@ -202,15 +204,15 @@ class JSConfigHelper {
 				(string)$this->l->t('Nov.'),
 				(string)$this->l->t('Dec.')
 			]),
-			"firstDay" => json_encode($this->l->l('firstday', null)) ,
+			"firstDay" => json_encode($this->l->l('firstday', null)),
 			"oc_config" => json_encode([
-				'session_lifetime'	=> min($this->config->getSystemValue('session_lifetime', $this->iniWrapper->getNumeric('session.gc_maxlifetime')), $this->iniWrapper->getNumeric('session.gc_maxlifetime')),
-				'session_keepalive'	=> $this->config->getSystemValue('session_keepalive', true),
-				'version'			=> implode('.', \OCP\Util::getVersion()),
-				'versionstring'		=> \OC_Util::getVersionString(),
-				'enable_avatars'	=> true, // here for legacy reasons - to not crash existing code that relies on this value
-				'lost_password_link'=> $this->config->getSystemValue('lost_password_link', null),
-				'modRewriteWorking'	=> ($this->config->getSystemValue('htaccess.IgnoreFrontController', false) === true || getenv('front_controller_active') === 'true'),
+				'session_lifetime' => min($this->config->getSystemValue('session_lifetime', $this->iniWrapper->getNumeric('session.gc_maxlifetime')), $this->iniWrapper->getNumeric('session.gc_maxlifetime')),
+				'session_keepalive' => $this->config->getSystemValue('session_keepalive', true),
+				'version' => implode('.', \OCP\Util::getVersion()),
+				'versionstring' => \OC_Util::getVersionString(),
+				'enable_avatars' => true, // here for legacy reasons - to not crash existing code that relies on this value
+				'lost_password_link' => $this->config->getSystemValue('lost_password_link', null),
+				'modRewriteWorking' => ($this->config->getSystemValue('htaccess.IgnoreFrontController', false) === true || getenv('front_controller_active') === 'true'),
 				'sharing.maxAutocompleteResults' => intval($this->config->getSystemValue('sharing.maxAutocompleteResults', 0)),
 				'sharing.minSearchStringLength' => intval($this->config->getSystemValue('sharing.minSearchStringLength', 0)),
 				'blacklist_files_regex' => \OCP\Files\FileInfo::BLACKLIST_FILES_REGEX,
@@ -254,13 +256,13 @@ class JSConfigHelper {
 		}
 
 		// Allow hooks to modify the output values
-		\OC_Hook::emit('\OCP\Config', 'js', array('array' => &$array));
+		\OC_Hook::emit('\OCP\Config', 'js', ['array' => &$array]);
 
 		$result = '';
 
 		// Echo it
-		foreach ($array as  $setting => $value) {
-			$result .= 'var '. $setting . '='. $value . ';' . PHP_EOL;
+		foreach ($array as $setting => $value) {
+			$result .= 'var ' . $setting . '=' . $value . ';' . PHP_EOL;
 		}
 
 		return $result;

@@ -38,7 +38,7 @@ class ExpireTrash extends Command {
 	 * @var Expiration
 	 */
 	private $expiration;
-	
+
 	/**
 	 * @var IUserManager
 	 */
@@ -48,8 +48,10 @@ class ExpireTrash extends Command {
 	 * @param IUserManager|null $userManager
 	 * @param Expiration|null $expiration
 	 */
-	public function __construct(IUserManager $userManager = null,
-								Expiration $expiration = null) {
+	public function __construct(
+		IUserManager $userManager = null,
+		Expiration $expiration = null
+	) {
 		parent::__construct();
 
 		$this->userManager = $userManager;
@@ -68,7 +70,6 @@ class ExpireTrash extends Command {
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
-
 		$maxAge = $this->expiration->getMaxAgeAsTimestamp();
 		if (!$maxAge) {
 			$output->writeln("No expiry configured.");
@@ -89,7 +90,7 @@ class ExpireTrash extends Command {
 		} else {
 			$p = new ProgressBar($output);
 			$p->start();
-			$this->userManager->callForSeenUsers(function(IUser $user) use ($p) {
+			$this->userManager->callForSeenUsers(function (IUser $user) use ($p) {
 				$p->advance();
 				$this->expireTrashForUser($user);
 			});
@@ -98,7 +99,7 @@ class ExpireTrash extends Command {
 		}
 	}
 
-	function expireTrashForUser(IUser $user) {
+	public function expireTrashForUser(IUser $user) {
 		$uid = $user->getUID();
 		if (!$this->setupFS($uid)) {
 			return;
@@ -109,6 +110,7 @@ class ExpireTrash extends Command {
 
 	/**
 	 * Act on behalf on trash item owner
+	 *
 	 * @param string $user
 	 * @return boolean
 	 */

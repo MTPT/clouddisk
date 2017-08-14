@@ -23,7 +23,6 @@
 
 namespace OC\Notification;
 
-
 use OCP\Notification\IApp;
 use OCP\Notification\IManager;
 use OCP\Notification\INotification;
@@ -80,7 +79,7 @@ class Manager implements IManager {
 	/**
 	 * @param \Closure $service The service must implement INotifier, otherwise a
 	 *                          \InvalidArgumentException is thrown later
-	 * @param \Closure $info    An array with the keys 'id' and 'name' containing
+	 * @param \Closure $info An array with the keys 'id' and 'name' containing
 	 *                          the app id and the app name
 	 * @since 8.2.0 - Parameter $info was added in 9.0.0
 	 */

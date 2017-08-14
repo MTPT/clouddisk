@@ -46,10 +46,11 @@ class SessionMiddleware extends Middleware {
 	 * @param IRequest $request
 	 * @param ControllerMethodReflector $reflector
 	 */
-	public function __construct(IRequest $request,
-								ControllerMethodReflector $reflector,
-								ISession $session
-) {
+	public function __construct(
+		IRequest $request,
+		ControllerMethodReflector $reflector,
+		ISession $session
+	) {
 		$this->request = $request;
 		$this->reflector = $reflector;
 		$this->session = $session;
@@ -72,12 +73,11 @@ class SessionMiddleware extends Middleware {
 	 * @param Response $response
 	 * @return Response
 	 */
-	public function afterController($controller, $methodName, Response $response){
+	public function afterController($controller, $methodName, Response $response) {
 		$useSession = $this->reflector->hasAnnotation('UseSession');
 		if ($useSession) {
 			$this->session->close();
 		}
 		return $response;
 	}
-
 }

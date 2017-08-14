@@ -47,12 +47,13 @@ class App {
 	/**
 	 * Turns an app id into a namespace by either reading the appinfo.xml's
 	 * namespace tag or uppercasing the appid's first letter
+	 *
 	 * @param string $appId the app id
 	 * @param string $topNamespace the namespace which should be prepended to
 	 * the transformed app id, defaults to OCA\
 	 * @return string the starting namespace for the app
 	 */
-	public static function buildAppNamespace($appId, $topNamespace='OCA\\') {
+	public static function buildAppNamespace($appId, $topNamespace = 'OCA\\') {
 		// Hit the cache!
 		if (isset(self::$nameSpaceCache[$appId])) {
 			return $topNamespace . self::$nameSpaceCache[$appId];
@@ -72,6 +73,7 @@ class App {
 
 	/**
 	 * Shortcut for calling a controller method and printing the result
+	 *
 	 * @param string $controllerName the name of the controller under which it is
 	 *                               stored in the DI container
 	 * @param string $methodName the method that you want to call
@@ -81,7 +83,7 @@ class App {
 	public static function main($controllerName, $methodName, DIContainer $container, array $urlParams = null) {
 		if (!is_null($urlParams)) {
 			$container['OCP\\IRequest']->setUrlParameters($urlParams);
-		} else if (isset($container['urlParams']) && !is_null($container['urlParams'])) {
+		} elseif (isset($container['urlParams']) && !is_null($container['urlParams'])) {
 			$container['OCP\\IRequest']->setUrlParameters($container['urlParams']);
 		}
 		$appName = $container['AppName'];
@@ -89,10 +91,10 @@ class App {
 		// first try $controllerName then go for \OCA\AppName\Controller\$controllerName
 		try {
 			$controller = $container->query($controllerName);
-		} catch(QueryException $e) {
+		} catch (QueryException $e) {
 			if ($appName === 'core') {
 				$appNameSpace = 'OC\\Core';
-			} else if ($appName === 'settings') {
+			} elseif ($appName === 'settings') {
 				$appNameSpace = 'OC\\Settings';
 			} else {
 				$appNameSpace = self::buildAppNamespace($appName);
@@ -111,21 +113,21 @@ class App {
 			$responseCookies,
 			$output,
 			$response
-		) = $dispatcher->dispatch($controller, $methodName);
+			) = $dispatcher->dispatch($controller, $methodName);
 
 		$io = $container['OCP\\AppFramework\\Http\\IOutput'];
 
-		if(!is_null($httpHeaders)) {
+		if (!is_null($httpHeaders)) {
 			$io->setHeader($httpHeaders);
 		}
 
-		foreach($responseHeaders as $name => $value) {
+		foreach ($responseHeaders as $name => $value) {
 			$io->setHeader($name . ': ' . $value);
 		}
 
-		foreach($responseCookies as $name => $value) {
+		foreach ($responseCookies as $name => $value) {
 			$expireDate = null;
-			if($value['expireDate'] instanceof \DateTime) {
+			if ($value['expireDate'] instanceof \DateTime) {
 				$expireDate = $value['expireDate']->getTimestamp();
 			}
 			$io->setCookie(
@@ -148,12 +150,11 @@ class App {
 		if ($httpHeaders !== Http::STATUS_NO_CONTENT && $httpHeaders !== Http::STATUS_NOT_MODIFIED) {
 			if ($response instanceof ICallbackResponse) {
 				$response->callback($io);
-			} else if (!is_null($output)) {
+			} elseif (!is_null($output)) {
 				$io->setHeader('Content-Length: ' . strlen($output));
 				$io->setOutput($output);
 			}
 		}
-
 	}
 
 	/**
@@ -168,16 +169,18 @@ class App {
 	 * @param array $urlParams an array with variables extracted from the routes
 	 * @param DIContainer $container an instance of a pimple container.
 	 */
-	public static function part($controllerName, $methodName, array $urlParams,
-								DIContainer $container){
-
+	public static function part(
+		$controllerName,
+		$methodName,
+		array $urlParams,
+		DIContainer $container
+	) {
 		$container['urlParams'] = $urlParams;
 		$controller = $container[$controllerName];
 
 		$dispatcher = $container['Dispatcher'];
 
-		list(, , $output) =  $dispatcher->dispatch($controller, $methodName);
+		list(, , $output) = $dispatcher->dispatch($controller, $methodName);
 		return $output;
 	}
-
 }

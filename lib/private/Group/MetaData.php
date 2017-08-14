@@ -39,7 +39,7 @@ class MetaData {
 	/** @var bool */
 	protected $isAdmin;
 	/** @var array */
-	protected $metaData = array();
+	protected $metaData = [];
 	/** @var \OCP\IGroupManager */
 	protected $groupManager;
 	/** @var bool */
@@ -54,11 +54,11 @@ class MetaData {
 	 * @param IUserSession $userSession
 	 */
 	public function __construct(
-			$user,
-			$isAdmin,
-			\OCP\IGroupManager $groupManager,
-			IUserSession $userSession
-			) {
+		$user,
+		$isAdmin,
+		\OCP\IGroupManager $groupManager,
+		IUserSession $userSession
+	) {
 		$this->user = $user;
 		$this->isAdmin = (bool)$isAdmin;
 		$this->groupManager = $groupManager;
@@ -70,6 +70,7 @@ class MetaData {
 	 * the array is structured as follows:
 	 * [0] array containing meta data about admin groups
 	 * [1] array containing meta data about unprivileged groups
+	 *
 	 * @param string $groupSearch only effective when instance was created with
 	 * isAdmin being true
 	 * @param string $userSearch the pattern users are search for
@@ -77,25 +78,26 @@ class MetaData {
 	 */
 	public function get($groupSearch = '', $userSearch = '') {
 		$key = $groupSearch . '::' . $userSearch;
-		if(isset($this->metaData[$key])) {
+		if (isset($this->metaData[$key])) {
 			return $this->metaData[$key];
 		}
 
-		$adminGroups = array();
-		$groups = array();
+		$adminGroups = [];
+		$groups = [];
 		$sortGroupsIndex = 0;
-		$sortGroupsKeys = array();
+		$sortGroupsKeys = [];
 		$sortAdminGroupsIndex = 0;
-		$sortAdminGroupsKeys = array();
+		$sortAdminGroupsKeys = [];
 
-		foreach($this->getGroups($groupSearch) as $group) {
+		foreach ($this->getGroups($groupSearch) as $group) {
 			$groupMetaData = $this->generateGroupMetaData($group, $userSearch);
 			if (strtolower($group->getGID()) !== 'admin') {
 				$this->addEntry(
 					$groups,
 					$sortGroupsKeys,
 					$sortGroupsIndex,
-					$groupMetaData);
+					$groupMetaData
+				);
 			} else {
 				//admin group is hard coded to 'admin' for now. In future,
 				//backends may define admin groups too. Then the if statement
@@ -104,7 +106,8 @@ class MetaData {
 					$adminGroups,
 					$sortAdminGroupsKeys,
 					$sortAdminGroupsIndex,
-					$groupMetaData);
+					$groupMetaData
+				);
 			}
 		}
 
@@ -112,7 +115,7 @@ class MetaData {
 		$this->sort($groups, $sortGroupsKeys);
 		$this->sort($adminGroups, $sortAdminGroupsKeys);
 
-		$this->metaData[$key] = array($adminGroups, $groups);
+		$this->metaData[$key] = [$adminGroups, $groups];
 		return $this->metaData[$key];
 	}
 
@@ -135,6 +138,7 @@ class MetaData {
 
 	/**
 	 * adds an group entry to the resulting array
+	 *
 	 * @param array $entries the resulting array, by reference
 	 * @param array $sortKeys the sort key array, by reference
 	 * @param int $sortIndex the sort key index, by reference
@@ -145,7 +149,7 @@ class MetaData {
 		if ($this->sorting === self::SORT_USERCOUNT) {
 			$sortKeys[$sortIndex] = $data['usercount'];
 			$sortIndex++;
-		} else if ($this->sorting === self::SORT_GROUPNAME) {
+		} elseif ($this->sorting === self::SORT_GROUPNAME) {
 			$sortKeys[$sortIndex] = $data['name'];
 			$sortIndex++;
 		}
@@ -153,20 +157,22 @@ class MetaData {
 
 	/**
 	 * creates an array containing the group meta data
+	 *
 	 * @param \OCP\IGroup $group
 	 * @param string $userSearch
 	 * @return array with the keys 'id', 'name' and 'usercount'
 	 */
 	private function generateGroupMetaData(\OCP\IGroup $group, $userSearch) {
-		return array(
-				'id' => $group->getGID(),
-				'name' => $group->getGID(),
-				'usercount' => $this->sorting === self::SORT_USERCOUNT ? $group->count($userSearch) : 0,
-			);
+		return [
+			'id' => $group->getGID(),
+			'name' => $group->getGID(),
+			'usercount' => $this->sorting === self::SORT_USERCOUNT ? $group->count($userSearch) : 0,
+		];
 	}
 
 	/**
 	 * sorts the result array, if applicable
+	 *
 	 * @param array $entries the result array, by reference
 	 * @param array $sortKeys the array containing the sort keys
 	 * @param return null
@@ -174,22 +180,23 @@ class MetaData {
 	private function sort(&$entries, $sortKeys) {
 		if ($this->sorting === self::SORT_USERCOUNT) {
 			array_multisort($sortKeys, SORT_DESC, $entries);
-		} else if ($this->sorting === self::SORT_GROUPNAME) {
+		} elseif ($this->sorting === self::SORT_GROUPNAME) {
 			array_multisort($sortKeys, SORT_ASC, $entries);
 		}
 	}
 
 	/**
 	 * returns the available groups
+	 *
 	 * @param string $search a search string
 	 * @return \OCP\IGroup[]
 	 */
 	protected function getGroups($search = '') {
-		if($this->isAdmin) {
+		if ($this->isAdmin) {
 			return $this->groupManager->search($search);
 		} else {
 			$userObject = $this->userSession->getUser();
-			if($userObject !== null) {
+			if ($userObject !== null) {
 				$groups = $this->groupManager->getSubAdmin()->getSubAdminsGroups($userObject);
 			} else {
 				$groups = [];

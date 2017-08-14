@@ -141,6 +141,7 @@ class Propagator implements IPropagator {
 
 	/**
 	 * Commit the active propagation batch
+	 *
 	 * @suppress SqlInjectionChecker
 	 */
 	public function commitBatch() {
@@ -185,6 +186,4 @@ class Propagator implements IPropagator {
 
 		$this->connection->commit();
 	}
-
-
 }

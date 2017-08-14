@@ -30,7 +30,6 @@ use OCP\AppFramework\Http\DataResponse;
 use OCP\IL10N;
 use OCP\IRequest;
 
-
 class SettingsController extends Controller {
 
 	/** @var IL10N */
@@ -45,10 +44,11 @@ class SettingsController extends Controller {
 	 * @param IL10N $l10n
 	 * @param TrustedServers $trustedServers
 	 */
-	public function __construct($AppName,
-								IRequest $request,
-								IL10N $l10n,
-								TrustedServers $trustedServers
+	public function __construct(
+		$AppName,
+		IRequest $request,
+		IL10N $l10n,
+		TrustedServers $trustedServers
 	) {
 		parent::__construct($AppName, $request);
 		$this->l = $l10n;
@@ -71,7 +71,7 @@ class SettingsController extends Controller {
 			[
 				'url' => $url,
 				'id' => $id,
-				'message' => (string) $this->l->t('Added to the list of trusted servers')
+				'message' => (string)$this->l->t('Added to the list of trusted servers')
 			]
 		);
 	}
@@ -119,5 +119,4 @@ class SettingsController extends Controller {
 
 		return true;
 	}
-
 }

@@ -39,7 +39,6 @@ use OCP\L10N\IFactory;
 /**
  * Manages the ownCloud navigation
  */
-
 class NavigationManager implements INavigationManager {
 	protected $entries = [];
 	protected $closureEntries = [];
@@ -59,12 +58,14 @@ class NavigationManager implements INavigationManager {
 	/** @var IConfig */
 	private $config;
 
-	public function __construct(IAppManager $appManager,
-						 IURLGenerator $urlGenerator,
-						 IFactory $l10nFac,
-						 IUserSession $userSession,
-						 IGroupManager $groupManager,
-						 IConfig $config) {
+	public function __construct(
+		IAppManager $appManager,
+		IURLGenerator $urlGenerator,
+		IFactory $l10nFac,
+		IUserSession $userSession,
+		IGroupManager $groupManager,
+		IConfig $config
+	) {
 		$this->appManager = $appManager;
 		$this->urlGenerator = $urlGenerator;
 		$this->l10nFac = $l10nFac;
@@ -77,8 +78,8 @@ class NavigationManager implements INavigationManager {
 	 * Creates a new navigation entry
 	 *
 	 * @param array|\Closure $entry Array containing: id, name, order, icon and href key
-	 *					The use of a closure is preferred, because it will avoid
-	 * 					loading the routing of your app, unless required.
+	 *                    The use of a closure is preferred, because it will avoid
+	 *                    loading the routing of your app, unless required.
 	 * @return void
 	 */
 	public function add($entry) {
@@ -88,10 +89,10 @@ class NavigationManager implements INavigationManager {
 		}
 
 		$entry['active'] = false;
-		if(!isset($entry['icon'])) {
+		if (!isset($entry['icon'])) {
 			$entry['icon'] = '';
 		}
-		if(!isset($entry['type'])) {
+		if (!isset($entry['type'])) {
 			$entry['type'] = 'link';
 		}
 		$this->entries[] = $entry;
@@ -99,6 +100,7 @@ class NavigationManager implements INavigationManager {
 
 	/**
 	 * returns all the added Menu entries
+	 *
 	 * @param string $type
 	 * @return array an array of the added entries
 	 */
@@ -107,13 +109,13 @@ class NavigationManager implements INavigationManager {
 		foreach ($this->closureEntries as $c) {
 			$this->add($c());
 		}
-		$this->closureEntries = array();
+		$this->closureEntries = [];
 
 		if ($type === 'all') {
 			return $this->entries;
 		}
 
-		return array_filter($this->entries, function($entry) use ($type) {
+		return array_filter($this->entries, function ($entry) use ($type) {
 			return $entry['type'] === $type;
 		});
 	}
@@ -129,6 +131,7 @@ class NavigationManager implements INavigationManager {
 
 	/**
 	 * Sets the current navigation entry of the currently running app
+	 *
 	 * @param string $id of the app entry to activate (from added $entry)
 	 */
 	public function setActiveEntry($id) {
@@ -137,6 +140,7 @@ class NavigationManager implements INavigationManager {
 
 	/**
 	 * gets the active Menu entry
+	 *
 	 * @return string id or empty string
 	 *
 	 * This function returns the id of the active navigation entry (set by

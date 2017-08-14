@@ -20,6 +20,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 namespace OC\Repair\NC11;
 
 use OCP\BackgroundJob\IJobList;
@@ -47,9 +48,11 @@ class CleanPreviews implements IRepairStep {
 	 * @param IUserManager $userManager
 	 * @param IConfig $config
 	 */
-	public function __construct(IJobList $jobList,
-								IUserManager $userManager,
-								IConfig $config) {
+	public function __construct(
+		IJobList $jobList,
+		IUserManager $userManager,
+		IConfig $config
+	) {
 		$this->jobList = $jobList;
 		$this->userManager = $userManager;
 		$this->config = $config;

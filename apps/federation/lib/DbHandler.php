@@ -26,7 +26,6 @@
 
 namespace OCA\Federation;
 
-
 use OC\Files\Filesystem;
 use OC\HintException;
 use OCP\IDBConnection;
@@ -77,7 +76,7 @@ class DbHandler {
 		$query->insert($this->dbTable)
 			->values(
 				[
-					'url' =>  $query->createParameter('url'),
+					'url' => $query->createParameter('url'),
 					'url_hash' => $query->createParameter('url_hash'),
 				]
 			)
@@ -303,7 +302,7 @@ class DbHandler {
 
 		if (strpos($url, 'https://') === 0) {
 			$normalized = substr($url, strlen('https://'));
-		} else if (strpos($url, 'http://') === 0) {
+		} elseif (strpos($url, 'http://') === 0) {
 			$normalized = substr($url, strlen('http://'));
 		}
 
@@ -331,5 +330,4 @@ class DbHandler {
 		$statement->closeCursor();
 		return !empty($result);
 	}
-
 }

@@ -40,9 +40,9 @@ class JSResourceLocator extends ResourceLocator {
 	 * @param string $script
 	 */
 	public function doFind($script) {
-		$theme_dir = 'themes/'.$this->theme.'/';
+		$theme_dir = 'themes/' . $this->theme . '/';
 		if (strpos($script, '3rdparty') === 0
-			&& $this->appendIfExist($this->thirdpartyroot, $script.'.js')) {
+			&& $this->appendIfExist($this->thirdpartyroot, $script . '.js')) {
 			return;
 		}
 
@@ -50,28 +50,28 @@ class JSResourceLocator extends ResourceLocator {
 			// For language files we try to load them all, so themes can overwrite
 			// single l10n strings without having to translate all of them.
 			$found = 0;
-			$found += $this->appendIfExist($this->serverroot, 'core/'.$script.'.js');
-			$found += $this->appendIfExist($this->serverroot, $theme_dir.'core/'.$script.'.js');
-			$found += $this->appendIfExist($this->serverroot, $script.'.js');
-			$found += $this->appendIfExist($this->serverroot, $theme_dir.$script.'.js');
-			$found += $this->appendIfExist($this->serverroot, $theme_dir.'apps/'.$script.'.js');
+			$found += $this->appendIfExist($this->serverroot, 'core/' . $script . '.js');
+			$found += $this->appendIfExist($this->serverroot, $theme_dir . 'core/' . $script . '.js');
+			$found += $this->appendIfExist($this->serverroot, $script . '.js');
+			$found += $this->appendIfExist($this->serverroot, $theme_dir . $script . '.js');
+			$found += $this->appendIfExist($this->serverroot, $theme_dir . 'apps/' . $script . '.js');
 
 			if ($found) {
 				return;
 			}
-		} else if ($this->appendIfExist($this->serverroot, $theme_dir.'apps/'.$script.'.js')
-			|| $this->appendIfExist($this->serverroot, $theme_dir.$script.'.js')
-			|| $this->appendIfExist($this->serverroot, $script.'.js')
-			|| $this->cacheAndAppendCombineJsonIfExist($this->serverroot, $script.'.json')
-			|| $this->appendIfExist($this->serverroot, $theme_dir.'core/'.$script.'.js')
-			|| $this->appendIfExist($this->serverroot, 'core/'.$script.'.js')
-			|| $this->cacheAndAppendCombineJsonIfExist($this->serverroot, 'core/'.$script.'.json')
+		} elseif ($this->appendIfExist($this->serverroot, $theme_dir . 'apps/' . $script . '.js')
+			|| $this->appendIfExist($this->serverroot, $theme_dir . $script . '.js')
+			|| $this->appendIfExist($this->serverroot, $script . '.js')
+			|| $this->cacheAndAppendCombineJsonIfExist($this->serverroot, $script . '.json')
+			|| $this->appendIfExist($this->serverroot, $theme_dir . 'core/' . $script . '.js')
+			|| $this->appendIfExist($this->serverroot, 'core/' . $script . '.js')
+			|| $this->cacheAndAppendCombineJsonIfExist($this->serverroot, 'core/' . $script . '.json')
 		) {
 			return;
 		}
 
 		$app = substr($script, 0, strpos($script, '/'));
-		$script = substr($script, strpos($script, '/')+1);
+		$script = substr($script, strpos($script, '/') + 1);
 		$app_path = \OC_App::getAppPath($app);
 		$app_url = \OC_App::getAppWebPath($app);
 
@@ -89,7 +89,7 @@ class JSResourceLocator extends ResourceLocator {
 			return;
 		}
 
-		if (!$this->cacheAndAppendCombineJsonIfExist($app_path, $script.'.json', $app)) {
+		if (!$this->cacheAndAppendCombineJsonIfExist($app_path, $script . '.json', $app)) {
 			$this->append($app_path, $script . '.js', $app_url);
 		}
 	}
@@ -101,7 +101,7 @@ class JSResourceLocator extends ResourceLocator {
 	}
 
 	protected function cacheAndAppendCombineJsonIfExist($root, $file, $app = 'core') {
-		if (is_file($root.'/'.$file)) {
+		if (is_file($root . '/' . $file)) {
 			if ($this->jsCombiner->process($root, $file, $app)) {
 				$this->append($this->serverroot, $this->jsCombiner->getCachedJS($app, $file), false, false);
 			} else {

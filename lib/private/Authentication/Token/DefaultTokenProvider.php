@@ -57,11 +57,13 @@ class DefaultTokenProvider implements IProvider {
 	 * @param ILogger $logger
 	 * @param ITimeFactory $time
 	 */
-	public function __construct(DefaultTokenMapper $mapper,
-								ICrypto $crypto,
-								IConfig $config,
-								ILogger $logger,
-								ITimeFactory $time) {
+	public function __construct(
+		DefaultTokenMapper $mapper,
+		ICrypto $crypto,
+		IConfig $config,
+		ILogger $logger,
+		ITimeFactory $time
+	) {
 		$this->mapper = $mapper;
 		$this->crypto = $crypto;
 		$this->config = $config;
@@ -252,10 +254,10 @@ class DefaultTokenProvider implements IProvider {
 	 * Invalidate (delete) old session tokens
 	 */
 	public function invalidateOldTokens() {
-		$olderThan = $this->time->getTime() - (int) $this->config->getSystemValue('session_lifetime', 60 * 60 * 24);
+		$olderThan = $this->time->getTime() - (int)$this->config->getSystemValue('session_lifetime', 60 * 60 * 24);
 		$this->logger->debug('Invalidating session tokens older than ' . date('c', $olderThan), ['app' => 'cron']);
 		$this->mapper->invalidateOld($olderThan, IToken::DO_NOT_REMEMBER);
-		$rememberThreshold = $this->time->getTime() - (int) $this->config->getSystemValue('remember_login_cookie_lifetime', 60 * 60 * 24 * 15);
+		$rememberThreshold = $this->time->getTime() - (int)$this->config->getSystemValue('remember_login_cookie_lifetime', 60 * 60 * 24 * 15);
 		$this->logger->debug('Invalidating remembered session tokens older than ' . date('c', $rememberThreshold), ['app' => 'cron']);
 		$this->mapper->invalidateOld($rememberThreshold, IToken::REMEMBER);
 	}
@@ -303,5 +305,4 @@ class DefaultTokenProvider implements IProvider {
 			throw new InvalidTokenException();
 		}
 	}
-
 }

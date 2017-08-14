@@ -54,7 +54,7 @@ class Response implements IResponse {
 	 */
 	public function getBody() {
 		return $this->stream ?
-			$this->response->getBody()->detach():
+			$this->response->getBody()->detach() :
 			$this->response->getBody()->getContents();
 	}
 

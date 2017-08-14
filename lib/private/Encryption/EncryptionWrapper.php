@@ -23,7 +23,6 @@
 
 namespace OC\Encryption;
 
-
 use OC\Memcache\ArrayCache;
 use OC\Files\Filesystem;
 use OC\Files\Storage\Wrapper\Encryption;
@@ -41,7 +40,7 @@ use OCP\ILogger;
  */
 class EncryptionWrapper {
 
-	/** @var ArrayCache  */
+	/** @var ArrayCache */
 	private $arrayCache;
 
 	/** @var  Manager */
@@ -57,9 +56,10 @@ class EncryptionWrapper {
 	 * @param Manager $manager
 	 * @param ILogger $logger
 	 */
-	public function __construct(ArrayCache $arrayCache,
-								Manager $manager,
-								ILogger $logger
+	public function __construct(
+		ArrayCache $arrayCache,
+		Manager $manager,
+		ILogger $logger
 	) {
 		$this->arrayCache = $arrayCache;
 		$this->manager = $manager;
@@ -84,7 +84,6 @@ class EncryptionWrapper {
 		if (!$storage->instanceOfStorage('OCA\Files_Sharing\SharedStorage')
 			&& !$storage->instanceOfStorage('OCA\Files_Sharing\External\Storage')
 			&& !$storage->instanceOfStorage('OC\Files\Storage\OwnCloud')) {
-
 			$user = \OC::$server->getUserSession()->getUser();
 			$mountManager = Filesystem::getMountManager();
 			$uid = $user ? $user->getUID() : null;
@@ -121,5 +120,4 @@ class EncryptionWrapper {
 			return $storage;
 		}
 	}
-
 }
