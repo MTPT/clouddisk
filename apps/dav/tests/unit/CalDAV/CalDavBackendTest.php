@@ -727,6 +727,23 @@ EOD;
 		$this->assertEquals(count($search5), 0);
 	}
 
+	public function testCalendarMovement()
+	{
+		$this->backend->createCalendar(self::UNIT_TEST_USER, 'Example', []);
+
+		$this->assertCount(1, $this->backend->getCalendarsForUser(self::UNIT_TEST_USER));
+
+		$calendarInfoUser = $this->backend->getCalendarsForUser(self::UNIT_TEST_USER)[0];
+
+		$this->backend->moveCalendar('Example', self::UNIT_TEST_USER, self::UNIT_TEST_USER1);
+		$this->assertCount(0, $this->backend->getCalendarsForUser(self::UNIT_TEST_USER));
+		$this->assertCount(1, $this->backend->getCalendarsForUser(self::UNIT_TEST_USER1));
+
+		$calendarInfoUser1 = $this->backend->getCalendarsForUser(self::UNIT_TEST_USER1)[0];
+		$this->assertEquals($calendarInfoUser['id'], $calendarInfoUser1['id']);
+		$this->assertEquals($calendarInfoUser['uri'], $calendarInfoUser1['uri']);
+	}
+
 	/**
 	 * @dataProvider searchDataProvider
 	 */

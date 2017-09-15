@@ -96,12 +96,12 @@ class MoveCalendar extends Command {
 		}
 
 		if (!$this->userManager->userExists($userOrigin)) {
-			throw new \InvalidArgumentException("User <$userOrigin> in unknown.");
+			throw new \InvalidArgumentException("User <$userOrigin> is unknown.");
 		}
 
 
 		if (!$this->userManager->userExists($userDestination)) {
-			throw new \InvalidArgumentException("User <$userDestination> in unknown.");
+			throw new \InvalidArgumentException("User <$userDestination> is unknown.");
 		}
 
 		$principalBackend = new Principal(
