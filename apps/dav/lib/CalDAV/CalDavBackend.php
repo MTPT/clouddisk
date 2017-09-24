@@ -2293,7 +2293,7 @@ class CalDavBackend extends AbstractBackend implements SyncSupport, Subscription
 	{
 		$query = $this->db->getQueryBuilder();
 		$query->update('calendars')
-			->set('principaluri', $uriDestination)
+			->set('principaluri', $query->createNamedParameter($uriDestination))
 			->where($query->expr()->eq('principaluri', $query->createNamedParameter($uriOrigin)))
 			->andWhere($query->expr()->eq('uri', $query->createNamedParameter($uriName)))
 			->execute();
