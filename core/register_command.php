@@ -155,6 +155,10 @@ if (\OC::$server->getConfig()->getSystemValue('installed', false)) {
 	$application->add(new OC\Core\Command\Security\ListCertificates(\OC::$server->getCertificateManager(null), \OC::$server->getL10N('core')));
 	$application->add(new OC\Core\Command\Security\ImportCertificate(\OC::$server->getCertificateManager(null)));
 	$application->add(new OC\Core\Command\Security\RemoveCertificate(\OC::$server->getCertificateManager(null)));
+
+	$migrateManager = new \OC\Migrate\MigrateManager();
+	$application->add(new OC\Core\Command\Migrate\Migrate($migrateManager, \OC::$server->getAppManager(), \OC::$server, \OC::$server->getRemoteInstanceFactory(), \OC::$server->getRemoteApiFactory()));
+	$application->add(new OC\Core\Command\Migrate\PreMigrate($migrateManager, \OC::$server->getAppManager(), \OC::$server, \OC::$server->getRemoteInstanceFactory(), \OC::$server->getRemoteApiFactory()));
 } else {
 	$application->add(new OC\Core\Command\Maintenance\Install(\OC::$server->getSystemConfig()));
 }

@@ -10,6 +10,7 @@
 namespace Test\App;
 
 use OC\App\AppManager;
+use OC\App\InfoParser;
 use OC\Group\Group;
 use OC\User\User;
 use OCP\App\AppPathNotFoundException;
@@ -103,7 +104,7 @@ class AppManagerTest extends TestCase {
 			->method('create')
 			->with('settings')
 			->willReturn($this->cache);
-		$this->manager = new AppManager($this->userSession, $this->appConfig, $this->groupManager, $this->cacheFactory, $this->eventDispatcher);
+		$this->manager = new AppManager($this->userSession, $this->appConfig, $this->groupManager, $this->cacheFactory, $this->eventDispatcher, new InfoParser());
 	}
 
 	protected function expectClearCache() {

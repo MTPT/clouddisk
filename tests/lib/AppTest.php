@@ -9,6 +9,7 @@
 
 namespace Test;
 
+use OC\App\InfoParser;
 use OC\AppConfig;
 use OCP\IAppConfig;
 
@@ -549,7 +550,8 @@ class AppTest extends \Test\TestCase {
 			$appConfig,
 			\OC::$server->getGroupManager(),
 			\OC::$server->getMemCacheFactory(),
-			\OC::$server->getEventDispatcher()
+			\OC::$server->getEventDispatcher(),
+			new InfoParser()
 		));
 	}
 

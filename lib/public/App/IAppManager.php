@@ -99,6 +99,14 @@ interface IAppManager {
 	public function getAppPath($appId);
 
 	/**
+	 * Get the parsed info.xml for the given app
+	 *
+	 * @param string $appId
+	 * @return array
+	 */
+	public function getAppInfo($appId);
+
+	/**
 	 * List all apps enabled for a user
 	 *
 	 * @param \OCP\IUser $user

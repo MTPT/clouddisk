@@ -491,6 +491,17 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 			->method('getName')
 			->willReturn('Nextcloud');
 		/** @var IL10N|\PHPUnit_Framework_MockObject_MockObject $l10n */
+		$l10n = $this->getL10NMock();
+
+		$t = new Base($template, $requestToken, $l10n, $theme);
+		$buf = $t->fetchPage($vars);
+		$this->assertHtmlStringEqualsHtmlString($expectedHtml, $buf);
+	}
+
+	/**
+	 * @return IL10N|\PHPUnit_Framework_MockObject_MockObject
+	 */
+	protected function getL10NMock() {
 		$l10n = $this->getMockBuilder('\OCP\IL10N')
 			->disableOriginalConstructor()->getMock();
 		$l10n
@@ -500,9 +511,8 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase {
 				return vsprintf($text, $parameters);
 			}));
 
-		$t = new Base($template, $requestToken, $l10n, $theme);
-		$buf = $t->fetchPage($vars);
-		$this->assertHtmlStringEqualsHtmlString($expectedHtml, $buf);
+		return $l10n;
+
 	}
 
 	/**

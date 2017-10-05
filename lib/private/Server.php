@@ -48,6 +48,7 @@ use OC\App\AppManager;
 use OC\App\AppStore\Bundles\BundleFetcher;
 use OC\App\AppStore\Fetcher\AppFetcher;
 use OC\App\AppStore\Fetcher\CategoryFetcher;
+use OC\App\InfoParser;
 use OC\AppFramework\Http\Request;
 use OC\AppFramework\Utility\SimpleContainer;
 use OC\AppFramework\Utility\TimeFactory;
@@ -657,7 +658,8 @@ class Server extends ServerContainer implements IServerContainer {
 				$c->getAppConfig(),
 				$c->getGroupManager(),
 				$c->getMemCacheFactory(),
-				$c->getEventDispatcher()
+				$c->getEventDispatcher(),
+				new InfoParser($c->getMemCacheFactory()->createLocal('core.appinfo'))
 			);
 		});
 		$this->registerAlias('AppManager', AppManager::class);

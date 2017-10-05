@@ -45,6 +45,7 @@ class AppManager implements IAppManager {
 
 	/**
 	 * Apps with these types can not be enabled for certain groups only
+	 *
 	 * @var string[]
 	 */
 	protected $protectedAppTypes = [
@@ -79,23 +80,29 @@ class AppManager implements IAppManager {
 	/** @var string[] */
 	private $alwaysEnabled;
 
+	/** @var InfoParser */
+	private $appInfoParser;
+
 	/**
 	 * @param IUserSession $userSession
 	 * @param IAppConfig $appConfig
 	 * @param IGroupManager $groupManager
 	 * @param ICacheFactory $memCacheFactory
 	 * @param EventDispatcherInterface $dispatcher
+	 * @param InfoParser $appInfoParser
 	 */
 	public function __construct(IUserSession $userSession,
 								IAppConfig $appConfig,
 								IGroupManager $groupManager,
 								ICacheFactory $memCacheFactory,
-								EventDispatcherInterface $dispatcher) {
+								EventDispatcherInterface $dispatcher,
+								InfoParser $appInfoParser) {
 		$this->userSession = $userSession;
 		$this->appConfig = $appConfig;
 		$this->groupManager = $groupManager;
 		$this->memCacheFactory = $memCacheFactory;
 		$this->dispatcher = $dispatcher;
+		$this->appInfoParser = $appInfoParser;
 	}
 
 	/**
@@ -106,7 +113,7 @@ class AppManager implements IAppManager {
 			$values = $this->appConfig->getValues(false, 'enabled');
 
 			$alwaysEnabledApps = $this->getAlwaysEnabledApps();
-			foreach($alwaysEnabledApps as $appId) {
+			foreach ($alwaysEnabledApps as $appId) {
 				$values[$appId] = 'yes';
 			}
 
@@ -174,7 +181,7 @@ class AppManager implements IAppManager {
 		} elseif ($user === null) {
 			return false;
 		} else {
-			if(empty($enabled)){
+			if (empty($enabled)) {
 				return false;
 			}
 
@@ -295,7 +302,7 @@ class AppManager implements IAppManager {
 	 */
 	public function getAppPath($appId) {
 		$appPath = \OC_App::getAppPath($appId);
-		if($appPath === false) {
+		if ($appPath === false) {
 			throw new AppPathNotFoundException('Could not find path for ' . $appId);
 		}
 		return $appPath;

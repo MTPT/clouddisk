@@ -87,5 +87,8 @@
 		"admin-section": [],
 		"personal": [],
 		"personal-section": []
-	}
+	},
+	"migrate": [
+		"OCA\\Files\\Migrate\\MigratePlugin"
+	]
 }

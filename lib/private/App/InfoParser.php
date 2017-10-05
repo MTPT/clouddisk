@@ -137,6 +137,9 @@ class InfoParser {
 		if (!array_key_exists('personal-section', $array['settings'])) {
 			$array['settings']['personal-section'] = [];
 		}
+		if (!array_key_exists('migrate', $array)) {
+			$array['migrate'] = [];
+		}
 
 		if (array_key_exists('types', $array)) {
 			if (is_array($array['types'])) {
@@ -197,6 +200,13 @@ class InfoParser {
 		}
 		if (isset($array['settings']['personal-section']) && !is_array($array['settings']['personal-section'])) {
 			$array['settings']['personal-section'] = [$array['settings']['personal-section']];
+		}
+		if (isset($array['migrate']['plugin'])) {
+			if (is_array($array['migrate']['plugin'])) {
+				$array['migrate'] = $array['migrate']['plugin'];
+			} else {
+				$array['migrate'] = [$array['migrate']['plugin']];
+			}
 		}
 
 		if(!is_null($this->cache)) {

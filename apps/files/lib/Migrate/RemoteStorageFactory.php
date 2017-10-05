@@ -19,37 +19,24 @@
  *
  */
 
-namespace OC\Remote\Api;
+namespace OCA\Files\Migrate;
 
 
-use OCP\Http\Client\IClientService;
-use OCP\Remote\Api\IApiCollection;
 use OCP\Remote\ICredentials;
 use OCP\Remote\IInstance;
 
-class ApiCollection implements IApiCollection {
-	/** @var IInstance */
-	private $instance;
-	/** @var ICredentials */
-	private $credentials;
-	/** @var IClientService */
-	private $clientService;
-
-	public function __construct(IInstance $instance, ICredentials $credentials, IClientService $clientService) {
-		$this->instance = $instance;
-		$this->credentials = $credentials;
-		$this->clientService = $clientService;
-	}
-
-	public function getCapabilitiesApi() {
-		return new OCS($this->instance, $this->credentials, $this->clientService);
-	}
-
-	public function getUserApi() {
-		return new OCS($this->instance, $this->credentials, $this->clientService);
-	}
-
-	public function getStorageApi() {
-
+class RemoteStorageFactory {
+	/**
+	 * @param IInstance $instance
+	 * @param ICredentials $credentials
+	 * @return RemoteCloudStorage
+	 */
+	public function getRemoteStorage(IInstance $instance, ICredentials $credentials) {
+		return new RemoteCloudStorage([
+			'host' => $instance->getFullUrl() . '/remote.php/files',
+			'secure' => ($instance->getProtocol() === 'https'),
+			'user' => $credentials->getUsername(),
+			'password' => $credentials->getPassword()
+		]);
 	}
 }
