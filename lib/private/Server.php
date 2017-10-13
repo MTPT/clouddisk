@@ -114,6 +114,7 @@ use OCA\Theming\Util;
 use OCP\Federation\ICloudIdManager;
 use OCP\Authentication\LoginCredentials\IStore;
 use OCP\ICacheFactory;
+use OCP\IContainer;
 use OCP\IDBConnection;
 use OCP\IL10N;
 use OCP\IServerContainer;
@@ -1098,6 +1099,10 @@ class Server extends ServerContainer implements IServerContainer {
 		$this->registerService(IInstanceFactory::class, function(Server $c) {
 			$memcacheFactory = $c->getMemCacheFactory();
 			return new InstanceFactory($memcacheFactory->createLocal('remoteinstance.'), $c->getHTTPClientService());
+		});
+
+		$this->registerService(IContainer::class, function(Server $c) {
+			return $c;
 		});
 	}
 
