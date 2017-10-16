@@ -21,7 +21,10 @@
 
 namespace OC\Core\Controller;
 
+use OC\AppFramework\Http;
+use OC\ForbiddenException;
 use OC\Migrate\MigrateManager;
+use OC\Remote\Api\NotFoundException;
 use OC\Remote\Credentials;
 use OCP\App\IAppManager;
 use OCP\AppFramework\Http\DataResponse;
@@ -72,8 +75,18 @@ class MigrateController extends \OCP\AppFramework\OCSController {
 
 	public function migrateUser($targetUser, $remoteUrl, $remoteUser, $remotePassword) {
 		$instance = $this->instanceFactory->getInstance($remoteUrl);
+		$credentials = new Credentials($remoteUser, $remotePassword);
+		$userApi = $this->apiFactory->getApiCollection($instance, $credentials)->getUserApi();
+		try {
+			$userApi->getUser($remoteUser);
+		} catch (NotFoundException $e) {
+			return new DataResponse([], Http::STATUS_NOT_FOUND);
+		} catch (ForbiddenException $e) {
+			return new DataResponse([], Http::STATUS_FORBIDDEN);
+		}
+
 		$this->migrateManager->loadPluginsFromApps($this->appManager, $this->container);
-		$this->migrateManager->migrateFrom($targetUser, $instance, new Credentials($remoteUser, $remotePassword));
-		return new DataResponse(true);
+		$this->migrateManager->migrateFrom($targetUser, $instance, $credentials);
+		return new DataResponse([]);
 	}
 }

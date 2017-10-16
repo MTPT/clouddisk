@@ -97,6 +97,16 @@ default:
             regular_user_password: 123456
         - RemoteContext:
             remote:  http://localhost:8080
+    migrate:
+      paths:
+        - %paths.base%/../migrate_features
+      contexts:
+        - FeatureContext:
+            baseUrl:  http://localhost:8080/ocs/
+            admin:
+              - admin
+              - admin
+            regular_user_password: 123456
   extensions:
       jarnaiz\JUnitFormatter\JUnitFormatterExtension:
           filename: report.xml
