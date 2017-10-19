@@ -29,6 +29,7 @@
 namespace OCA\DAV;
 
 use OC\AppFramework\Utility\TimeFactory;
+use OCA\DAV\AppleProvisioning\AppleProvisioningPlugin;
 use OCA\DAV\CalDAV\Schedule\IMipPlugin;
 use OCA\DAV\CardDAV\ImageExportPlugin;
 use OCA\DAV\CardDAV\PhotoCache;
@@ -251,6 +252,12 @@ class Server {
 						$view
 					)));
 				}
+				$this->server->addPlugin(new AppleProvisioningPlugin(
+					\OC::$server->getUserSession(),
+					\OC::$server->getURLGenerator(),
+					\OC::$server->getThemingDefaults(),
+					\OC::$server->getRequest()
+				));
 			}
 		});
 	}
