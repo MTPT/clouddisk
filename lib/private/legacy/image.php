@@ -539,6 +539,13 @@ class OC_Image implements \OCP\IImage {
 	 * @return bool|resource An image resource or false on error
 	 */
 	public function loadFromFile($imagePath = false) {
+		try {
+			// detect if it is a path or maybe the images as string
+			// needed because the constructor iterates over all load* methods
+			realpath($imagePath);
+		} catch (TypeError $e) {
+			return false;
+		}
 		// exif_imagetype throws "read error!" if file is less than 12 byte
 		if (!@is_file($imagePath) || !file_exists($imagePath) || filesize($imagePath) < 12 || !is_readable($imagePath)) {
 			return false;
