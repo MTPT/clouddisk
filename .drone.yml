@@ -652,8 +652,18 @@ pipeline:
     when:
       matrix:
         TEST: memcache-redis-cluster
+  acceptance-ui:
+    image: nextcloudci/integration-php7.0:integration-php7.0-6
+    commands:
+      - cd tests/ui-regression
+      - ./run-servers.sh
+      - ./run-tests.sh
+    when:
+      matrix:
+        TESTS: acceptance-ui
 matrix:
   include:
+    - TESTS: acceptance-ui
     - TESTS: checkers
     - TESTS: nodb-codecov
       ENABLE_REDIS: true
