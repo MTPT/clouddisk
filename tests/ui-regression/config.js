@@ -13,12 +13,12 @@ module.exports = {
 	/**
 	 * URL that holds the base branch
 	 */
-	urlBase: 'http://localhost:8080/',
+	urlBase: 'http://acceptance-ui-php:8080/',
 
 	/**
 	 * URL that holds the branch to be diffed
 	 */
-	urlChange: 'http://localhost:8081/',
+	urlChange: 'http://acceptance-ui-php:8081/',
 
 	/**
 	 * Path to output directory for screenshot files

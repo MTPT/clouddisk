@@ -23,7 +23,7 @@ module.exports = {
 		if (this.browser) {
 			await this.browser.close();
 		}
-		this.browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox'], headless: false});
+		this.browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox'], headless: true});
 		this.pageBase = await this.browser.newPage();
 		this.pageCompare = await this.browser.newPage();
 	},
