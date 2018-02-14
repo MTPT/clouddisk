@@ -26,6 +26,8 @@ module.exports = {
 		this.browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox'], headless: true});
 		this.pageBase = await this.browser.newPage();
 		this.pageCompare = await this.browser.newPage();
+		this.pageBase.setDefaultNavigationTimeout(60000);
+		this.pageCompare.setDefaultNavigationTimeout(60000);
 	},
 
 	takeAndCompare: async function (test, route, action, options) {
