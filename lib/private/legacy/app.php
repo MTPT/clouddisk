@@ -68,6 +68,7 @@ class OC_App {
 	static private $loadedApps = array();
 	static private $altLogin = array();
 	static private $alreadyRegistered = [];
+	static public $autoDisabledApps = [];
 	const officialApp = 200;
 
 	/**
@@ -154,6 +155,7 @@ class OC_App {
 				if (!\OC::$server->getAppManager()->isShipped($app)) {
 					// Only disable apps which are not shipped
 					self::disable($app);
+					self::$autoDisabledApps[] = $app;
 				}
 			}
 			if (self::isType($app, array('authentication'))) {
