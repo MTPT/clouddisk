@@ -87,7 +87,7 @@ try {
 			@set_time_limit(0);
 		}
 
-		if (!$config->getValue('config_is_read_only', false)) {
+		if (!$config->getSystemValue('config_is_read_only', false)) {
 			// the cron job must be executed with the right user
 			if (!function_exists('posix_getuid')) {
 				echo "The posix extensions are required - see http://php.net/manual/en/book.posix.php" . PHP_EOL;
