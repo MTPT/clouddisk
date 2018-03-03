@@ -4,7 +4,7 @@ const config = require('../config.js');
 describe('installation', function () {
 
 	before(async () => await helper.init(this));
-	after(() => helper.exit());
+	after(async () => await helper.exit());
 
 	config.resolutions.forEach(function (resolution) {
 		it('show-page.' + resolution.title, async function () {
