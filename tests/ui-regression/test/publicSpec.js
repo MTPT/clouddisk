@@ -4,8 +4,11 @@ const config = require('../config.js');
 
 describe('public', function () {
 
-	before(async () => await helper.init(this));
-	after(() => helper.exit());
+	before(async () => { 
+    await helper.init(this)
+    await helper.login(this)
+  });
+	after(async () => await helper.exit());
 
 	/**
 	 * Test invalid file share rendering
@@ -15,20 +18,6 @@ describe('public', function () {
 			return helper.takeAndCompare(this, '/index.php/s/invalid', async function () {
 			}, { waitUntil: 'networkidle2', viewport: resolution});
 		});
-	});
-
-	it('login', async function () {
-		this.timeout(30000);
-		await helper.resetBrowser();
-		return helper.takeAndCompare(this, '/', async function (page) {
-			const login = await page.$('#user');
-			const password = await page.$('#password');
-			await login.type('admin');
-			await password.type('admin');
-			const inputElement = await page.$('input[type=submit]');
-			inputElement.click();
-			return await page.waitForNavigation({waitUntil: 'load'});
-			}, {viewport: {w: 1920, h: 1080}});
 	});
 
 	/**

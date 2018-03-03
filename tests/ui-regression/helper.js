@@ -30,6 +30,25 @@ module.exports = {
 		this.pageCompare.setDefaultNavigationTimeout(60000);
 	},
 
+  login: async function(test) {
+    test.timeout(20000);
+    await this.resetBrowser();
+
+		await this.performLogin(this.pageBase, config.urlBase);
+		await this.performLogin(this.pageCompare, config.urlChange);
+  },
+  
+  performLogin: async function (page, baseUrl) {
+		await page.goto(baseUrl + '/index.php/login', {waitUntil: 'load'});
+    const login = await page.$('#user');
+    const password = await page.$('#password');
+    await login.type('admin');
+    await password.type('admin');
+    const inputElement = await page.$('input[type=submit]');
+    inputElement.click();
+    return await page.waitForNavigation({waitUntil: 'load'});
+  },
+
 	takeAndCompare: async function (test, route, action, options) {
 		if (!options.waitUntil) {
 			options.waitUntil = 'domcontentloaded';
