@@ -659,7 +659,7 @@ pipeline:
       - cd tests/ui-regression
       - npm install
       - mkdir out && chown -R pptruser out node_modules
-      - sudo -u pptruser ./run-tests.sh
+      - sudo -u pptruser ./run-tests.sh || true
     shm_size: '1gb'
     when:
       matrix:
