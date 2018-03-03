@@ -653,7 +653,7 @@ pipeline:
       matrix:
         TEST: memcache-redis-cluster
   acceptance-ui:
-    image: alekzonder/puppeteer:1.0.0-2
+    image: alekzonder/puppeteer:1.1.1-0
     commands:
       - cd tests/ui-regression
       - npm install
