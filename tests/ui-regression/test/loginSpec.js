@@ -4,7 +4,7 @@ const config = require('../config.js');
 describe('login', function () {
 
 	before(async () => await helper.init(this));
-	after(() => helper.exit());
+	after(async () => await helper.exit());
 
 	/**
 	 * Test login page rendering
