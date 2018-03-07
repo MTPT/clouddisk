@@ -26,11 +26,11 @@
 		<?php print_unescaped($_['headers']); ?>
 	</head>
 	<body id="<?php p($_['bodyid']);?>">
-	<?php include 'layout.noscript.warning.php'; ?>
-	<div id="notification-container">
-		<div id="notification"></div>
-	</div>
-	<header role="banner"><div id="header">
+		<?php include 'layout.noscript.warning.php'; ?>
+		<div id="notification-container">
+			<div id="notification"></div>
+		</div>
+		<header role="banner" id="header">
 			<div class="header-left">
 				<a href="<?php print_unescaped(link_to('', 'index.php')); ?>"
 					id="nextcloud">
@@ -134,7 +134,7 @@
 					</div>
 				</div>
 			</div>
-		</div></header>
+		</header>
 
 		<div id="sudo-login-background" class="hidden"></div>
 		<form id="sudo-login-form" class="hidden">
@@ -146,10 +146,8 @@
 			<input class="confirm" value="<?php p($l->t('Confirm')); ?>" type="submit">
 		</form>
 
-		<div id="content-wrapper">
-			<div id="content" class="app-<?php p($_['appid']) ?>" role="main">
-				<?php print_unescaped($_['content']); ?>
-			</div>
+		<div id="content-wrapper" class="app-<?php p($_['appid']) ?>" role="main">
+			<?php print_unescaped($_['content']); ?>
 		</div>
 
 	</body>

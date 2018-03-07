@@ -27,50 +27,48 @@
 </head>
 <body id="<?php p($_['bodyid']);?>">
 <?php include('layout.noscript.warning.php'); ?>
-<header>
-	<div id="header" class="<?php p($_['header-classes']); ?>">
-		<div class="header-left">
-			<span id="nextcloud">
-				<div class="logo logo-icon svg"></div>
-				<h1 class="header-appname">
-					<?php p($template->getHeaderTitle()); ?>
-				</h1>
-				<div class="header-shared-by">
-					<?php p($template->getHeaderDetails()) ?>
-				</div>
-			</span>
-		</div>
-
-		<?php
-		/** @var \OCP\AppFramework\Http\Template\PublicTemplateResponse $template */
-		if($template->getActionCount() !== 0) {
-			$primary = $template->getPrimaryAction();
-			$others = $template->getOtherActions();
-			?>
-		<div class="header-right">
-			<span id="header-primary-action" class="<?php if($template->getActionCount() === 1) {  p($primary->getIcon()); } ?>">
-				<a href="<?php p($primary->getLink()); ?>">
-					<span class="share-menutoggle-text"><?php p($primary->getLabel()) ?></span>
-				</a>
-			</span>
-			<?php if($template->getActionCount()>1) { ?>
-			<div id="header-secondary-action">
-				<span id="header-actions-toggle" class="menutoggle icon-more-white"></span>
-				<div id="share-menu" class="popovermenu menu">
-					<ul>
-						<?php
-							/** @var \OCP\AppFramework\Http\Template\IMenuAction $action */
-							foreach($template->getOtherActions() as $action) {
-								print_unescaped($action->render());
-							}
-						?>
-					</ul>
-				</div>
+<header id="header" class="<?php p($_['header-classes']); ?>">
+	<div class="header-left">
+		<span id="nextcloud">
+			<div class="logo logo-icon svg"></div>
+			<h1 class="header-appname">
+				<?php p($template->getHeaderTitle()); ?>
+			</h1>
+			<div class="header-shared-by">
+				<?php p($template->getHeaderDetails()) ?>
 			</div>
-			<?php } ?>
+		</span>
+	</div>
+
+	<?php
+	/** @var \OCP\AppFramework\Http\Template\PublicTemplateResponse $template */
+	if($template->getActionCount() !== 0) {
+		$primary = $template->getPrimaryAction();
+		$others = $template->getOtherActions();
+		?>
+	<div class="header-right">
+		<span id="header-primary-action" class="<?php if($template->getActionCount() === 1) {  p($primary->getIcon()); } ?>">
+			<a href="<?php p($primary->getLink()); ?>">
+				<span class="share-menutoggle-text"><?php p($primary->getLabel()) ?></span>
+			</a>
+		</span>
+		<?php if($template->getActionCount()>1) { ?>
+		<div id="header-secondary-action">
+			<span id="header-actions-toggle" class="menutoggle icon-more-white"></span>
+			<div id="share-menu" class="popovermenu menu">
+				<ul>
+					<?php
+						/** @var \OCP\AppFramework\Http\Template\IMenuAction $action */
+						foreach($template->getOtherActions() as $action) {
+							print_unescaped($action->render());
+						}
+					?>
+				</ul>
+			</div>
 		</div>
 		<?php } ?>
 	</div>
+	<?php } ?>
 </header>
 <div id="content-wrapper">
 	<div id="content" class="app-<?php p($_['appid']) ?>" role="main">

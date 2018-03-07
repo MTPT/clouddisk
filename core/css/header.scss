@@ -53,6 +53,7 @@
 	background-color: $color-primary;
 	box-sizing: border-box;
 	justify-content: space-between;
+	-webkit-backface-visibility: hidden;
 }
 
 /* LOGO and APP NAME -------------------------------------------------------- */

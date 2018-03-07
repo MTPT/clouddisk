@@ -37,25 +37,11 @@
 
 /* APP SIDEBAR TOGGLE and SWIPE ----------------------------------------------*/
 
-#app-navigation,
-#app-content {
-	position: absolute !important;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-}
+.snapjs-left {
 
-#app-navigation {
-	width: 250px !important;
 }
-
 #app-content {
-	width: 100% !important;
-	left: 0 !important;
-	background-color: $color-main-background;
-	overflow-x: hidden !important;
-	z-index: 1000;
+	margin-left: 0;
 }
 
 /* allow horizontal scrollbar in settings

@@ -289,11 +289,9 @@ body {
 }
 
 #content-wrapper {
-	position: absolute;
-	height: 100%;
+	position: relative;
+	min-height: 100vh;
 	width: 100%;
-	overflow-x: hidden;
-	/* prevent horizontal scrollbar */
 	padding-top: 45px;
 	box-sizing: border-box;
 }
