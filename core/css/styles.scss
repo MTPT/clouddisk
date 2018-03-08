@@ -290,7 +290,8 @@ body {
 
 #content-wrapper {
 	position: relative;
-	min-height: 100vh;
+	/* min-height hack, it will grow to fit #app-content */
+	height: 100vh;
 	width: 100%;
 	padding-top: 45px;
 	box-sizing: border-box;

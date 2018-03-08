@@ -79,22 +79,7 @@ kbd {
 /* Navigation: folder like structure */
 
 #app-navigation {
-	width: 250px;
-	height: calc(100vh - 45px);
-	position: fixed;
-	box-sizing: border-box;
-	background-color: $color-main-background;
-	padding-bottom: 44px;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-	border-right: 1px solid $color-border;
-	display: flex;
-	flex-direction: column;
-	z-index: -1; /* under content */
-
-	/* 'New' button */
+	/* primary action button */
 	.app-navigation-new {
 		display: block;
 		padding: 10px;
@@ -525,64 +510,13 @@ kbd {
 	}
 }
 
-/* APP-CONTENT ---------------------------------------------------------------*/
-/* Part where the content will be loaded into */
-#app-content {
-	margin-left: 250px;
-	z-index: 1000;
-	background-color: $color-main-background;
-	/* no top border for first settings item */
-	> .section:first-child {
-		border-top: none;
-	}
-	&.with-app-sidebar {
-		margin-right: 27%;
-	}
+/* CONTENT - SIDEBAR -------------------------------------------------------- */
+#app-sidebar.disappear {
+	visibility: hidden;
 }
 
-#app-content-wrapper {
-	min-width: 100%;
-	min-height: 100%;
-}
-
-/* APP-SIDEBAR ----------------------------------------------------------------*/
-
-/*
-	Sidebar: a sidebar to be used within #app-content
-	 have it as first element within app-content in order to shrink other
-	 sibling containers properly. Compare Files app for example.
-*/
-#app-sidebar {
-	position: fixed;
-	top: 45px;
-	right: 0;
-	left: auto;
-	bottom: 0;
-	width: 27%;
-	min-width: 300px;
-	display: block;
-	background: $color-main-background;
-	border-left: 1px solid $color-border;
-	-webkit-transition: margin-right 300ms;
-	transition: margin-right 300ms;
-	overflow-x: hidden;
-	overflow-y: auto;
-	visibility: visible;
-	z-index: 500;
-	&.disappear {
-		visibility: hidden;
-	}
-}
-
-/* APP-SETTINGS ---------------------------------------------------------------*/
-
-/* settings area */
+/* APP-SIDEBAR - SETTINGS -------------------------------------------------- */
 #app-settings {
-	position: fixed;
-	width: 250px;
-	/* change to 100% when layout positions are absolute */
-	bottom: 0;
-	z-index: 140;
 	&.open,
 	&.opened {
 		#app-settings-content {
@@ -590,7 +524,6 @@ kbd {
 		}
 	}
 }
-
 #app-settings-content {
 	display: none;
 	padding: 10px;
@@ -919,12 +852,6 @@ kbd {
 
 /* CONTENT LIST ------------------------------------------------------------- */
 .app-content-list {
-	width: 300px;
-	border-right: 1px solid nc-darken($color-main-background, 8%);
-	display: flex;
-	flex-direction: column;
-	transition: transform 250ms ease-in-out;
-
 	/* Default item */
 	.app-content-list-item {
 		position: relative;
@@ -1067,15 +994,6 @@ kbd {
 	}
 }
 
-/* CONTENT ------------------------------------------------------------------ */
-.app-content-detail {
-	/* grow full width */
-	flex-grow: 1;
-
-	#app-navigation-toggle-back {
-		display: none;
-	}
-}
 
 /* MOBILE ------------------------------------------------------------------- */
 /* Mobile width < 768px */

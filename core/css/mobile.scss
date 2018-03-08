@@ -38,10 +38,12 @@
 /* APP SIDEBAR TOGGLE and SWIPE ----------------------------------------------*/
 
 .snapjs-left {
-
+	#app-navigation {
+		z-index: 1000;
+	}
 }
 #app-content {
-	margin-left: 0;
+	margin-left: 0 !important;
 }
 
 /* allow horizontal scrollbar in settings
