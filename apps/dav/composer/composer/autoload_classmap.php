@@ -64,6 +64,8 @@ return array(
     'OCA\\DAV\\CardDAV\\Xml\\Groups' => $baseDir . '/../lib/CardDAV/Xml/Groups.php',
     'OCA\\DAV\\Command\\CreateAddressBook' => $baseDir . '/../lib/Command/CreateAddressBook.php',
     'OCA\\DAV\\Command\\CreateCalendar' => $baseDir . '/../lib/Command/CreateCalendar.php',
+    'OCA\\DAV\\Command\\ListCalendars' => $baseDir . '/../lib/Command/ListCalendars.php',
+    'OCA\\DAV\\Command\\MoveCalendar' => $baseDir . '/../lib/Command/MoveCalendar.php',
     'OCA\\DAV\\Command\\SyncBirthdayCalendar' => $baseDir . '/../lib/Command/SyncBirthdayCalendar.php',
     'OCA\\DAV\\Command\\SyncSystemAddressBook' => $baseDir . '/../lib/Command/SyncSystemAddressBook.php',
     'OCA\\DAV\\Comments\\CommentNode' => $baseDir . '/../lib/Comments/CommentNode.php',
