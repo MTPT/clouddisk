@@ -136,6 +136,7 @@ class DeleteOrphanedSharesJobTest extends \Test\TestCase {
 		$fileInfo = $view->getFileInfo('files/test/sub');
 		$fileId = $fileInfo->getId();
 
+		// TODO new sharing
 		$this->assertTrue(
 			\OC\Share\Share::shareItem('folder', $fileId, \OCP\Share::SHARE_TYPE_USER, $this->user2, \OCP\Constants::PERMISSION_READ),
 			'Failed asserting that user 1 successfully shared "test/sub" with user 2.'
@@ -159,6 +160,7 @@ class DeleteOrphanedSharesJobTest extends \Test\TestCase {
 
 		\OC\Share\Share::registerBackend('test', 'Test\Share\Backend');
 
+		// TODO new sharing
 		$this->assertTrue(
 			\OC\Share\Share::shareItem('test', 'test.txt', \OCP\Share::SHARE_TYPE_USER, $this->user2, \OCP\Constants::PERMISSION_READ),
 			'Failed asserting that user 1 successfully shared something with user 2.'
