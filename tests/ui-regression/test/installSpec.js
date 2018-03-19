@@ -1,7 +1,7 @@
 const helper = require('../helper.js');
 const config = require('../config.js');
 
-describe('installation', function () {
+describe('install', function () {
 
 	before(async () => await helper.init(this));
 	after(async () => await helper.exit());
