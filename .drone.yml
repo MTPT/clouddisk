@@ -832,6 +832,7 @@ services:
     commands:
       - . /etc/apache2/envvars
       - rm -fr /var/www/html/config/config.php /var/www/html/data/*
+      - git pull && git submodule update
       - apache2 -DFOREGROUND 
     when:
       matrix:
