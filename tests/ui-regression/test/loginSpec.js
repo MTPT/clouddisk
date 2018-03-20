@@ -10,14 +10,13 @@ describe('login', function () {
 	 * Test login page rendering
 	 */
 	config.resolutions.forEach(function (resolution) {
-
 		it('login-page.' + resolution.title, async function () {
 			return helper.takeAndCompare(this, '/', async (page) => {
 				// make sure the cursor is not blinking in the login field
 				await page.$eval('body', function (e) {
 					$('#user').blur();
 				});
-				return await helper.delay(500);
+				return await helper.delay(100);
 			}, {viewport: resolution});
 		});
 	});
@@ -33,8 +32,9 @@ describe('login', function () {
 				await page.type('#user', 'admin');
 				await page.type('#password', 'admin');
 				const inputElement = await page.$('input[type=submit]');
-				inputElement.click();
-				return await page.waitForNavigation({waitUntil: 'load'});
+				await inputElement.click();
+				await page.waitForNavigation({waitUntil: 'networkidle0'});
+				return await helper.delay(100);
 			}, {viewport: resolution});
 		})
 	});

@@ -50,8 +50,8 @@ module.exports = {
   },
 
 	takeAndCompare: async function (test, route, action, options) {
-		if (!options.waitUntil) {
-			options.waitUntil = 'domcontentloaded';
+		if (options.waitUntil === undefined) {
+			options.waitUntil = 'networkidle2';
 		}
 
 		let fileName = test.test.fullTitle();
