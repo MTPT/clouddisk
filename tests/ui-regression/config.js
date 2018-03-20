@@ -13,7 +13,7 @@ module.exports = {
 	/**
 	 * URL that holds the base branch
 	 */
-	urlBase: 'http://acceptance-ui-php:8080/',
+	urlBase: 'http://acceptance-ui-php-master/',
 
 	/**
 	 * URL that holds the branch to be diffed

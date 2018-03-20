@@ -825,6 +825,11 @@ services:
     when:
       matrix:
         TESTS: acceptance-ui
+  acceptance-ui-php-master:
+    image: nextcloudci/server:server-1
+    when:
+      matrix:
+        TESTS: acceptance-ui
   cache-cluster:
     image: morrisjobke/redis-cluster
     when:
