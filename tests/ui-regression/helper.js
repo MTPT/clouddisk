@@ -10,44 +10,45 @@ module.exports = {
 	browser: null,
 	pageBase: null,
 	pageCompare: null,
-	init: async function(test) {
+	init: async function (test) {
 		this._outputDirectory = `${config.outputDirectory}/${test.title}`;
 		if (!fs.existsSync(config.outputDirectory)) fs.mkdirSync(config.outputDirectory);
 		if (!fs.existsSync(this._outputDirectory)) fs.mkdirSync(this._outputDirectory);
 		await this.resetBrowser();
 	},
-	exit: async function() {
+	exit: async function () {
 		await this.browser.close();
 	},
 	resetBrowser: async function () {
 		if (this.browser) {
 			await this.browser.close();
 		}
-		this.browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox'], headless: true});
+		this.browser = await puppeteer.launch({
+			args: ['--no-sandbox', '--disable-setuid-sandbox'],
+			headless: true
+		});
 		this.pageBase = await this.browser.newPage();
 		this.pageCompare = await this.browser.newPage();
 		this.pageBase.setDefaultNavigationTimeout(60000);
 		this.pageCompare.setDefaultNavigationTimeout(60000);
 	},
 
-  login: async function(test) {
-    test.timeout(20000);
-    await this.resetBrowser();
+	login: async function (test) {
+		test.timeout(20000);
+		await this.resetBrowser();
 
 		await this.performLogin(this.pageBase, config.urlBase);
 		await this.performLogin(this.pageCompare, config.urlChange);
-  },
-  
-  performLogin: async function (page, baseUrl) {
-		await page.goto(baseUrl + '/index.php/login', {waitUntil: 'load'});
-    const login = await page.$('#user');
-    const password = await page.$('#password');
-    await login.type('admin');
-    await password.type('admin');
-    const inputElement = await page.$('input[type=submit]');
-    inputElement.click();
-    return await page.waitForNavigation({waitUntil: 'load'});
-  },
+	},
+
+	performLogin: async function (page, baseUrl) {
+		await page.goto(baseUrl + '/index.php/login', {waitUntil: 'networkidle0'});
+		await page.type('#user', 'admin');
+		await page.type('#password', 'admin');
+		const inputElement = await page.$('input[type=submit]');
+		inputElement.click();
+		return await page.waitForNavigation({waitUntil: 'networkidle0'});
+	},
 
 	takeAndCompare: async function (test, route, action, options) {
 		if (options.waitUntil === undefined) {
@@ -60,7 +61,7 @@ module.exports = {
 		return this.compareScreenshots(fileName);
 	},
 
-	takeScreenshot: async function(page, suffix, test, route, action, options) {
+	takeScreenshot: async function (page, suffix, test, route, action, options) {
 		let fileName = test.test.fullTitle();
 		if (options.viewport) {
 			await page.setViewport({
