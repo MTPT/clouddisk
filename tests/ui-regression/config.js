@@ -18,7 +18,7 @@ module.exports = {
 	/**
 	 * URL that holds the branch to be diffed
 	 */
-	urlChange: 'http://acceptance-ui-php:8081/',
+	urlChange: 'http://acceptance-ui-php/',
 
 	/**
 	 * Path to output directory for screenshot files

@@ -818,9 +818,12 @@ services:
       matrix:
        ENABLE_REDIS: true
   acceptance-ui-php:
-    image: nextcloudci/php7.0:php7.0-19
+    image: nextcloudci/server:server-1
     commands:
-      - php -S 0.0.0.0:8081
+      - . /etc/apache2/envvars
+      - rm -fr /var/www/html
+      - mkdir /var/www/html && cp -rT . /var/www/html
+      - apache2 -DFOREGROUND
     when:
       matrix:
         TESTS: acceptance-ui
