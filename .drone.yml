@@ -822,7 +822,7 @@ services:
     commands:
       - . /etc/apache2/envvars
       - rm -fr /var/www/html
-      - mkdir /var/www/html && cp -rT . /var/www/html
+      - mkdir /var/www/html && cp -rT . /var/www/html && chown -R www-data:www-data /var/www/html
       - apache2 -DFOREGROUND
     when:
       matrix:
