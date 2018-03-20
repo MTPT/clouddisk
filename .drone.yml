@@ -655,16 +655,26 @@ pipeline:
   acceptance-ui:
     image: juliushaertl/ui-regression:latest 
     commands:
-      # TODO: Move me to the docker image, so we can savely use ssh keys on pull requests
       - cd tests/ui-regression
       - npm install
-      - mkdir out && chown -R pptruser out node_modules
+      - mkdir -p out && chown -R pptruser out node_modules
       - sudo -u pptruser ./run-tests.sh || true
     shm_size: '1gb'
     when:
       matrix:
         TESTS: acceptance-ui
-
+  publish-s3:
+    image: plugins/s3
+    bucket: nextcloud-ui-regression
+    region: eu-central-1
+    source: tests/ui-regression/out/**/*
+    strip_prefix: tests/ui-regression/out/
+    acl: public-read
+    target: ${DRONE_REPO_OWNER}/${DRONE_REPO_NAME}/${DRONE_PULL_REQUEST}
+    secrets: [ aws_access_key_id, aws_secret_access_key ]
+    when:
+      matrix:
+        TESTS: acceptance-ui
 matrix:
   include:
     - TESTS: acceptance-ui
