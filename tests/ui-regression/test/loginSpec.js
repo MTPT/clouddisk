@@ -30,10 +30,8 @@ describe('login', function () {
 			this.timeout(20000);
 			await helper.resetBrowser();
 			return helper.takeAndCompare(this, '/', async function (page) {
-				const login = await page.$('#user');
-				const password = await page.$('#password');
-				await login.type('admin');
-				await password.type('admin');
+				await page.type('#user', 'admin');
+				await page.type('#password', 'admin');
 				const inputElement = await page.$('input[type=submit]');
 				inputElement.click();
 				return await page.waitForNavigation({waitUntil: 'load'});
