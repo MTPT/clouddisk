@@ -77,10 +77,15 @@ module.exports = {
 				this.pageCompare.goto(`${config.urlChange}${route}`, {waitUntil: options.waitUntil})
 			]);
 		}
-		await Promise.all([
-			action(this.pageBase),
-			action(this.pageCompare)
-		]);
+		var failed = null;
+		try {
+			await Promise.all([
+				action(this.pageBase),
+				action(this.pageCompare)
+			]);
+		} catch (err) {
+			failed = err;
+		}
 		await this.delay(500);
 		await Promise.all([
 			this.pageBase.screenshot({
@@ -92,7 +97,22 @@ module.exports = {
 				fullPage: false
 			})
 		]);
-		return this.compareScreenshots(fileName);
+
+		return new Promise(async (resolve, reject) => {
+			try {
+				await this.compareScreenshots(fileName);
+			} catch (err) {
+				console.log(err);
+				if (failed) {
+					return reject(failed);
+				}
+				return reject(err);
+			}
+			if (failed) {
+				return reject(failed);
+			}
+			return resolve();
+		});
 	},
 
 	compareScreenshots: function (fileName) {
