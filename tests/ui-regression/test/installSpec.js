@@ -14,14 +14,14 @@ describe('install', function () {
 	});
 
 	it('runs', async function () {
-		this.timeout(50000);
+		this.timeout(120000);
 		// just run for one resolution since we can only install once
 		return helper.takeAndCompare(this, '/index.php',  async function (page) {
 			const login = await page.type('#adminlogin', 'admin');
 			const password = await page.type('#adminpass', 'admin');
 			const inputElement = await page.$('input[type=submit]');
 			await inputElement.click();
-			return await page.waitForNavigation({waitUntil: 'networkidle0'});
+			await page.waitForNavigation({waitUntil: 'networkidle0'});
 		}, { waitUntil: 'networkidle0', viewport: {w: 1920, h: 1080}});
 	});
 
