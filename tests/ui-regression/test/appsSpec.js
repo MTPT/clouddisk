@@ -12,7 +12,8 @@ describe('apps', function () {
 	config.resolutions.forEach(function (resolution) {
 		it('apps.' + resolution.title, async function () {
 			return helper.takeAndCompare(this, 'index.php/settings/apps', async function (page) {
-			}, {viewport: resolution});
+				await page.waitForSelector('#app-content:not(.icon-loading)');
+			}, {viewport: resolution, waitUntil: 'networkidle2'});
 		});
 
 		['installed', 'enabled', 'disabled', 'app-bundles'].forEach(function(endpoint) {
