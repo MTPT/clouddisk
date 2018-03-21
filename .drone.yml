@@ -657,8 +657,9 @@ pipeline:
     commands:
       - cd tests/ui-regression
       - npm install
-      - mkdir -p out && chown -R pptruser out node_modules
-      - sudo -u pptruser ./run-tests.sh || true
+      - chown -R pptruser out node_modules
+      - bash -c "until curl -s http://ui-regression-php-master > /dev/null && curl -s http://ui-regression-php > /dev/null; do sleep 2; done"
+      - sudo -u pptruser node runTests.js || true
     shm_size: '1gb'
     when:
       matrix:
