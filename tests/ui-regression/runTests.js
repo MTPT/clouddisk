@@ -9,7 +9,8 @@ var tests = [
 	'login',
 	'files',
 	'public',
-	'settings'
+	'settings',
+	'apps',
 ]
 
 var args = process.argv.slice(2);
