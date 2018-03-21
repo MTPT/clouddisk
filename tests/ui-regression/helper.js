@@ -75,7 +75,7 @@ module.exports = {
 				})
 			]);
 		}
-		let fileName = test.test.fullTitle();
+		let fileName = test.test.title
 		if (route !== undefined) {
 			await Promise.all([
 				this.pageBase.goto(`${config.urlBase}${route}`, {waitUntil: options.waitUntil}),

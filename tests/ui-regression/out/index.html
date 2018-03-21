@@ -116,7 +116,7 @@
 			v-on:click="hidden === undefined ? hidden = false : hidden = !hidden">
 			<span class="fa fa-times" v-if="Object.keys(test.err).length > 0"></span>
 			<span class="fa fa-check" v-else></span>
-			{{ test.fullTitle }}
+			{{ test.title }}
 			<i v-if="test.duration">{{ test.duration }}ms</i>
 		</h3>
 		<transition name="fade">
@@ -155,7 +155,7 @@
 		},
 		methods: {
 			getImagePath: function(type) {
-				return this.suite + '/' + this.test.fullTitle + '.' + type + '.png';
+				return this.suite + '/' + this.test.title + '.' + type + '.png';
 			}
 		}
 	});
