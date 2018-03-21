@@ -12,12 +12,12 @@ describe('settings', function () {
 	config.resolutions.forEach(function (resolution) {
 		it('personal.' + resolution.title, async function () {
 			return helper.takeAndCompare(this, '/index.php/settings/user', async function (page) {
-			}, {viewport: resolution, waitUntil: 'networkidle2'});
+			}, {viewport: resolution});
 		});
 
 		it('admin.' + resolution.title, async function () {
 			return helper.takeAndCompare(this, '/index.php/settings/admin', async function (page) {
-			}, {viewport: resolution, waitUntil: 'networkidle0'});
+			}, {viewport: resolution});
 		});
 
 		['sharing', 'security', 'theming', 'encryption', 'additional', 'tips-tricks'].forEach(function(endpoint) {
