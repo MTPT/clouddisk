@@ -19,6 +19,17 @@ describe('login', function () {
 				return await helper.delay(100);
 			}, {viewport: resolution});
 		});
+
+		it('login-page.forgot.' + resolution.title, async function () {
+			return helper.takeAndCompare(this, undefined, async (page) => {
+				const lostPassword = await page.$('#lost-password');
+				await lostPassword.click();
+				await helper.delay(500);
+				await page.$eval('body', function (e) {
+					$('#user').blur();
+				});
+			}, {viewport: resolution});
+		});
 	});
 
 	/**
