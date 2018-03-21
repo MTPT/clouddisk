@@ -36,9 +36,10 @@ module.exports = {
 	login: async function (test) {
 		test.timeout(20000);
 		await this.resetBrowser();
-
-		await this.performLogin(this.pageBase, config.urlBase);
-		await this.performLogin(this.pageCompare, config.urlChange);
+		await Promise.all([
+			this.performLogin(this.pageBase, config.urlBase),
+			this.performLogin(this.pageCompare, config.urlChange)
+		]);
 	},
 
 	performLogin: async function (page, baseUrl) {
@@ -55,7 +56,7 @@ module.exports = {
 		if (options === undefined)
 			options = {};
 		if (options.waitUntil === undefined) {
-			options.waitUntil = 'networkidle2';
+			options.waitUntil = 'networkidle0';
 		}
 		if (options.viewport) {
 			await this.pageBase.setViewport({

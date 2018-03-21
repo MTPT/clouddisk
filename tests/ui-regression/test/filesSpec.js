@@ -18,13 +18,13 @@ describe('files', function () {
 				await page.waitForSelector('input.shareWithField');
 				await helper.delay(500); // wait for animation
 				await page.$eval('body', e => { $('.shareWithField').blur() });
-			}, {waitUntil: 'networkidle2', viewport: resolution});
+			}, {viewport: resolution});
 		});
 		it('file-sidebar.popover.' + resolution.title, async function () {
 			return helper.takeAndCompare(this, '/index.php/apps/files', async function (page) {
 				await page.click('[data-file=\'welcome.txt\'] .action-menu');
 				await page.waitForSelector('.fileActionsMenu');
-			}, {waitUntil: 'networkidle2', viewport: resolution});
+			}, {viewport: resolution});
 		});
 		it('file-sidebar-details.' + resolution.title, async function() {
 			return helper.takeAndCompare(this, undefined, async function (page) {

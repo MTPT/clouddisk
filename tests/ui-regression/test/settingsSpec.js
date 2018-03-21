@@ -20,7 +20,7 @@ describe('settings', function () {
 			}, {viewport: resolution, waitUntil: 'networkidle0'});
 		});
 
-		['', 'sharing', 'security', 'theming', 'encryption', 'additional', 'tips-tricks'].forEach(function(endpoint) {
+		['sharing', 'security', 'theming', 'encryption', 'additional', 'tips-tricks'].forEach(function(endpoint) {
 			it('admin.' + endpoint + '.' + resolution.title, async function () {
 				return helper.takeAndCompare(this, '/index.php/settings/admin/' + endpoint, async function (page) {
 				}, {viewport: resolution, waitUntil: 'networkidle2'});

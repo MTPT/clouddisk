@@ -37,7 +37,7 @@ describe('login', function () {
 	 */
 	config.resolutions.forEach(function (resolution) {
 		it('login-success.' + resolution.title, async function () {
-			this.timeout(20000);
+			this.timeout(30000);
 			await helper.resetBrowser();
 			return helper.takeAndCompare(this, '/', async function (page) {
 				await page.type('#user', 'admin');
@@ -50,16 +50,4 @@ describe('login', function () {
 		})
 	});
 
-	/**
-	 * Load settings page
-	 */
-	config.resolutions.forEach(function (resolution) {
-		it('settings.' + resolution.title, async function () {
-			this.timeout(20000);
-			return helper.takeAndCompare(this, '/index.php/settings/user', async function (page) {
-				return await helper.delay(500);
-			}, {viewport: resolution, waitUntil: 'networkidle2'});
-		});
-
-	});
 });
