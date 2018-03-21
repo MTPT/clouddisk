@@ -34,8 +34,10 @@ describe('install', function () {
 		});
 	});
 
-	it('runs', async function () {
-		this.timeout(120000);
+	it.only('runs', async function () {
+		this.timeout(5*60*1000);
+		helper.pageBase.setDefaultNavigationTimeout(5*60*1000);
+		helper.pageCompare.setDefaultNavigationTimeout(5*60*1000);
 		// just run for one resolution since we can only install once
 		return helper.takeAndCompare(this, '/index.php',  async function (page) {
 			const login = await page.type('#adminlogin', 'admin');
@@ -43,6 +45,8 @@ describe('install', function () {
 			const inputElement = await page.$('input[type=submit]');
 			await inputElement.click();
 			await page.waitForNavigation({waitUntil: 'networkidle0'});
+			helper.pageBase.setDefaultNavigationTimeout(60000);
+			helper.pageCompare.setDefaultNavigationTimeout(60000);
 		}, { waitUntil: 'networkidle0', viewport: {w: 1920, h: 1080}});
 	});
 
