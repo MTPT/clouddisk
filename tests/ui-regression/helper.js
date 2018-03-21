@@ -25,7 +25,7 @@ module.exports = {
 		}
 		this.browser = await puppeteer.launch({
 			args: ['--no-sandbox', '--disable-setuid-sandbox'],
-			headless: true
+			headless: config.headless
 		});
 		this.pageBase = await this.browser.newPage();
 		this.pageCompare = await this.browser.newPage();
@@ -59,14 +59,19 @@ module.exports = {
 			options.waitUntil = 'networkidle0';
 		}
 		if (options.viewport) {
+			if (options.viewport.scale === undefined) {
+				options.viewport.scale = 1;
+			}
 			await Promise.all([
 				this.pageBase.setViewport({
 					width: options.viewport.w,
-					height: options.viewport.h
+					height: options.viewport.h,
+					deviceScaleFactor: options.viewport.scale
 				}),
 				this.pageCompare.setViewport({
 					width: options.viewport.w,
-					height: options.viewport.h
+					height: options.viewport.h,
+					deviceScaleFactor: options.viewport.scale
 				})
 			]);
 		}
