@@ -10,11 +10,27 @@ describe('install', function () {
 		it('show-page.' + resolution.title, async function () {
 			// (test, route, prepare, action, options
 			return helper.takeAndCompare(this, '/index.php', async (page) => {
+				await helper.delay(100);
 				await page.$eval('body', function (e) {
-					$('#user').blur();
+					$('#adminlogin').blur();
 				});
-				return await helper.delay(100);
+				await helper.delay(100);
 			}, { waitUntil: 'networkidle0', viewport: resolution});
+		});
+
+		it('show-advanced.' + resolution.title, async function () {
+			// (test, route, prepare, action, options
+			return helper.takeAndCompare(this, undefined, async (page) => {
+				await page.click('#showAdvanced');
+				await helper.delay(500);
+			});
+		});
+		it('show-advanced-mysql.' + resolution.title, async function () {
+			// (test, route, prepare, action, options
+			return helper.takeAndCompare(this, undefined, async (page) => {
+				await page.click('label.mysql');
+				await helper.delay(500);
+			});
 		});
 	});
 
