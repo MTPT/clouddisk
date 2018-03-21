@@ -29,7 +29,7 @@ console.log(config);
 fs.writeFile('out/config.json', JSON.stringify(config), 'utf8', () => {});
 
 var mocha = new Mocha({
-	timeout: 30000
+	timeout: 60000
 });
 let result = {};
 

@@ -107,13 +107,17 @@ module.exports = {
 			try {
 				await this.compareScreenshots(fileName);
 			} catch (err) {
-				console.log(err);
 				if (failed) {
+					console.log('Failure during takeAndCompare action callback');
+					test.failedAction = failed;
 					return reject(failed);
 				}
+				console.log('Failure when comparing images');
 				return reject(err);
 			}
 			if (failed) {
+				console.log('Failure during takeAndCompare action callback');
+				test.failedAction = failed;
 				return reject(failed);
 			}
 			return resolve();
