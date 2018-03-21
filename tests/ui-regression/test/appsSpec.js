@@ -11,7 +11,7 @@ describe('apps', function () {
 
 	config.resolutions.forEach(function (resolution) {
 		it('apps.' + resolution.title, async function () {
-			return helper.takeAndCompare(this, '/index.php/settings/apps', async function (page) {
+			return helper.takeAndCompare(this, 'index.php/settings/apps', async function (page) {
 			}, {viewport: resolution});
 		});
 
@@ -23,9 +23,9 @@ describe('apps', function () {
 						timeout: 1000,
 					}).then((element) => element.click())
 					await helper.delay(500);
-					await page.click('#app-category-' + endpoint);
+					await page.click('li#app-category-' + endpoint + ' a');
 					await helper.delay(500);
-					await page.waitForNavigation({ waitUntil: 'networkidle0', timeout: 5000})
+					await page.waitForSelector('#app-content:not(.icon-loading)');
 				}, {viewport: resolution});
 			});
 		});
