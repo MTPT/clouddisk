@@ -75,6 +75,7 @@ module.exports = {
 		}
 		await action(this.pageBase);
 		await action(this.pageCompare);
+		await this.delay(500);
 		await this.pageBase.screenshot({
 			path: `${this._outputDirectory}/${fileName}.base.png`,
 			fullPage: false
