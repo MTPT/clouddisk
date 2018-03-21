@@ -15,12 +15,12 @@ module.exports = {
 	/**
 	 * URL that holds the base branch
 	 */
-	urlBase: 'http://acceptance-ui-php-master/',
+	urlBase: 'http://ui-regression-php-master/',
 
 	/**
 	 * URL that holds the branch to be diffed
 	 */
-	urlChange: 'http://acceptance-ui-php/',
+	urlChange: 'http://ui-regression-php/',
 
 	/**
 	 * Path to output directory for screenshot files
