@@ -67,6 +67,13 @@
 		.navbar a {
 			color: #fff;
 		}
+
+		.fade-enter-active, .fade-leave-active {
+			transition: opacity .5s;
+		}
+		.fade-enter, .fade-leave-to {
+			opacity: 0;
+		}
 	</style>
 </head>
 
@@ -95,7 +102,7 @@
 		</div>
 		<div class="col-md-10" id="container">
 			<div v-for="suite in config.tests" v-if="result[suite]">
-				<h2 :id="suite | convertToId">{{ suite }} <span v-if="result[suite].stats">{{ result[suite].stats.passes }}/{{ result[suite].stats.tests }}</span></h2>
+				<h2 :id="suite | convertToId">{{ suite }} <span>{{ result[suite].passes.length }}/{{ result[suite].tests.length }}</span></h2>
 				<test-result v-for="test in result[suite].tests" :key="test.fullTitle" :suite="suite" :test="test"></test-result>
 			</div>
 		</div>
@@ -105,15 +112,21 @@
 
 <script type="text/x-template" id="test-result-template">
 	<div class="test-result" :id="test.fullTitle | convertToId">
-		<h3 :class="{ error: Object.keys(test.err).length > 0, success: Object.keys(test.err).length == 0}">
+		<h3 :class="{ error: Object.keys(test.err).length > 0, success: Object.keys(test.err).length == 0}"
+			v-on:click="hidden === undefined ? hidden = false : hidden = !hidden">
 			<span class="fa fa-times" v-if="Object.keys(test.err).length > 0"></span>
 			<span class="fa fa-check" v-else></span>
 			{{ test.fullTitle }}
+			<i v-if="test.duration">{{ test.duration }}ms</i>
 		</h3>
-		<a :href="getImagePath('base')"><img :src="getImagePath('base')"  /></a>
-		<a :href="getImagePath('diff')"><img :src="getImagePath('diff')"  /></a>
-		<a :href="getImagePath('change')"><img :src="getImagePath('change')"  /></a>
-		<pre>{{ jsonData }}</pre>
+		<transition name="fade">
+		<div v-if="(hidden === undefined && Object.keys(test.err).length > 0) || hidden === false">
+			<a :href="getImagePath('base')"><img :src="getImagePath('base')"  /></a>
+			<a :href="getImagePath('diff')"><img :src="getImagePath('diff')"  /></a>
+			<a :href="getImagePath('change')"><img :src="getImagePath('change')"  /></a>
+			<pre>{{ jsonData }}</pre>
+		</div>
+		</transition>
 	</div>
 </script>
 
@@ -130,6 +143,11 @@
 	Vue.component('test-result', {
 		template: '#test-result-template',
 		props: ['test', 'suite'],
+		data: function () {
+			return {
+				hidden: undefined
+			}
+		},
 		computed: {
 			jsonData: function() {
 				return JSON.stringify(this.test, null, 2)
@@ -160,7 +178,6 @@
 				request.open('GET', 'config.json', true);
 
 				request.onload = function() {
-					console.log('onload');
 					if (request.status >= 200 && request.status < 400) {
 						app.config = JSON.parse(request.responseText);
 						app.config.tests.forEach(function(item, i){
