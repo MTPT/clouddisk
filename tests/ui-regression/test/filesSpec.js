@@ -13,18 +13,19 @@ describe('files', function () {
 	config.resolutions.forEach(function (resolution) {
 
 		it('file-sidebar-share.' + resolution.title, async function () {
-			return helper.takeAndCompare(this, '/index.php/apps/files', async function (page) {
-				await page.click('[data-file=\'welcome.txt\'] .action-share');
-				await page.waitForSelector('input.shareWithField');
-				await helper.delay(500); // wait for animation
+			return helper.takeAndCompare(this, 'index.php/apps/files', async function (page) {
+				let element = await page.$('[data-file="welcome.txt"] .action-share');
+				await element.click('[data-file="welcome.txt"] .action-share');
+				await page.waitForSelector('.shareWithField');
+				await helper.delay(500);
 				await page.$eval('body', e => { $('.shareWithField').blur() });
-			}, {viewport: resolution});
+			}, {viewport: resolution, waitUntil: 'networkidle2'});
 		});
-		it('file-sidebar.popover.' + resolution.title, async function () {
-			return helper.takeAndCompare(this, '/index.php/apps/files', async function (page) {
+		it('file-popover.' + resolution.title, async function () {
+			return helper.takeAndCompare(this, 'index.php/apps/files', async function (page) {
 				await page.click('[data-file=\'welcome.txt\'] .action-menu');
 				await page.waitForSelector('.fileActionsMenu');
-			}, {viewport: resolution});
+			}, {viewport: resolution, waitUntil: 'networkidle2'});
 		});
 		it('file-sidebar-details.' + resolution.title, async function() {
 			return helper.takeAndCompare(this, undefined, async function (page) {
@@ -48,6 +49,26 @@ describe('files', function () {
 				tab[0].click();
 				await helper.delay(100); // wait for animation
 			});
+		});
+		it('file-popover.favorite.' + resolution.title, async function () {
+			return helper.takeAndCompare(this, 'index.php/apps/files', async function (page) {
+				await page.click('[data-file=\'welcome.txt\'] .action-menu');
+				await page.waitForSelector('.fileActionsMenu')
+				await page.click('[data-file=\'welcome.txt\'] .fileActionsMenu [data-action=\'Favorite\']');;
+			}, {viewport: resolution, waitUntil: 'networkidle2'});
+		});
+
+		it('file-favorites.' + resolution.title, async function () {
+			return helper.takeAndCompare(this, 'index.php/apps/files', async function (page) {
+				try {
+					await page.waitForSelector('#app-navigation-toggle', {
+						visible: true,
+						timeout: 1000,
+					}).then((element) => element.click())
+				} catch (err) {}
+				await page.click('#app-navigation [data-id=\'favorites\'] a');
+				await helper.delay(500); // wait for animation
+			}, {viewport: resolution, waitUntil: 'networkidle2'});
 		});
 
 

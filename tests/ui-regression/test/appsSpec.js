@@ -18,10 +18,12 @@ describe('apps', function () {
 		['installed', 'enabled', 'disabled', 'app-bundles'].forEach(function(endpoint) {
 			it('apps.' + endpoint + '.' + resolution.title, async function () {
 				return helper.takeAndCompare(this, undefined, async function (page) {
-					await page.waitForSelector('#app-navigation-toggle', {
-						visible: true,
-						timeout: 1000,
-					}).then((element) => element.click())
+					try {
+						await page.waitForSelector('#app-navigation-toggle', {
+							visible: true,
+							timeout: 1000,
+						}).then((element) => element.click())
+					} catch (err) {}
 					await helper.delay(500);
 					await page.click('li#app-category-' + endpoint + ' a');
 					await helper.delay(500);
