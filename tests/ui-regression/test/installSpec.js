@@ -9,7 +9,12 @@ describe('install', function () {
 	config.resolutions.forEach(function (resolution) {
 		it('show-page.' + resolution.title, async function () {
 			// (test, route, prepare, action, options
-			return helper.takeAndCompare(this, '/index.php', async () => {}, { waitUntil: 'networkidle0', viewport: resolution});
+			return helper.takeAndCompare(this, '/index.php', async (page) => {
+				await page.$eval('body', function (e) {
+					$('#user').blur();
+				});
+				return await helper.delay(100);
+			}, { waitUntil: 'networkidle0', viewport: resolution});
 		});
 	});
 
