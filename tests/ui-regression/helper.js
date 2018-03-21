@@ -59,31 +59,39 @@ module.exports = {
 			options.waitUntil = 'networkidle0';
 		}
 		if (options.viewport) {
-			await this.pageBase.setViewport({
-				width: options.viewport.w,
-				height: options.viewport.h
-			});
-			await this.pageCompare.setViewport({
-				width: options.viewport.w,
-				height: options.viewport.h
-			});
+			await Promise.all([
+				this.pageBase.setViewport({
+					width: options.viewport.w,
+					height: options.viewport.h
+				}),
+				this.pageCompare.setViewport({
+					width: options.viewport.w,
+					height: options.viewport.h
+				})
+			]);
 		}
 		let fileName = test.test.fullTitle();
 		if (route !== undefined) {
-			await this.pageBase.goto(`${config.urlBase}${route}`, {waitUntil: options.waitUntil});
-			await this.pageCompare.goto(`${config.urlChange}${route}`, {waitUntil: options.waitUntil});
+			await Promise.all([
+				this.pageBase.goto(`${config.urlBase}${route}`, {waitUntil: options.waitUntil}),
+				this.pageCompare.goto(`${config.urlChange}${route}`, {waitUntil: options.waitUntil})
+			]);
 		}
-		await action(this.pageBase);
-		await action(this.pageCompare);
+		await Promise.all([
+			action(this.pageBase),
+			action(this.pageCompare)
+		]);
 		await this.delay(500);
-		await this.pageBase.screenshot({
-			path: `${this._outputDirectory}/${fileName}.base.png`,
-			fullPage: false
-		});
-		await this.pageCompare.screenshot({
-			path: `${this._outputDirectory}/${fileName}.change.png`,
-			fullPage: false
-		});
+		await Promise.all([
+			this.pageBase.screenshot({
+				path: `${this._outputDirectory}/${fileName}.base.png`,
+				fullPage: false,
+			}),
+			this.pageCompare.screenshot({
+				path: `${this._outputDirectory}/${fileName}.change.png`,
+				fullPage: false
+			})
+		]);
 		return this.compareScreenshots(fileName);
 	},
 
@@ -126,11 +134,11 @@ module.exports = {
 		});
 	},
 
-	childOfClassByText: async function(page, classname, text) {
+	childOfClassByText: async function (page, classname, text) {
 		return page.$x('//*[contains(concat(" ", normalize-space(@class), " "), " ' + classname + ' ")]//text()[normalize-space() = \'' + text + '\']/..');
 	},
 
-	childOfIdByText: async function(page, classname, text) {
+	childOfIdByText: async function (page, classname, text) {
 		return page.$x('//*[contains(concat(" ", normalize-space(@id), " "), " ' + classname + ' ")]//text()[normalize-space() = \'' + text + '\']/..');
 	}
 };
