@@ -34,9 +34,19 @@ describe('settings', function () {
 
 		it('usermanagement.add.' + resolution.title, async function () {
 			return helper.takeAndCompare(this, undefined, async function (page) {
+				try {
+					await page.waitForSelector('#app-navigation-toggle', {
+						visible: true,
+						timeout: 1000,
+					}).then((element) => element.click())
+				} catch (err) {}
 				let newUserButton = await page.waitForSelector('#new-user-button');
 				await newUserButton.click();
-				await helper.delay(500);
+				await helper.delay(200);
+				await page.$eval('body', function (e) {
+					$('#newusername').blur();
+				})
+				await helper.delay(100);
 			}, {viewport: resolution});
 		});
 
