@@ -105,7 +105,9 @@ module.exports = {
 
 		return new Promise(async (resolve, reject) => {
 			try {
-				await this.compareScreenshots(fileName);
+				if (options.runOnly !== true) {
+					await this.compareScreenshots(fileName);
+				}
 			} catch (err) {
 				if (failed) {
 					console.log('Failure during takeAndCompare action callback');
@@ -114,7 +116,7 @@ module.exports = {
 				console.log('Failure when comparing images');
 				return reject(err);
 			}
-			if (failed) {
+			if (options.runOnly !== true && failed) {
 				console.log('Failure during takeAndCompare action callback');
 				console.log(failed);
 				failed.failedAction = true;
