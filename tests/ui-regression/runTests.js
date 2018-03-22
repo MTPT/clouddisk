@@ -54,6 +54,7 @@ function clean (test) {
 		fullTitle: test.fullTitle(),
 		duration: test.duration,
 		currentRetry: test.currentRetry(),
+		failedAction: test.failedAction,
 		err: errorJSON(test.err || {})
 	};
 }

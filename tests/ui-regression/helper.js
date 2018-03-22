@@ -109,15 +109,15 @@ module.exports = {
 			} catch (err) {
 				if (failed) {
 					console.log('Failure during takeAndCompare action callback');
-					test.failedAction = failed;
-					return reject(failed);
+					console.log(failed);
 				}
 				console.log('Failure when comparing images');
 				return reject(err);
 			}
 			if (failed) {
 				console.log('Failure during takeAndCompare action callback');
-				test.failedAction = failed;
+				console.log(failed);
+				failed.failedAction = true;
 				return reject(failed);
 			}
 			return resolve();
@@ -145,7 +145,12 @@ module.exports = {
 				const numDiffPixels = pixelmatch(
 					img1.data, img2.data, diff.data, img1.width, img1.height,
 					{threshold: 0.3});
-				diff.pack().pipe(fs.createWriteStream(`${self._outputDirectory}/${fileName}.diff.png`));
+				if (numDiffPixels > 0) {
+					diff.pack().pipe(fs.createWriteStream(`${self._outputDirectory}/${fileName}.diff.png`));
+				} else {
+					fs.unlinkSync(`${self._outputDirectory}/${fileName}.base.png`);
+					fs.renameSync(`${self._outputDirectory}/${fileName}.change.png`, `${self._outputDirectory}/${fileName}.png`);
+				}
 
 				// The files should look the same.
 				expect(numDiffPixels, 'number of different pixels').equal(0);

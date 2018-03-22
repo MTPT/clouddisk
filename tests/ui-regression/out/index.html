@@ -121,9 +121,14 @@
 		</h3>
 		<transition name="fade">
 		<div v-if="(hidden === undefined && Object.keys(test.err).length > 0) || hidden === false">
-			<a :href="getImagePath('base')"><img :src="getImagePath('base')"  /></a>
-			<a :href="getImagePath('diff')"><img :src="getImagePath('diff')"  /></a>
-			<a :href="getImagePath('change')"><img :src="getImagePath('change')"  /></a>
+			<div v-if="Object.keys(test.err).length > 0 && !test.err.failedAction">
+				<a :href="getImagePath('.base')"><img :src="getImagePath('.base')"  /></a>
+				<a :href="getImagePath('.diff')"><img :src="getImagePath('.diff')"  /></a>
+				<a :href="getImagePath('.change')"><img :src="getImagePath('.change')"  /></a>
+			</div>
+			<div v-else>
+				<a :href="getImagePath('')"><img :src="getImagePath('')"  /></a>
+			</div>
 			<pre>{{ jsonData }}</pre>
 		</div>
 		</transition>
@@ -155,7 +160,7 @@
 		},
 		methods: {
 			getImagePath: function(type) {
-				return this.suite + '/' + this.test.title + '.' + type + '.png';
+				return this.suite + '/' + this.test.title + type + '.png';
 			}
 		}
 	});
