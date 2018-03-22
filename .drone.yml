@@ -653,7 +653,7 @@ pipeline:
       matrix:
         TEST: memcache-redis-cluster
   ui-regression:
-    image: juliushaertl/ui-regression:latest 
+    image: nextcloudci/ui-regression:ui-regression-1
     commands:
       - cd tests/ui-regression
       - npm install
