@@ -103,6 +103,11 @@ module.exports = {
 			})
 		]);
 
+		if (options.runOnly === true) {
+			fs.unlinkSync(`${this._outputDirectory}/${fileName}.base.png`);
+			fs.renameSync(`${this._outputDirectory}/${fileName}.change.png`, `${this._outputDirectory}/${fileName}.png`);
+		}
+
 		return new Promise(async (resolve, reject) => {
 			try {
 				if (options.runOnly !== true) {
