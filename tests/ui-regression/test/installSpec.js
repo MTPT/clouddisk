@@ -34,7 +34,7 @@ describe('install', function () {
 		});
 	});
 
-	it.only('runs', async function () {
+	it('runs', async function () {
 		this.timeout(5*60*1000);
 		helper.pageBase.setDefaultNavigationTimeout(5*60*1000);
 		helper.pageCompare.setDefaultNavigationTimeout(5*60*1000);
