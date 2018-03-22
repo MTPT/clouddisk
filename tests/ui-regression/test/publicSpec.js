@@ -14,7 +14,7 @@ describe('public', function () {
 	 * Test invalid file share rendering
 	 */
 	config.resolutions.forEach(function (resolution) {
-		it.skip('file-share-invalid.' + resolution.title, async function () {
+		it('file-share-invalid.' + resolution.title, async function () {
 			return helper.takeAndCompare(this, '/index.php/s/invalid', async function () {
 			}, { waitUntil: 'networkidle2', viewport: resolution});
 		});
@@ -34,8 +34,6 @@ describe('public', function () {
 			await helper.delay(500);
 			const text = await page.waitForSelector('.linkText');
 			const link = await (await text.getProperty('value')).jsonValue();
-			console.log(page.url());
-			console.log(link);
 			shareLink[page.url()] = link;
 			return await helper.delay(500);
 		}, { runOnly: true, waitUntil: 'networkidle2', viewport: {w: 1920, h:1080}});
@@ -43,8 +41,6 @@ describe('public', function () {
 
 	it('file-share-valid', async function () {
 		return helper.takeAndCompare(this, '/index.php/apps/files', async function (page) {
-			console.log(page.url());
-			console.log(shareLink[page.url()]);
 			await page.goto(shareLink[page.url()]);
 			await helper.delay(500);
 		}, { waitUntil: 'networkidle2', viewport: {w: 1920, h:1080}});
