@@ -27,5 +27,18 @@ describe('settings', function () {
 			});
 		});
 
+		it('usermanagement.' + resolution.title, async function () {
+			return helper.takeAndCompare(this, '/index.php/settings/users', async function (page) {
+			}, {viewport: resolution});
+		});
+
+		it('usermanagement.add.' + resolution.title, async function () {
+			return helper.takeAndCompare(this, undefined, async function (page) {
+				let newUserButton = await page.waitForSelector('#new-user-button');
+				await newUserButton.click();
+				await helper.delay(500);
+			}, {viewport: resolution});
+		});
+
 	});
 });
