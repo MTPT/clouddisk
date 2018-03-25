@@ -12,7 +12,7 @@
 		'<ul>' +
 		'{{#each items}}' +
 		'<li>' +
-		'<a href="#" class="menuitem action action-{{name}} permanent" data-action="{{name}}">' +
+		'<a href="#" class="menuitem action {{name}} permanent" data-action="{{name}}">' +
 			'{{#if iconClass}}' +
 				'<span class="icon {{iconClass}}"></span>' +
 			'{{else}}' +
@@ -64,7 +64,7 @@
 			}
 
 			OC.hideMenus();
-			
+
 			this.trigger('select:menu-item-clicked', event, $target.data('action'));
 		},
 
