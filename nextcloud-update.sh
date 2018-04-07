@@ -1,0 +1,1 @@
+/home/jan/nextcloud-scripts/nextcloud-update.sh
