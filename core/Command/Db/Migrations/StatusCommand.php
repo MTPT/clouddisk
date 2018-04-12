@@ -56,7 +56,14 @@ class StatusCommand extends Command {
 
 		$infos = $this->getMigrationsInfos($ms);
 		foreach ($infos as $key => $value) {
-			$output->writeln("    <comment>>></comment> $key: " . str_repeat(' ', 50 - strlen($key)) . $value);
+			if (is_array($value)) {
+				$output->writeln("    <comment>>></comment> $key:");
+				foreach ($value as $subKey => $subValue) {
+					$output->writeln("        <comment>>></comment> $subKey: " . str_repeat(' ', 46 - strlen($subKey)) . $subValue);
+				}
+			} else {
+				$output->writeln("    <comment>>></comment> $key: " . str_repeat(' ', 50 - strlen($key)) . $value);
+			}
 		}
 	}
 
@@ -72,6 +79,7 @@ class StatusCommand extends Command {
 
 		$numExecutedUnavailableMigrations = count($executedUnavailableMigrations);
 		$numNewMigrations = count(array_diff(array_keys($availableMigrations), $executedMigrations));
+		$pending = $ms->describeMigrationStep('lastest');
 
 		$infos = [
 			'App'								=> $ms->getApp(),
@@ -86,6 +94,7 @@ class StatusCommand extends Command {
 			'Executed Unavailable Migrations'	=> $numExecutedUnavailableMigrations,
 			'Available Migrations'				=> count($availableMigrations),
 			'New Migrations'					=> $numNewMigrations,
+			'Pending Migrations'				=> count($pending) ? $pending : 'None'
 		];
 
 		return $infos;
