@@ -352,7 +352,7 @@ class UsersController extends Controller {
 	 * @param string $email
 	 * @return DataResponse
 	 */
-	public function create(string $username, string $password, array $groups = [], $email = ''): DataResponse {
+	public function create(string $username, string $password, array $groups = [], string $email = ''): DataResponse {
 		if ($email !== '' && !$this->mailer->validateMailAddress($email)) {
 			return new DataResponse(
 				[
