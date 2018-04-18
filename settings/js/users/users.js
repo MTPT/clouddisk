@@ -1053,6 +1053,7 @@ $(document).ready(function () {
 		}
 
 		var username = $('#newusername').val();
+		var displayName = $('#newdisplayname').val();
 		var password = $('#newuserpassword').val();
 		var email = $('#newemail').val();
 		if ($.trim(username) === '') {
@@ -1076,6 +1077,7 @@ $(document).ready(function () {
 				OC.generateUrl('/settings/users/users'),
 				{
 					username: username,
+					displayName: displayName,
 					password: password,
 					groups: groups,
 					email: email
