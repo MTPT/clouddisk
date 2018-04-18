@@ -17,4 +17,6 @@ return array(
     'OCA\\Comments\\JSSettingsHelper' => $baseDir . '/../lib/JSSettingsHelper.php',
     'OCA\\Comments\\Notification\\Listener' => $baseDir . '/../lib/Notification/Listener.php',
     'OCA\\Comments\\Notification\\Notifier' => $baseDir . '/../lib/Notification/Notifier.php',
+    'OCA\\Comments\\Search\\CommentSearchResult' => $baseDir . '/../lib/Search/CommentSearchResult.php',
+    'OCA\\Comments\\Search\\Provider' => $baseDir . '/../lib/Search/Provider.php',
 );

@@ -25,6 +25,7 @@ namespace OCA\Comments\AppInfo;
 
 use OCA\Comments\Controller\Notifications;
 use OCA\Comments\JSSettingsHelper;
+use OCA\Comments\Search\Provider;
 use OCP\AppFramework\App;
 use OCP\Util;
 
@@ -38,5 +39,7 @@ class Application extends App {
 
 		$jsSettingsHelper = new JSSettingsHelper($container->getServer());
 		Util::connectHook('\OCP\Config', 'js', $jsSettingsHelper, 'extend');
+
+		$container->getServer()->getSearch()->registerProvider(Provider::class, ['apps' => ['files']]);
 	}
 }

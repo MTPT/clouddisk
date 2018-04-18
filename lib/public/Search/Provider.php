@@ -84,7 +84,7 @@ abstract class Provider {
 	/**
 	 * Search for $query
 	 * @param string $query
-	 * @return array An array of OCP\Search\Result's
+	 * @return Result[] An array of OCP\Search\Result's
 	 * @since 7.0.0
 	 */
 	abstract public function search($query);
