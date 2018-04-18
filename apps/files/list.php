@@ -21,6 +21,8 @@
  *
  */
 
+//$discoveryService = new \OC\OCS\DiscoveryService(\OC::$server->getMemCacheFactory(), \OC::$server->getHTTPClientService());
+//$endPoint = $discoveryService->discover('http://localhost', 'FEDERATED_SHARING');
 $config = \OC::$server->getConfig();
 // TODO: move this to the generated config.js
 $publicUploadEnabled = $config->getAppValue('core', 'shareapi_allow_public_upload', 'yes');
