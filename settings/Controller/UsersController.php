@@ -349,10 +349,11 @@ class UsersController extends Controller {
 	 * @param string $username
 	 * @param string $password
 	 * @param array $groups
+	 * @param string $displayName
 	 * @param string $email
 	 * @return DataResponse
 	 */
-	public function create(string $username, string $password, array $groups = [], string $email = ''): DataResponse {
+	public function create(string $username, string $password, array $groups = [], string $displayName = '', string $email = ''): DataResponse {
 		if ($email !== '' && !$this->mailer->validateMailAddress($email)) {
 			return new DataResponse(
 				[
@@ -444,6 +445,11 @@ class UsersController extends Controller {
 					$group->addUser($user);
 				}
 			}
+
+			if ($displayName !== '') {
+				$user->setDisplayName($displayName);
+			}
+
 			/**
 			 * Send new user mail only if a mail is set
 			 */

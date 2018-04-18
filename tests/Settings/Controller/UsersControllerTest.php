@@ -1554,6 +1554,73 @@ class UsersControllerTest extends \Test\TestCase {
 		$this->assertEquals($expectedResponse, $response);
 	}
 
+	public function testCreateSuccessfulWithDisplayNameAdmin() {
+		$controller = $this->getController(true);
+
+		$user = $this->createMock(User::class);
+		$user
+			->method('getHome')
+			->will($this->returnValue('/home/user'));
+		$user
+			->method('getUID')
+			->will($this->returnValue('foo'));
+		$user
+			->expects($this->once())
+			->method('getBackendClassName')
+			->will($this->returnValue('bar'));
+		$user
+			->expects($this->any())
+			->method('isEnabled')
+			->willReturn(true);
+
+		$user
+			->expects($this->once())
+			->method('setDisplayName')
+			->with('Display Name');
+		$user
+			->method('getDisplayName')
+			->willReturn('Display Name');
+
+		$this->userManager
+			->expects($this->once())
+			->method('createUser')
+			->will($this->onConsecutiveCalls($user));
+
+		$subadmin = $this->getMockBuilder(SubAdmin::class)
+			->disableOriginalConstructor()
+			->getMock();
+		$subadmin
+			->expects($this->any())
+			->method('getSubAdminsGroupsName')
+			->with($user)
+			->will($this->returnValue([]));
+		$this->groupManager
+			->expects($this->any())
+			->method('getSubAdmin')
+			->will($this->returnValue($subadmin));
+
+		$expectedResponse = new DataResponse(
+			array(
+				'name' => 'foo',
+				'groups' => null,
+				'storageLocation' => '/home/user',
+				'backend' => 'bar',
+				'lastLogin' => null,
+				'displayname' => 'Display Name',
+				'quota' => null,
+				'subadmin' => array(),
+				'email' => null,
+				'isRestoreDisabled' => false,
+				'isAvatarAvailable' => true,
+				'isEnabled' => true,
+				'quota_bytes' => false,
+			),
+			Http::STATUS_CREATED
+		);
+		$response = $controller->create('foo', 'password', array(), 'Display Name');
+		$this->assertEquals($expectedResponse, $response);
+	}
+
 	/**
 	 * test if an invalid mail result in a failure response
 	 */
@@ -1565,7 +1632,7 @@ class UsersControllerTest extends \Test\TestCase {
 			],
 			Http::STATUS_UNPROCESSABLE_ENTITY
 		);
-		$response = $controller->create('foo', 'password', [], 'invalidMailAdress');
+		$response = $controller->create('foo', 'password', [], '', 'invalidMailAdress');
 		$this->assertEquals($expectedResponse, $response);
 	}
 
@@ -1625,7 +1692,7 @@ class UsersControllerTest extends \Test\TestCase {
 			->method('getSubAdmin')
 			->will($this->returnValue($subadmin));
 
-		$response = $controller->create('foo', 'password', [], 'validMail@Adre.ss');
+		$response = $controller->create('foo', 'password', [], '', 'validMail@Adre.ss');
 		$this->assertEquals(Http::STATUS_CREATED, $response->getStatus());
 	}
 
@@ -2427,7 +2494,7 @@ class UsersControllerTest extends \Test\TestCase {
 			),
 			Http::STATUS_UNPROCESSABLE_ENTITY
 		);
-		$response = $controller->create('foo', '', array(), '');
+		$response = $controller->create('foo', '', array(), '', '');
 		$this->assertEquals($expectedResponse, $response);
 	}
 
@@ -2508,7 +2575,7 @@ class UsersControllerTest extends \Test\TestCase {
 			],
 			Http::STATUS_CREATED
 		);
-		$response = $controller->create('foo', '', array(), 'abc@example.org');
+		$response = $controller->create('foo', '', array(), '', 'abc@example.org');
 		$this->assertEquals($expectedResponse, $response);
 	}
 
