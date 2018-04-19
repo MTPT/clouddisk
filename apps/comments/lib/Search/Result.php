@@ -21,10 +21,11 @@
 
 namespace OCA\Comments\Search;
 
+use OCP\Comments\IComment;
 use OCP\Files\NotFoundException;
-use OCP\Search\Result;
+use OCP\Search\Result as BaseResult;
 
-class CommentSearchResult extends Result {
+class Result extends BaseResult {
 
 	public $type = 'comment';
 	public $comment;
@@ -35,27 +36,23 @@ class CommentSearchResult extends Result {
 
 	/**
 	 * @param string $search
-	 * @param int $commentId
-	 * @param string $comment
-	 * @param string $authorId
+	 * @param IComment $comment
 	 * @param string $authorName
 	 * @param string $path
 	 * @throws NotFoundException
 	 */
 	public function __construct(string $search,
-								int $commentId,
-								string $comment,
-								string $authorId,
+								IComment $comment,
 								string $authorName,
 								string $path) {
 		parent::__construct(
-			$commentId,
-			$comment
+			(int) $comment->getId(),
+			$comment->getMessage()
 		/* @todo , [link to file] */
 		);
 
-		$this->comment = $this->getRelevantMessagePart($comment, $search);
-		$this->authorId = $authorId;
+		$this->comment = $this->getRelevantMessagePart($comment->getMessage(), $search);
+		$this->authorId = $comment->getActorId();
 		$this->authorName = $authorName;
 		$this->fileName = basename($path);
 		$this->path = $this->getVisiblePath($path);

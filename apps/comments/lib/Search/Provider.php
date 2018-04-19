@@ -40,7 +40,6 @@ class Provider extends \OCP\Search\Provider {
 	public function search($query): array {
 		$cm = \OC::$server->getCommentsManager();
 		$us = \OC::$server->getUserSession();
-		$um = \OC::$server->getUserManager();
 
 		$user = $us->getUser();
 		if (!$user instanceof IUser) {
@@ -62,19 +61,13 @@ class Provider extends \OCP\Search\Provider {
 				continue;
 			}
 
-			$author = $um->get($comment->getActorId());
-
-			if (!$author instanceof IUser) {
-				continue;
-			}
+			$displayName = $cm->resolveDisplayName($comment->getActorType(), $comment->getActorId());
 
 			try {
 				$file = $this->getFileForComment($uf, $comment);
-				$result[] = new CommentSearchResult($query,
-					(int) $comment->getId(),
-					$comment->getMessage(),
-					$author->getUID(),
-					$author->getDisplayName(),
+				$result[] = new Result($query,
+					$comment,
+					$displayName,
 					$file->getPath()
 				);
 			} catch (NotFoundException $e) {
