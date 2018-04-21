@@ -660,15 +660,16 @@ pipeline:
       - chown -R pptruser out node_modules
       - bash -c "until curl -s http://ui-regression-php-master > /dev/null && curl -s http://ui-regression-php > /dev/null; do sleep 2; done"
       - sudo -u pptruser node runTests.js || true
-      - echo "The result can be found at https://s3.eu-central-1.amazonaws.com/nextcloud-ui-regression/nextcloud/server/${DRONE_PULL_REQUEST}/index.html"
+      - echo "The result can be found at https://s3.bitgrid.net/nextcloud-ui-regression/nextcloud/server/${DRONE_PULL_REQUEST}/index.html"
     shm_size: '1gb'
     when:
       matrix:
         TESTS: ui-regression
   publish-s3:
     image: plugins/s3
+    endpoint: https://s3.bitgrid.net/
     bucket: nextcloud-ui-regression
-    region: eu-central-1
+    path_style: true
     source: tests/ui-regression/out/**/*
     strip_prefix: tests/ui-regression/out/
     acl: public-read
