@@ -51,28 +51,41 @@ class Provider extends \OCP\Search\Provider {
 			return [];
 		}
 
-		/** @var IComment[] $comments */
-		$comments = $cm->search('files', '', 'comment', $query);
-
-
 		$result = [];
-		foreach ($comments as $comment) {
-			if ($comment->getActorType() !== 'users') {
-				continue;
+		$numComments = 50;
+		$offset = 0;
+
+		while ($result < $numComments) {
+			/** @var IComment[] $comments */
+			$comments = $cm->search($query, 'files', '', 'comment', $offset, $numComments);
+
+
+			foreach ($comments as $comment) {
+				if ($comment->getActorType() !== 'users') {
+					continue;
+				}
+
+				$displayName = $cm->resolveDisplayName($comment->getActorType(), $comment->getActorId());
+
+				try {
+					$file = $this->getFileForComment($uf, $comment);
+					$result[] = new Result($query,
+						$comment,
+						$displayName,
+						$file->getPath()
+					);
+				} catch (NotFoundException $e) {
+					continue;
+				}
 			}
 
-			$displayName = $cm->resolveDisplayName($comment->getActorType(), $comment->getActorId());
-
-			try {
-				$file = $this->getFileForComment($uf, $comment);
-				$result[] = new Result($query,
-					$comment,
-					$displayName,
-					$file->getPath()
-				);
-			} catch (NotFoundException $e) {
-				continue;
+			if (\count($comments) < $numComments) {
+				// Didn't find more comments when we tried to get, so there are no more comments.
+				return $result;
 			}
+
+			$offset += $numComments;
+			$numComments = 50 - \count($result);
 		}
 
 		return $result;
